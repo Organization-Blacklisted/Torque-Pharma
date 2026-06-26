@@ -1,0 +1,20 @@
+@theme inline {
+  /* Section Spacing */
+
+--spacing-section: clamp(6.25rem, 12vw, 12.5rem);     /* 100px → 200px */
+--spacing-page-top: clamp(3.125rem, 6vw, 6.25rem);   /* 50px → 100px — first section on every page */
+--spacing-section-inner: clamp(3.125rem, 4vw, 6.25rem);   /* 50 → 100 */
+--spacing-section-inner-sm: clamp(3rem, 4vw, 6rem);
+
+
+    /* Related Blocks */
+  --spacing-subsection: clamp(1.25rem, 2vw, 2.5rem);
+
+    /* Layout */
+  --spacing-gutter: 1.5rem;           /* 24px */
+
+    /* Icon sizes */
+  --spacing-icon-sm: 3rem;            /* 48px */
+  --spacing-icon: 5rem;               /* 80px */
+
+}

@@ -1,0 +1,58 @@
+.split-btn-arrow {
+  --arrow-travel: 28px;
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.split-btn-arrow-track {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  margin-left: -8px;
+  margin-top: -8px;
+  transition:
+    transform 0.85s cubic-bezier(0.45, 0, 0.15, 1),
+    opacity 0.55s cubic-bezier(0.45, 0, 0.15, 1);
+}
+
+/* Default: centered arrow visible */
+.split-btn-arrow-exit {
+  transform: translate(0, 0);
+  opacity: 1;
+}
+
+/* Default: replacement arrow waits below-left corner */
+.split-btn-arrow-enter {
+  transform: translate(calc(-1 * var(--arrow-travel)), var(--arrow-travel));
+  opacity: 0;
+}
+
+/* Hover: exit travels up-right into top corner */
+.group:hover .split-btn-arrow-exit {
+  transform: translate(var(--arrow-travel), calc(-1 * var(--arrow-travel)));
+  opacity: 0;
+  transition-delay: 0s;
+}
+
+/* Hover: enter follows from bottom-left corner after exit clears */
+.group:hover .split-btn-arrow-enter {
+  transform: translate(0, 0);
+  opacity: 1;
+  transition-delay: 0.4s;
+}
+
+/* Mouse leave: enter retreats to bottom corner first */
+.group:not(:hover) .split-btn-arrow-enter {
+  transition-delay: 0s;
+}
+
+/* Mouse leave: original arrow returns to center */
+.group:not(:hover) .split-btn-arrow-exit {
+  transition-delay: 0.55s;
+}

@@ -1,0 +1,56 @@
+@import "tailwindcss";
+@import "../styles/typography.css";
+@import "../styles/colors.css";
+@import "../styles/spacings.css";
+@import "../styles/rich-text.css";
+
+@theme {
+  --breakpoint-nav: 75rem; /* 1200px */
+}
+
+:root {
+  --background:  #DBE5F2;
+  --foreground: #171717;
+}
+
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body);
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+@keyframes slideOutLeft {
+  from { transform: translateX(0);     }
+  to   { transform: translateX(-100%); }
+}
+
+@keyframes slideInRight {
+  from { transform: translateX(100%);  }
+  to   { transform: translateX(0);     }
+}
+
+.cta-gradient {
+  background:
+    radial-gradient(
+      circle at 78% 50%,
+      color-mix(in srgb, var(--color-sky) 28%, transparent) 0%,
+      color-mix(in srgb, var(--color-sky) 12%, transparent) 25%,
+      transparent 55%
+    ),
+    var(--color-mint);
+}
+
+.hero-eyebrow-gradient {
+  background: linear-gradient(92deg, var(--color-vivid-blue) -13.36%, var(--color-dark-blue) 118.24%);
+}

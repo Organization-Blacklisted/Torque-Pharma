@@ -1,0 +1,15 @@
+@theme {
+    --color-primary: #1B2978;
+    --color-secondary: #5C607C;
+    --color-mint: #5BC4A0;
+    --color-mint-dark: #204639;
+    --color-dark-blue: #061549;
+    --color-vivid-blue: #0E32AF;
+    --color-sky: #53BEE5;
+    --color-dark-grey: #2A3645;
+    --color-lightgray: #5E6381;
+    --color-yellowgray: rgba(217, 217, 217, 1);
+    --color-pin: #E51919;
+    --color-surface: #EEF1F8;
+    --color-card-bg: #F6F6F6;
+}
