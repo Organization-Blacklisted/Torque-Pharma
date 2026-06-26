@@ -1,6 +1,49 @@
 import type { HomepageData } from "@/types/homepage";
 
 export const homepageMock: HomepageData = {
+  torqueLineup: {
+    eyebrow: "The Torque Lineup",
+    heading: "Brands That Earned Recognition",
+    description: "Together, they represent a lineup built on usability, quality, and the quiet trust that comes from products that perform well.",
+    items: [
+      {
+        category: "Respiratory Relief",
+        pillColor: "#446615",
+        logo: "/images/home/torex-image.svg",
+        productImage: "/images/home/torex-pdp-image.png",
+        description: "Fast relief, everyday wellness",
+        brandName: "Torex",
+        href: "#",
+      },
+      {
+        category: "Anti-Scars & Brightening",
+        pillColor: "#9D1A41",
+        logo: "/images/home/no-scars-image.svg",
+        productImage: "/images/home/no-scars-pdp-image.png",
+        description: "Brighter-looking skin with focused scar care",
+        brandName: "No Scars",
+        href: "#",
+      },
+      {
+        category: "Clinical Skin Solutions",
+        pillColor: "#A13790",
+        logo: "/images/home/medisalic-image.svg",
+        productImage: "/images/home/medisalic-pdp-image.png",
+        description: "Dermatological care for persistent skin concerns",
+        brandName: "Medisalic",
+        href: "#",
+      },
+      {
+        category: "Hair and Scalp Care",
+        pillColor: "#446615",
+        logo: "/images/home/ketomac-image.svg",
+        productImage: "/images/home/ketomac-pdp-image.png",
+        description: "Targeted care for dandruff-prone scalps",
+        brandName: "Ketomac",
+        href: "#",
+      },
+    ],
+  },
   therapeuticAreas: {
     eyebrow: "Therapeutic Areas",
     heading: "Strengthening Health Across Multiple Specialities",

@@ -1,6 +1,7 @@
 import type { StatCardProps } from "@/components/ui/StatCard/StatCard.types";
 import type { VideoSource } from "@/components/ui/VideoBackground/VideoBackground";
 import type { TherapeuticAreasData } from "@/types/therapeutic-areas";
+import type { TorqueLineupData } from "@/types/torque-lineup";
 
 export interface StatsMediaData {
   eyebrow: string;
@@ -19,4 +20,5 @@ export interface StatsMediaData {
 export interface HomepageData {
   statsMedia: StatsMediaData;
   therapeuticAreas: TherapeuticAreasData;
+  torqueLineup: TorqueLineupData;
 }

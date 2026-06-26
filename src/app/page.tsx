@@ -9,6 +9,7 @@ import BlogsPreviewSection from "@/components/sections/home/BlogsPreviewSection"
 import ContractManufacturingSection from "@/components/sections/home/ContractManufacturingSection";
 import TherapeuticAreasSection from "@/components/sections/home/TherapeuticAreasSection";
 import HomeOverviewSection from "@/components/sections/home/HomeOverviewSection";
+import TorqueLineupSection from "@/components/sections/home/TorqueLineupSection";
 import Container from "@/components/layouts/Container";
 import Section from "@/components/layouts/Section";
 import { homepageMock } from "@/data/homepage.mock";
@@ -20,7 +21,7 @@ export const metadata: Metadata = {
 };
 
 export default async function Home() {
-  const { statsMedia, therapeuticAreas } = homepageMock;
+  const { statsMedia, therapeuticAreas, torqueLineup } = homepageMock;
   const { hero, overview, impact, globalPresence, lifeAtTorque, contractManufacturing, blogsPreview } = await getHomePage();
 
   return (
@@ -37,6 +38,11 @@ export default async function Home() {
       <Section>
         <Container size="content">
           <HomeGlobalPresenceSection data={globalPresence} />
+        </Container>
+      </Section>
+      <Section>
+        <Container size="wide">
+          <TorqueLineupSection data={torqueLineup} />
         </Container>
       </Section>
       <HomeStatsMediaSection data={statsMedia} />
