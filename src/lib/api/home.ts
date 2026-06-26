@@ -113,9 +113,7 @@ export async function getHomePage(): Promise<HomePageData> {
       },
       video: {
         sources: [{
-          src: process.env.NODE_ENV === "development"
-            ? "/videos/home/hero.mp4"
-            : data.video_section.video,
+          src: data.video_section.video,
           type: "video/mp4",
         }],
         poster: data.video_section.image,
