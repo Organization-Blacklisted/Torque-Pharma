@@ -31,7 +31,7 @@ type ButtonProps = BaseProps & {
 export type SplitButtonProps = LinkProps | ButtonProps;
 
 const baseRoot =
-  "group inline-flex items-stretch gap-1 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mint focus-visible:ring-offset-2 disabled:pointer-events-none aria-disabled:pointer-events-none disabled:opacity-50 aria-disabled:opacity-50";
+  "group inline-flex items-stretch gap-1 rounded-sm no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mint focus-visible:ring-offset-2 disabled:pointer-events-none aria-disabled:pointer-events-none disabled:opacity-50 aria-disabled:opacity-50";
 
 const baseLabel =
   "flex items-center rounded-sm px-6 py-3 font-body text-sm font-medium uppercase tracking-[0.08em] transition-colors duration-300 ease-out";

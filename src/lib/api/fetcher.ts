@@ -20,13 +20,16 @@ export async function apiFetch<T>(
   { revalidate = 3600, tags }: FetchOptions = {}
 ): Promise<T> {
   const url = `${API_BASE}${endpoint}`;
+  const label = `[API] ${endpoint}`;
 
+  console.time(label);
   const res = await fetch(url, {
     next: {
       revalidate,
       ...(tags ? { tags } : {}),
     },
   });
+  console.timeEnd(label);
 
   if (!res.ok) {
     throw new Error(`API error ${res.status}: ${res.statusText} — ${url}`);
