@@ -51,9 +51,8 @@ export function PinterestIcon({ className }: IconProps) {
 }
 
 export const socialLinks = [
-  { label: "YouTube", href: "https://youtube.com", Icon: YouTubeIcon },
-  { label: "LinkedIn", href: "https://linkedin.com", Icon: LinkedInIcon },
-  { label: "Facebook", href: "https://facebook.com", Icon: FacebookIcon },
-  { label: "Instagram", href: "https://instagram.com", Icon: InstagramIcon },
-  { label: "Pinterest", href: "https://pinterest.com", Icon: PinterestIcon },
+  { label: "YouTube", href: "https://www.youtube.com/@TorquePharmaIndia/", Icon: YouTubeIcon },
+  { label: "LinkedIn", href: "https://www.linkedin.com/company/torquecorporates", Icon: LinkedInIcon },
+  { label: "Facebook", href: "https://www.facebook.com/torquecorporate", Icon: FacebookIcon },
+  { label: "Instagram", href: "https://www.instagram.com/torquecorporate/", Icon: InstagramIcon },
 ] as const;

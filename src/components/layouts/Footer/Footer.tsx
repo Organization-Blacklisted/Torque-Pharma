@@ -68,12 +68,14 @@ export default function Footer() {
 
               {/* Brand Column */}
               <div className="md:col-span-2 [@media(min-width:1200px)]:col-span-1 [@media(min-width:1200px)]:shrink-0 [@media(min-width:1200px)]:w-[clamp(280px,22vw,350px)]">
-                <Image
-                  src="/torque-white.svg"
-                  alt="Torque"
-                  width={220}
-                  height={55}
-                />
+                <Link href="/">
+                  <Image
+                    src="/torque-white.svg"
+                    alt="Torque"
+                    width={220}
+                    height={55}
+                  />
+                </Link>
                 <address className="mt-6 not-italic font-body text-body-lg font-light text-white/80 ">
                   C-83, Industrial Area, Phase 7, Sector 74
                   Sahibzada Ajit Singh Nagar, Punjab 160055
