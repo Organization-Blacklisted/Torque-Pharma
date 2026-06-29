@@ -92,7 +92,7 @@ export const homepageMock: HomepageData = {
     ],
     media: {
       sources: [
-        { src: "/videos/manufacturing/higher-standards.mp4", type: "video/mp4" as const },
+        { src: "/videos/Higher-Standards.mp4", type: "video/mp4" as const },
       ],
     },
     card: {
