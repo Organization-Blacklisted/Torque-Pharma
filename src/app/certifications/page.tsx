@@ -21,7 +21,7 @@ export default async function CertificationsPage() {
   return (
     <main>
       <Section first>
-        <Container size="content">
+        <Container size="wide">
           <AwardsSection data={page} />
         </Container>
       </Section>

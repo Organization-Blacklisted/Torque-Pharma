@@ -5,8 +5,11 @@ export interface AwardItem {
   tag: string | null;
 }
 
+export type AwardsSectionVariant = "certification" | "accreditation";
+
 export interface AwardsSection {
   section_title: string;
+  variant: AwardsSectionVariant;
   items: AwardItem[];
 }
 

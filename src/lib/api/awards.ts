@@ -39,6 +39,9 @@ export async function getAwardsPage(): Promise<AwardsPageData> {
     description: data.description.replace(/<[^>]*>/g, "").trim(),
     sections: data.content.awards_sections.map((section) => ({
       section_title: section.section_title,
+      variant: section.section_title.toLowerCase().includes("accreditation")
+        ? ("accreditation" as const)
+        : ("certification" as const),
       items: section.items.map((item) => ({
         image: item.image.startsWith("http") ? item.image : `${STORAGE_BASE}/${item.image}`,
         title: item.title,

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import AccreditationCard from "@/components/ui/AccreditationCard";
 import CertCard from "@/components/ui/CertCard";
 import SectionHeader from "@/components/ui/SectionHeading";
 import { TabList, Tab } from "@/components/ui/Tabs";
@@ -56,13 +57,25 @@ export default function AwardsSection({
         id="awards-tab-panel"
         role="tabpanel"
         aria-labelledby={`awards-tab-${activeIndex}`}
-        className={`grid grid-cols-2 gap-[var(--spacing-gutter)] transition-opacity duration-150 ease-in-out md:grid-cols-3 ${
-          fading ? "opacity-0" : "opacity-100"
-        }`}
+        className={`transition-opacity duration-150 ease-in-out ${
+          activeSection?.variant === "accreditation"
+            ? "flex flex-wrap justify-center gap-[var(--spacing-gutter)]"
+            : "grid grid-cols-1 gap-[var(--spacing-gutter)] md:grid-cols-3"
+        } ${fading ? "opacity-0" : "opacity-100"}`}
       >
-        {activeSection?.items.map((item) => (
-          <CertCard key={item.title} image={item.image} label={item.title} />
-        ))}
+        {activeSection?.items.map((item) =>
+          activeSection.variant === "accreditation" ? (
+            <AccreditationCard
+              key={item.title}
+              image={item.image}
+              title={item.title}
+              desc={item.desc}
+              className="w-full md:w-[calc(33.333%-16px)] xl:w-[calc(20%-20px)]"
+            />
+          ) : (
+            <CertCard key={item.title} image={item.image} label={item.title} />
+          )
+        )}
       </div>
     </div>
   );
