@@ -19,7 +19,7 @@
   --text-lead: clamp(1.125rem, 2vw, 1.75rem);
 
   --text-body-lg: clamp(1rem, 1.2vw, 1.125rem);
-  --text-body-sm: 1rem;
+  --text-body-sm: clamp(0.875rem, 1vw, 1rem);
 
   --text-eyebrow: 1rem;
   --text-button: 0.875rem;
