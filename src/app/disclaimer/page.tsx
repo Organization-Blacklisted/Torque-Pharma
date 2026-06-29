@@ -27,7 +27,7 @@ export default async function DisclaimerPage() {
   return (
     <main className="py-section-inner">
       <Container size="wide">
-        <h1 className="font-heading text-h1 font-light text-dark-blue leading-[1.1] mb-10">
+        <h1 className="font-heading text-h1 font-light text-primary leading-[1.1] mb-10">
           {page.title}
         </h1>
         <SafeHtml html={page.description} className="rich-text rich-text--policy" />
