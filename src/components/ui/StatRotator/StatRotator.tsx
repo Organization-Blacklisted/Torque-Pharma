@@ -80,34 +80,36 @@ export default function StatRotator({
       ref={containerRef}
       className={`grid md:grid-cols-2 gap-[var(--spacing-gutter)] ${className}`}
     >
-      {/* Slot 1 — card frame stays, content slides within */}
+      {/* Slot 1 */}
       <div className="relative overflow-hidden">
+        {/* Ghost — always in flow, locks container height during animation */}
+        <div className="opacity-0 pointer-events-none" aria-hidden="true">
+          <StatCard {...firstCurrent} showDots isFirstDotActive={isFirstDotActive} />
+        </div>
         {isSliding && firstPrev && (
           <div className={`absolute inset-0 ${exitAnim}`}>
             <StatCard {...firstPrev} showDots isFirstDotActive={prevDotActive} />
           </div>
         )}
-        <StatCard
-          {...firstCurrent}
-          showDots
-          isFirstDotActive={isFirstDotActive}
-          className={isSliding ? enterAnim : ""}
-        />
+        <div className={isSliding ? `absolute inset-0 ${enterAnim}` : "absolute inset-0"}>
+          <StatCard {...firstCurrent} showDots isFirstDotActive={isFirstDotActive} />
+        </div>
       </div>
 
-      {/* Slot 2 — card frame stays, content slides within */}
+      {/* Slot 2 */}
       <div className="relative overflow-hidden">
+        {/* Ghost — always in flow, locks container height during animation */}
+        <div className="opacity-0 pointer-events-none" aria-hidden="true">
+          <StatCard {...secondCurrent} showDots isFirstDotActive={isFirstDotActive} />
+        </div>
         {isSliding && secondPrev && (
           <div className={`absolute inset-0 ${exitAnim}`}>
             <StatCard {...secondPrev} showDots isFirstDotActive={prevDotActive} />
           </div>
         )}
-        <StatCard
-          {...secondCurrent}
-          showDots
-          isFirstDotActive={isFirstDotActive}
-          className={isSliding ? enterAnim : ""}
-        />
+        <div className={isSliding ? `absolute inset-0 ${enterAnim}` : "absolute inset-0"}>
+          <StatCard {...secondCurrent} showDots isFirstDotActive={isFirstDotActive} />
+        </div>
       </div>
     </div>
   );
