@@ -36,7 +36,7 @@ export default function AwardsSection({
         align="center"
         size="h1"
         as="h1"
-        className="mb-10"
+        className="mx-auto mb-10 max-w-[1080px]"
       />
 
       <TabList className="mb-10 justify-center gap-[clamp(2rem,_3vw,_2.5rem)]">
@@ -60,7 +60,7 @@ export default function AwardsSection({
         className={`transition-opacity duration-150 ease-in-out ${
           activeSection?.variant === "accreditation"
             ? "flex flex-wrap justify-center gap-[var(--spacing-gutter)]"
-            : "grid grid-cols-1 gap-[var(--spacing-gutter)] md:grid-cols-3"
+            : "mx-auto grid max-w-[1177px] grid-cols-1 gap-[var(--spacing-gutter)] md:grid-cols-3"
         } ${fading ? "opacity-0" : "opacity-100"}`}
       >
         {activeSection?.items.map((item) =>
