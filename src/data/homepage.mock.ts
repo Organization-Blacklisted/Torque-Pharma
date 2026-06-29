@@ -100,10 +100,6 @@ export const homepageMock: HomepageData = {
       description:
         "Our facilities are built to exceed global regulatory benchmarks, backed by rigorous audits, continuous improvement, teams trained to the highest pharmaceutical standards.",
     },
-    footer: {
-      label: "Manufacturing Capabilities",
-      href: "/manufacturing-facility",
-    },
   },
 
 };
