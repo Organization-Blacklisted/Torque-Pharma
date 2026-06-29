@@ -174,7 +174,7 @@ export default function Header() {
                 aria-expanded={menuOpen}
                 aria-controls="mobile-nav-drawer"
                 onClick={() => setMenuOpen(true)}
-                className="flex nav:hidden shrink-0 items-center justify-center p-1"
+                className="flex nav:hidden shrink-0 items-center justify-center p-1 outline-none"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" width="30" height="18" viewBox="0 0 30 18" fill="none" className="text-dark-blue" aria-hidden="true">
                   <line x1="0.75" y1="0.75" x2="29.25" y2="0.75" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
