@@ -12,6 +12,8 @@ export interface AwardsSection {
 
 export interface AwardsPageData {
   title: string;
+  eyebrow: string;
+  subtitle: string;
   description: string;
   sections: AwardsSection[];
 }
