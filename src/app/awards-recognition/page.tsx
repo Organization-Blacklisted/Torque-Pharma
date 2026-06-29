@@ -13,7 +13,7 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default async function AwardsAccreditationsPage() {
+export default async function AwardsRecognitionPage() {
   const page = await getAwardsPage();
 
   if (!page) notFound();
