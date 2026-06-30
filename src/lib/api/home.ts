@@ -6,6 +6,8 @@ import type { LifeAtTorqueData } from "@/types/life-at-torque";
 import type { GlobalPresenceData } from "@/types/global-presence";
 import type { ContractManufacturingData } from "@/types/contract-manufacturing";
 import type { HomeOverviewData } from "@/types/home-overview";
+import type { StatsMediaData } from "@/types/homepage";
+import type { TorqueLineupData } from "@/types/torque-lineup";
 
 // ─── Raw API shape ─────────────────────────────────────────────────────────────
 // Mirrors the /pages/home response exactly. Extend as more sections are wired up.
@@ -46,7 +48,7 @@ type HomeApiResponse = {
   };
   overview_section: {
     image: string;
-    title: string;
+    title: string | null;
     description: string;
     button_text: string;
     button_link: string;
@@ -60,7 +62,58 @@ type HomeApiResponse = {
     items: { image: string; title: string; description: string }[];
   };
   blogs_section: HomeBlogsPreviewData;
+  zero_defect_section: {
+    title: string;
+    sub_title: string;
+    description: string;
+    view_text: string;
+    view_link: string;
+    video: string | null;
+    video_title: string;
+    video_desc: string;
+    items: {
+      title: string;
+      sub_title: string;
+      description: string;
+      inner_items: { title: string; sub_title: string; description: string }[];
+    }[];
+  };
+  torque_lineup_section: {
+    title: string;
+    sub_title: string;
+    description: string;
+    items: {
+      image: string;
+      hover_image: string;
+      title: string;
+      tag: string;
+      hover_tag: string;
+      button_text: string;
+      button_link: string;
+    }[];
+  };
 };
+
+// "2.83 <span>Billion</span>" → { value: "2.83", suffix: "Billion" }; "13+" → { value: "13+" }
+function parseStatValue(subTitle: string): { value: string; suffix?: string } {
+  const match = subTitle.match(/^(.*?)\s*<span>(.*?)<\/span>\s*$/);
+  if (!match) return { value: subTitle.trim() };
+  return { value: match[1].trim(), suffix: match[2].trim() };
+}
+
+// API doesn't supply brand colors — keyed by hover_tag, the brand name the API sends in caps
+const BRAND_PILL_COLORS: Record<string, string> = {
+  TOREX: "#446615",
+  "NO SCARS": "#9D1A41",
+  MEDISALIC: "#A13790",
+  KETOMAC: "#446615",
+};
+
+// API sends bare domains like "www.torex.co.in" with no protocol; "#" is a real unset placeholder, leave it
+function normalizeExternalUrl(url: string): string {
+  if (url === "#" || /^https?:\/\//.test(url)) return url;
+  return `https://${url}`;
+}
 
 // ─── Transformed shape ─────────────────────────────────────────────────────────
 // What page.tsx receives — component-ready, no raw API types leak out.
@@ -73,6 +126,8 @@ export type HomePageData = {
   lifeAtTorque: LifeAtTorqueData;
   contractManufacturing: ContractManufacturingData;
   blogsPreview: HomeBlogsPreviewData;
+  statsMedia: StatsMediaData;
+  torqueLineup: TorqueLineupData;
 };
 
 // ─── Fetcher ───────────────────────────────────────────────────────────────────
@@ -96,7 +151,7 @@ export async function getHomePage(): Promise<HomePageData> {
 
   return {
     overview: {
-      eyebrow: data.overview_section.title,
+      eyebrow: data.overview_section.title ?? "",
       image: data.overview_section.image,
       description: data.overview_section.description,
       cta: {
@@ -169,5 +224,47 @@ export async function getHomePage(): Promise<HomePageData> {
       },
     },
     blogsPreview: data.blogs_section,
+    statsMedia: {
+      eyebrow: data.zero_defect_section.title,
+      title: data.zero_defect_section.sub_title,
+      description: data.zero_defect_section.description,
+      // Each item is an independent card slot — its inner_items are that slot's own rotation, not one shared list
+      stats: data.zero_defect_section.items.map((item) =>
+        item.inner_items.map((inner) => {
+          const { value, suffix } = parseStatValue(inner.sub_title);
+          return {
+            label: inner.title,
+            value,
+            suffix,
+            description: inner.description.replace(/\r\n/g, " ").trim(),
+            theme: "light" as const,
+          };
+        })
+      ),
+      media: {
+        sources: data.zero_defect_section.video
+          ? [{ src: data.zero_defect_section.video, type: "video/mp4" as const }]
+          : [{ src: "/videos/Higher-Standards.mp4", type: "video/mp4" as const }],
+      },
+      card: {
+        title: data.zero_defect_section.video_title,
+        description: data.zero_defect_section.video_desc,
+      },
+      // No footer CTA on this section by design — API supplies view_text/view_link but it's intentionally unused here
+    },
+    torqueLineup: {
+      eyebrow: data.torque_lineup_section.title,
+      heading: data.torque_lineup_section.sub_title,
+      description: data.torque_lineup_section.description,
+      items: data.torque_lineup_section.items.map((item) => ({
+        category: item.tag,
+        pillColor: BRAND_PILL_COLORS[item.hover_tag] ?? "#1B2978",
+        logo: item.image,
+        productImage: item.hover_image,
+        description: item.title,
+        brandName: item.hover_tag,
+        href: normalizeExternalUrl(item.button_link),
+      })),
+    },
   };
 }

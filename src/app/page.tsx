@@ -21,8 +21,18 @@ export const metadata: Metadata = {
 };
 
 export default async function Home() {
-  const { statsMedia, therapeuticAreas, torqueLineup } = homepageMock;
-  const { hero, overview, impact, globalPresence, lifeAtTorque, contractManufacturing, blogsPreview } = await getHomePage();
+  const { therapeuticAreas } = homepageMock;
+  const {
+    hero,
+    overview,
+    impact,
+    globalPresence,
+    lifeAtTorque,
+    contractManufacturing,
+    blogsPreview,
+    statsMedia,
+    torqueLineup,
+  } = await getHomePage();
 
   return (
     <main>

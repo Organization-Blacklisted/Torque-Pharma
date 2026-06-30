@@ -30,8 +30,8 @@ export default function HomeStatsMediaSection({ data }: HomeStatsMediaSectionPro
         >
           <div className="grid gap-[var(--spacing-gutter)] md:grid-cols-2 xl:grid-cols-4">
             {/* Rotating stat cards — spans 2 cols */}
-            <div className="md:col-span-2">
-              <StatRotator items={stats} />
+            <div className="min-w-0 md:col-span-2">
+              <StatRotator slots={stats} />
             </div>
 
             {/* Video + content card joined as one unit — spans 2 cols */}

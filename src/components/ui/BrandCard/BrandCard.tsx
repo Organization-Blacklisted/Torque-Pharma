@@ -81,6 +81,8 @@ export default function BrandCard({
           </span>
           <Link
             href={href}
+            target="_blank"
+            rel="noopener noreferrer"
             className="flex items-center gap-1.5 text-body-sm font-medium uppercase tracking-wide text-mint"
           >
             Visit Site <VisitSiteArrow />

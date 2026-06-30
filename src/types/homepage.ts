@@ -1,13 +1,12 @@
 import type { StatCardProps } from "@/components/ui/StatCard/StatCard.types";
 import type { VideoSource } from "@/components/ui/VideoBackground/VideoBackground";
 import type { TherapeuticAreasData } from "@/types/therapeutic-areas";
-import type { TorqueLineupData } from "@/types/torque-lineup";
 
 export interface StatsMediaData {
   eyebrow: string;
   title: string;
   description: string;
-  stats: StatCardProps[];
+  stats: StatCardProps[][]; // one array per card slot — each slot rotates through its own items independently
   media: { sources: VideoSource[]; poster?: string };
   card: {
     title: string;
@@ -18,7 +17,5 @@ export interface StatsMediaData {
 }
 
 export interface HomepageData {
-  statsMedia: StatsMediaData;
   therapeuticAreas: TherapeuticAreasData;
-  torqueLineup: TorqueLineupData;
 }

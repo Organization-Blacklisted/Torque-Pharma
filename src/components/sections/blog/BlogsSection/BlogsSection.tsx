@@ -61,7 +61,7 @@ export default function BlogsSection({ data: { posts }, className = "" }: BlogsS
         className="mx-auto mb-10"
       />
 
-      <TabList className="mb-10 justify-center gap-[clamp(2rem,_3vw,_2.5rem)]">
+      <TabList className="mb-10 justify-start gap-[clamp(2rem,_3vw,_2.5rem)] lg:justify-center">
         {categories.map((category) => (
           <Tab
             key={category}

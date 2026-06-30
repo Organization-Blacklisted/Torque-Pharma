@@ -27,14 +27,14 @@ export default function BlogCard({
         </div>
       </div>
 
-      <div className="mt-4 flex flex-col gap-3">
+      <div className="mt-4 flex flex-1 flex-col gap-3">
         {category && (
           <span className="inline-flex h-8 w-fit items-center rounded-full bg-mint px-3.5 py-1 text-h5 font-normal uppercase text-mint-dark">
             {category.name}
           </span>
         )}
 
-        <h3 className="font-body font-medium text-h4 leading-[1.2] text-secondary">
+        <h3 className="font-body font-medium text-body leading-[1.2] text-secondary">
           {/* Stretched link covers the entire card */}
           <Link href={href} className="after:absolute after:inset-0">
             {title}
