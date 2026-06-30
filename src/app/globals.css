@@ -13,9 +13,14 @@
   --foreground: #171717;
 }
 
+html {
+  /* Reserves scrollbar space permanently so locking body scroll (mobile drawer)
+     never changes page width and shifts fixed-positioned elements (CLS). */
+  scrollbar-gutter: stable;
+}
 
 body {
-  background: var(--background);
+  background: radial-gradient(ellipse at 50% 25%, #ffffff 0%, var(--background) 70%) fixed;
   color: var(--foreground);
   font-family: var(--font-body);
 }
