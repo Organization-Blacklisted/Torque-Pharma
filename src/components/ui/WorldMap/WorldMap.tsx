@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
+import type { CSSProperties } from "react";
 import type { WorldMapProps } from "./WorldMap.types";
 
 const FADE_MS = 350;
@@ -71,7 +72,10 @@ export default function WorldMap({ items, className = "" }: WorldMapProps) {
   const [activeIndex, setActiveIndex]       = useState(0);
   const [displayedIndex, setDisplayedIndex] = useState(0);
   const [fading, setFading]                 = useState(false);
+  const [isZoomed, setIsZoomed]             = useState(false);
   const fadeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const zoomInTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const zoomOutTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const activeRef = useRef(0);
   activeRef.current = activeIndex;
 
@@ -94,34 +98,62 @@ export default function WorldMap({ items, className = "" }: WorldMapProps) {
     };
   }, [advance]);
 
+  // Mobile zoom pulse — independent of the desktop pin/tooltip timing above.
+  // Each time activeIndex changes: sit at default briefly, zoom in, hold, zoom back
+  // out to default — all comfortably inside the existing HOLD_MS window so it settles
+  // back to default before the next location's pulse begins.
+  useEffect(() => {
+    setIsZoomed(false);
+    zoomInTimer.current = setTimeout(() => setIsZoomed(true), 200);
+    zoomOutTimer.current = setTimeout(() => setIsZoomed(false), 200 + 700 + 1100);
+    return () => {
+      if (zoomInTimer.current) clearTimeout(zoomInTimer.current);
+      if (zoomOutTimer.current) clearTimeout(zoomOutTimer.current);
+    };
+  }, [activeIndex]);
+
   const displayed    = items[displayedIndex];
   const displayedPos = displayed ? POSITIONS[displayed.title] : null;
+  const activeItem   = items[activeIndex];
+  const activePos    = activeItem ? POSITIONS[activeItem.title] : null;
 
   return (
     <div className={className}>
-      <div className="relative w-full aspect-[1225/604]">
+      <div className="relative w-full aspect-[3/2] lg:aspect-[1225/604]">
         {/* Image layer — clipped + edge-faded. Separate from pins so the mask
             doesn't cut off tooltips that overflow the map edges. */}
-        <div className="absolute inset-0 overflow-hidden [mask-image:linear-gradient(to_bottom,transparent_0%,black_8%,black_92%,transparent_100%)]">
-          {/* Figma Ellipse 76 — behind the dots, glow baked into SVG */}
-          <Image
-            src="/images/map/ellipse.svg"
-            alt=""
-            aria-hidden
-            width={1472}
-            height={1472}
-            className="pointer-events-none absolute w-[120%] h-auto -translate-x-1/2 -translate-y-1/2 left-[54%] top-[55%] opacity-100"
-          />
-          <Image
-            src="/images/map/dots.svg"
-            alt="World map showing Torque Pharma global presence"
-            fill
-            className="object-contain"
-            priority
-          />
+        <div className="absolute inset-0 overflow-hidden [mask-composite:intersect] [mask-image:linear-gradient(to_bottom,transparent_0%,black_8%,black_92%,transparent_100%),linear-gradient(to_right,transparent_0%,black_8%,black_92%,transparent_100%)] lg:[mask-composite:auto] lg:[mask-image:linear-gradient(to_bottom,transparent_0%,black_8%,black_92%,transparent_100%)]">
+          {/* Mobile: pulses default → zoomed (pivoting on the active location's
+              coordinate) → default on each activeIndex change, via isZoomed.
+              Desktop: forced back to scale 1 regardless — pins handle it there. */}
+          <div
+            className="absolute inset-0 scale-[var(--map-zoom)] transition-transform duration-700 ease-in-out lg:!scale-100"
+            style={{
+              "--map-zoom": isZoomed ? "2.5" : "1",
+              transformOrigin: activePos ? `${activePos.x}% ${activePos.y}%` : "50% 50%",
+            } as CSSProperties}
+          >
+            {/* Figma Ellipse 76 — behind the dots, glow baked into SVG */}
+            <Image
+              src="/images/map/ellipse.svg"
+              alt=""
+              aria-hidden
+              width={1472}
+              height={1472}
+              className="pointer-events-none absolute w-[120%] h-auto -translate-x-1/2 -translate-y-1/2 left-[54%] top-[55%] opacity-100"
+            />
+            <Image
+              src="/images/map/dots.svg"
+              alt="World map showing Torque Pharma global presence"
+              fill
+              className="object-contain"
+              priority
+            />
+          </div>
         </div>
 
-        {/* Pins layer — outside the mask so they render at full opacity */}
+        {/* Pins layer — active pin shows on every breakpoint (anchors the mobile zoom).
+            Inactive pins are desktop-only; mobile relies on the zoom effect instead. */}
         {items.map((item, i) => {
           const pos = POSITIONS[item.title];
           if (!pos) return null;
@@ -129,17 +161,10 @@ export default function WorldMap({ items, className = "" }: WorldMapProps) {
           return (
             <div
               key={item.title}
-              className={`absolute -translate-x-1/2 ${isActive ? "z-10 -translate-y-full" : "z-0 -translate-y-1/2 lg:-translate-y-full"}`}
+              className={`absolute -translate-x-1/2 -translate-y-full ${isActive ? "z-10 block" : "z-0 hidden lg:block"}`}
               style={{ left: `${pos.x}%`, top: `${pos.y}%` }}
             >
-              {isActive ? (
-                <BlackPin />
-              ) : (
-                <>
-                  <div className="lg:hidden w-1 h-1 rounded-full bg-pin" />
-                  <div className="hidden lg:block"><RedPin /></div>
-                </>
-              )}
+              {isActive ? <BlackPin /> : <RedPin />}
             </div>
           );
         })}

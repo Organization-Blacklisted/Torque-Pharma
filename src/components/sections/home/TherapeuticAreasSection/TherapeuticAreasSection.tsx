@@ -22,7 +22,7 @@ export default function TherapeuticAreasSection({
         className="mb-[var(--spacing-subsection)]"
       />
 
-      <div className="grid grid-cols-2 gap-[var(--spacing-gutter)] md:grid-cols-4">
+      <div className="grid grid-cols-1 gap-[var(--spacing-gutter)] sm:grid-cols-2 md:grid-cols-4">
         {items.map((item) => (
           <CategoryCard
             key={item.title}

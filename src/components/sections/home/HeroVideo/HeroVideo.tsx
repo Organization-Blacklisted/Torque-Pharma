@@ -8,7 +8,7 @@ export default function HeroVideo({ data }: HeroVideoProps) {
   const { eyebrow, heading, cta, video } = data;
 
   return (
-    <section className="relative h-svh min-h-[600px] overflow-hidden -mt-[92px] lg:-mt-[96px]">
+    <section className="relative h-[85svh] min-h-[600px] overflow-hidden -mt-[92px] lg:-mt-[96px] lg:h-svh">
 
       {/* Video layer */}
       <VideoBackground sources={video.sources} poster={video.poster} />
