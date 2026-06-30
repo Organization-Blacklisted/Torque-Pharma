@@ -9,7 +9,7 @@ export default function BlogCard({
   featured_image,
   className = "",
 }: BlogCardProps) {
-  const href = `/resources/blogs/${slug}`;
+  const href = `/blogs/${slug}`;
 
   return (
     <article className={`group relative flex flex-col ${className}`}>
