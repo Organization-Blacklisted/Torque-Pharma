@@ -1,4 +1,5 @@
 import Image from "next/image";
+import RotatingPhotoBadge from "@/components/ui/RotatingPhotoBadge";
 import SectionHeader from "@/components/ui/SectionHeading";
 import { SplitButton } from "@/components/ui/SplitButton";
 import VideoBackground from "@/components/ui/VideoBackground";
@@ -9,6 +10,19 @@ function MediaBlock({
   layout,
 }: Pick<ContentMediaSectionProps, "media" | "layout">) {
   const isCentered = layout === "centered";
+
+  if (media.type === "rotating") {
+    return (
+      <div className="flex items-center justify-center">
+        <RotatingPhotoBadge
+          src={media.src}
+          alt={media.alt}
+          speed={media.speed}
+          className="w-full max-w-[750px]"
+        />
+      </div>
+    );
+  }
 
   const fit = media.type === "image" ? (media.fit ?? "cover") : "cover";
 
@@ -110,9 +124,8 @@ export default function ContentMediaSection({
     <div
       className={`
         grid
-        gap-[var(--spacing-gutter)]
+        gap-[40px]
         md:grid-cols-[2fr_3fr]
-        md:gap-[clamp(3rem,_6vw,_5.25rem)]
         md:items-center
         ${className}
       `}

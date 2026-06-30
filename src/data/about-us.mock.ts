@@ -10,10 +10,9 @@ export const aboutUsPage: AboutUsPageData = {
       "With focused purpose and growing ambition, Torque Pharma combines precise science with human care to serve people, improve lives, and support healthier communities.",
     layout: "split-left",
     media: {
-      type: "image",
-      src: "/images/about/banner.png",
+      type: "rotating",
+      src: "/images/about/about-banner-image.webp",
       alt: "Torque Pharma team",
-      fit: "contain",
     },
     actions: [
       {

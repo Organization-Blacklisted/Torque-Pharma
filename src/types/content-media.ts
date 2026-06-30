@@ -15,6 +15,7 @@ export interface ContentMediaData {
   layout: ContentMediaLayout;
   media:
     | { type: "image"; src: string; alt: string; fit?: "cover" | "contain" }
-    | { type: "video"; sources: VideoSource[]; poster?: string };
+    | { type: "video"; sources: VideoSource[]; poster?: string }
+    | { type: "rotating"; src: string; alt: string; speed?: number };
   actions?: ContentMediaAction[];
 }
