@@ -145,6 +145,31 @@ Zero component changes needed.
 
 When adding a new page backed by the API, create `src/lib/api/{page}.ts` following the `home.ts` pattern: raw type → transformed type → fetch + transform function.
 
+## Cache invalidation
+
+Every fetcher revalidates on a 1hr ISR window by default — content edited in Laravel can take up to an hour to appear on Vercel unless busted on demand.
+
+`POST /api/revalidate` (`src/app/api/revalidate/route.ts`) does that bust. Laravel should call it after publishing/editing content:
+
+```
+POST /api/revalidate
+Headers: x-revalidate-secret: <REVALIDATE_SECRET>
+Body: { "tag": "blogs" }          // or { "tags": ["blogs", "homepage"] }
+```
+
+`REVALIDATE_SECRET` must be set in both `.env.local` and the Vercel project's environment variables — without it the route always returns 401.
+
+**Current tags, one per fetcher:**
+| Tag | Fetcher |
+|---|---|
+| `homepage` | `home.ts` |
+| `awards` | `awards.ts` |
+| `blogs` | `blogs.ts` |
+| `code-of-conduct` | `code-of-conduct.ts` |
+| `{slug}` (e.g. `privacy-policy`) | `pages.ts` — tag is the page slug itself |
+
+When adding a new fetcher with a `tags: [...]` option, add its tag to this table so Laravel knows what to send.
+
 ## Key components
 
 | Component | Location | Notes |
@@ -165,6 +190,11 @@ When adding a new page backed by the API, create `src/lib/api/{page}.ts` followi
 | `StatRotator` | `ui/StatRotator` | Pair of StatCards that auto-advance. Pauses when off-screen or tab is hidden |
 | `StatCard` | `ui/StatCard` | `label` is optional. No label = number-first layout (About Us style). With label = manufacturing style |
 | `SafeHtml` | `ui/SafeHtml` | DOMPurify sanitiser + auto-injects `loading="lazy"` on images |
+| `BlogCard` | `ui/BlogCard` | Grid card — image, category pill, title, hover "Read More". Links to `/blogs/[slug]` |
+| `FeaturedBlogSlider` | `ui/FeaturedBlogSlider` | Single full-bleed slide (content + image) cycling through `is_featured` posts via dot indicators |
+| `Pagination` | `ui/Pagination` | Numbered pagination with ellipsis collapsing. Controlled: `currentPage`/`totalPages`/`onPageChange` |
+| `Tabs` (`TabList`/`Tab`) | `ui/Tabs` | Underline tab bar — parent owns active-index state, `Tab` takes `isActive`/`onClick` |
+| `BlogsSection` | `sections/blog/BlogsSection` | `/blogs` page body — derives category tabs + client-side pagination from the full post list |
 | `Container` | `layouts/Container` | Max-width wrapper. Sizes: wide (1700px), xl (1500px), large (1410px), standard (1360px), content (1264px), reading (1065px) |
 | `Section` | `layouts/Section` | Semantic section with spacing tokens. `spacing="default"` \| `"none"`. Use `first` prop on the first section of every page |
 
@@ -177,8 +207,9 @@ When adding a new page backed by the API, create `src/lib/api/{page}.ts` followi
 | `/manufacturing-facility` | Active — fully laid out | Mock only — no API fetcher yet |
 | `/board-of-directors` | Active — fully laid out | Mock only — no API fetcher yet |
 | `/company` `/global-presence` `/products` `/capabilities` `/life-at-torque` | Stub — h1 only | None |
-| `/resources` | **Does not exist** — causes 404 from footer + blog card links | None |
-| `/resources/blogs/[slug]` | **Does not exist** — causes 404 on every blog card click | None |
+| `/blogs` | Active — featured slider, category tabs, paginated grid | `getBlogs()` |
+| `/blogs/[slug]` | **Does not exist** — causes 404 on every blog card click | None |
+| `/resources` | **Does not exist** — no nav link points here directly (Resources dropdown links straight to children) | None |
 | `/contact-us` | Stub — placeholder content | None |
 | `/disclaimer` `/privacy-policy` `/terms-and-conditions` | Active — API-driven | `getPage(slug)` |
 
@@ -186,8 +217,8 @@ When adding a new page backed by the API, create `src/lib/api/{page}.ts` followi
 
 - `src/app/globals.css` `.cta-gradient` — uses raw `color-mix()` percentages, should reference CSS tokens
 - `src/app/contact-us/page.tsx` — placeholder content, broken layout, needs real build
-- `src/app/resources/` — route does not exist; footer and blog cards link to it (live 404)
-- `src/app/resources/blogs/[slug]/` — route does not exist; every BlogCard click is a live 404
+- `src/app/blogs/[slug]/` — route does not exist; every BlogCard / FeaturedBlogSlider click is a live 404
+- `src/lib/api/blogs.ts` — `/blogs` endpoint path is a guess based on REST convention; confirm against the real Laravel route. "Medically reviewed by" name in `FeaturedBlogSlider` is a hardcoded placeholder — API has no reviewer field yet
 - `src/app/error.tsx`, `loading.tsx`, `not-found.tsx` — none exist; API failures produce unhandled crashes
 - `src/components/sections/HomeStatsMediaSection` — permanently on mock data; no `stats_media_section` defined in API yet. Track with backend
 - `src/lib/api/about.ts`, `manufacturing.ts`, `board.ts` — do not exist; About Us, Manufacturing, and Board pages serve mock data in production. Build once backend delivers endpoints
