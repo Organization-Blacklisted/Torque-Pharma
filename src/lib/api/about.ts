@@ -48,7 +48,7 @@ export async function getAboutUsPage(): Promise<AboutUsApiData> {
       },
       actions: [
         {
-          label: "Download Company Profile",
+          label: "View Company Profile",
           href: data.content.company_profile.url,
           variant: "primary",
         },
