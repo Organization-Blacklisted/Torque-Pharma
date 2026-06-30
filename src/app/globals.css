@@ -15,7 +15,7 @@
 
 
 body {
-  background: var(--background);
+  background: radial-gradient(ellipse at 50% 25%, #ffffff 0%, var(--background) 70%) fixed;
   color: var(--foreground);
   font-family: var(--font-body);
 }

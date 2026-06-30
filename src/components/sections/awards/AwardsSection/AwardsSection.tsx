@@ -8,7 +8,7 @@ import { TabList, Tab } from "@/components/ui/Tabs";
 import type { AwardsSectionProps } from "./AwardsSection.types";
 
 export default function AwardsSection({
-  data: { title, eyebrow, subtitle, description, sections },
+  data: { eyebrow, subtitle, description, sections },
   className = "",
 }: AwardsSectionProps) {
   const [activeIndex, setActiveIndex] = useState(0);

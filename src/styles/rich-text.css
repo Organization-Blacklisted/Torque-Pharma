@@ -45,7 +45,7 @@
   font-family: var(--font-body);
   font-size: var(--text-body);
   color: var(--color-secondary);
-  line-height: 1.75;
+  line-height: 120%;
   margin-bottom: 1rem;
 }
 
@@ -88,6 +88,11 @@
 
 .rich-text--policy h2 {
   font-size: var(--text-h3);
+  margin-top: var(--spacing-icon);
+}
+
+.rich-text--policy h3 {
+  margin-top: var(--spacing-icon);
 }
 
 .rich-text img {

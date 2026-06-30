@@ -30,9 +30,9 @@ export default function CodeOfConductSection({
 
           <SafeHtml html={mdMessage} className="rich-text mb-12" />
 
-          <div className="flex flex-col gap-10">
+          <div className="flex flex-col">
             {items.map((item) => (
-              <section key={item.id} id={item.id} className="scroll-mt-24">
+              <section key={item.id} id={item.id} className="scroll-mt-24 mt-icon first:mt-0">
                 <h3 className="mb-4 font-heading text-h3 font-light text-primary">
                   {item.title}
                 </h3>
