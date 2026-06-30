@@ -14,7 +14,7 @@ const ALL_BLOGS = "All Blogs";
 export default function BlogsSection({ data: { posts }, className = "" }: BlogsSectionProps) {
   const [activeCategory, setActiveCategory] = useState(ALL_BLOGS);
   const [currentPage, setCurrentPage] = useState(1);
-  const gridRef = useRef<HTMLDivElement>(null);
+  const tabsRef = useRef<HTMLDivElement>(null);
 
   const featuredPosts = useMemo(() => posts.filter((p) => p.is_featured), [posts]);
   const regularPosts = useMemo(() => posts.filter((p) => !p.is_featured), [posts]);
@@ -43,8 +43,8 @@ export default function BlogsSection({ data: { posts }, className = "" }: BlogsS
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
-    if (gridRef.current) {
-      const top = gridRef.current.getBoundingClientRect().top + window.scrollY - 120;
+    if (tabsRef.current) {
+      const top = tabsRef.current.getBoundingClientRect().top + window.scrollY - 120;
       window.scrollTo({ top, behavior: "smooth" });
     }
   };
@@ -70,21 +70,22 @@ export default function BlogsSection({ data: { posts }, className = "" }: BlogsS
         className="mx-auto mb-10"
       />
 
-      <TabList className="mb-10 justify-start gap-[clamp(2rem,_3vw,_2.5rem)] lg:justify-center">
-        {categories.map((category) => (
-          <Tab
-            key={category}
-            isActive={activeCategory === category}
-            panelId="blogs-tab-panel"
-            onClick={() => handleCategoryChange(category)}
-          >
-            {category}
-          </Tab>
-        ))}
-      </TabList>
+      <div ref={tabsRef}>
+        <TabList className="mb-10 justify-start gap-[clamp(2rem,_3vw,_2.5rem)] lg:justify-center">
+          {categories.map((category) => (
+            <Tab
+              key={category}
+              isActive={activeCategory === category}
+              panelId="blogs-tab-panel"
+              onClick={() => handleCategoryChange(category)}
+            >
+              {category}
+            </Tab>
+          ))}
+        </TabList>
+      </div>
 
       <div
-        ref={gridRef}
         id="blogs-tab-panel"
         role="tabpanel"
         className="grid grid-cols-1 gap-[var(--spacing-gutter)] sm:grid-cols-2 lg:grid-cols-3"
