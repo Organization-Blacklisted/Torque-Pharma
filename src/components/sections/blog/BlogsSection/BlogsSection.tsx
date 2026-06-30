@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import BlogCard from "@/components/ui/BlogCard";
 import FeaturedBlogSlider from "@/components/ui/FeaturedBlogSlider";
 import Pagination from "@/components/ui/Pagination";
@@ -14,6 +14,7 @@ const ALL_BLOGS = "All Blogs";
 export default function BlogsSection({ data: { posts }, className = "" }: BlogsSectionProps) {
   const [activeCategory, setActiveCategory] = useState(ALL_BLOGS);
   const [currentPage, setCurrentPage] = useState(1);
+  const gridRef = useRef<HTMLDivElement>(null);
 
   const featuredPosts = useMemo(() => posts.filter((p) => p.is_featured), [posts]);
   const regularPosts = useMemo(() => posts.filter((p) => !p.is_featured), [posts]);
@@ -38,6 +39,14 @@ export default function BlogsSection({ data: { posts }, className = "" }: BlogsS
   const handleCategoryChange = (category: string) => {
     setActiveCategory(category);
     setCurrentPage(1);
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    if (gridRef.current) {
+      const top = gridRef.current.getBoundingClientRect().top + window.scrollY - 120;
+      window.scrollTo({ top, behavior: "smooth" });
+    }
   };
 
   return (
@@ -74,7 +83,12 @@ export default function BlogsSection({ data: { posts }, className = "" }: BlogsS
         ))}
       </TabList>
 
-      <div id="blogs-tab-panel" role="tabpanel" className="grid grid-cols-1 gap-[var(--spacing-gutter)] sm:grid-cols-2 lg:grid-cols-3">
+      <div
+        ref={gridRef}
+        id="blogs-tab-panel"
+        role="tabpanel"
+        className="grid grid-cols-1 gap-[var(--spacing-gutter)] sm:grid-cols-2 lg:grid-cols-3"
+      >
         {paginatedPosts.map((post) => (
           <BlogCard
             key={post.id}
@@ -89,7 +103,7 @@ export default function BlogsSection({ data: { posts }, className = "" }: BlogsS
       <Pagination
         currentPage={currentPage}
         totalPages={totalPages}
-        onPageChange={setCurrentPage}
+        onPageChange={handlePageChange}
         className="mx-auto mt-12"
       />
     </div>
