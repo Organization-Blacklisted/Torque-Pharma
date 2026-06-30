@@ -166,6 +166,7 @@ Body: { "tag": "blogs" }          // or { "tags": ["blogs", "homepage"] }
 | `awards` | `awards.ts` |
 | `blogs` | `blogs.ts` |
 | `code-of-conduct` | `code-of-conduct.ts` |
+| `about-us` | `about.ts` |
 | `{slug}` (e.g. `privacy-policy`) | `pages.ts` — tag is the page slug itself |
 
 When adding a new fetcher with a `tags: [...]` option, add its tag to this table so Laravel knows what to send.
@@ -203,7 +204,7 @@ When adding a new fetcher with a `tags: [...]` option, add its tag to this table
 | Route | Status | Data source |
 |---|---|---|
 | `/` | Active — 7 sections built | API (6 sections) + mock (statsMedia) |
-| `/about-us` | Active — fully laid out | Mock only — no API fetcher yet |
+| `/about-us` | Active — fully laid out | `getAboutUsPage()` for contentMedia + stats; overview + cta still mock — API has more sections (mission/vision, values, built-on, connect) not wired up yet |
 | `/manufacturing-facility` | Active — fully laid out | Mock only — no API fetcher yet |
 | `/board-of-directors` | Active — fully laid out | Mock only — no API fetcher yet |
 | `/company` `/global-presence` `/products` `/capabilities` `/life-at-torque` | Stub — h1 only | None |
@@ -218,6 +219,7 @@ When adding a new fetcher with a `tags: [...]` option, add its tag to this table
 - `src/app/globals.css` `.cta-gradient` — uses raw `color-mix()` percentages, should reference CSS tokens
 - `src/app/contact-us/page.tsx` — placeholder content, broken layout, needs real build
 - `src/app/blogs/[slug]/` — route does not exist; every BlogCard / FeaturedBlogSlider click is a live 404
+- `src/lib/api/about.ts` — `/pages/about-us` response includes `mission_vision_section`, `values_section`, `built_on_section`, and `connect_section` that aren't wired to any UI yet; only `contentMedia` and `counter_section` (stats) are consumed so far
 - `src/lib/api/blogs.ts` — `/blogs` endpoint path is a guess based on REST convention; confirm against the real Laravel route. "Medically reviewed by" name in `FeaturedBlogSlider` is a hardcoded placeholder — API has no reviewer field yet
 - `src/app/error.tsx`, `loading.tsx`, `not-found.tsx` — none exist; API failures produce unhandled crashes
 - `src/components/sections/HomeStatsMediaSection` — permanently on mock data; no `stats_media_section` defined in API yet. Track with backend

@@ -1,4 +1,5 @@
 import { apiFetch, type ApiResponse } from "./fetcher";
+import { parseStatValue } from "./utils";
 import type { HeroVideoData } from "@/types/hero";
 import type { HomeBlogsPreviewData } from "@/types/blog";
 import type { HomeImpactData } from "@/types/home-impact";
@@ -93,13 +94,6 @@ type HomeApiResponse = {
     }[];
   };
 };
-
-// "2.83 <span>Billion</span>" → { value: "2.83", suffix: "Billion" }; "13+" → { value: "13+" }
-function parseStatValue(subTitle: string): { value: string; suffix?: string } {
-  const match = subTitle.match(/^(.*?)\s*<span>(.*?)<\/span>\s*$/);
-  if (!match) return { value: subTitle.trim() };
-  return { value: match[1].trim(), suffix: match[2].trim() };
-}
 
 // API doesn't supply brand colors — keyed by hover_tag, the brand name the API sends in caps
 const BRAND_PILL_COLORS: Record<string, string> = {

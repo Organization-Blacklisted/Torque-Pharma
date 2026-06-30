@@ -1,16 +1,13 @@
-import type { StatCardProps } from "@/components/ui/StatCard/StatCard.types";
-import type { ContentMediaData } from "@/types/content-media";
-
 export interface AboutUsOverviewData {
   heading: string;
   description: string;
   video: string;
 }
 
+// contentMedia and stats are now API-driven — see lib/api/about.ts AboutUsApiData.
+// This type covers only what's still mock-driven.
 export interface AboutUsPageData {
-  contentMedia: ContentMediaData;
   overview: AboutUsOverviewData;
-  stats: StatCardProps[];
   cta: {
     eyebrow: string;
     title: string;

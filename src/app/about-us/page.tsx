@@ -9,6 +9,7 @@ import ContentMediaSection from "@/components/sections/shared/ContentMediaSectio
 import Container from "@/components/layouts/Container";
 import Section from "@/components/layouts/Section";
 import { aboutUsPage } from "@/data/about-us.mock";
+import { getAboutUsPage } from "@/lib/api/about";
 
 const MARQUEE_ITEMS = ["Better Together", "Better Health", "Better Life", "Better People", "Better Planet"];
 
@@ -18,8 +19,9 @@ export const metadata: Metadata = {
     "Learn about Torque Pharma — our history, mission, values, and commitment to better health since 1985.",
 };
 
-export default function AboutUsPage() {
-  const { contentMedia, overview, stats, cta } = aboutUsPage;
+export default async function AboutUsPage() {
+  const { overview, cta } = aboutUsPage;
+  const { contentMedia, stats } = await getAboutUsPage();
 
   return (
     <>
