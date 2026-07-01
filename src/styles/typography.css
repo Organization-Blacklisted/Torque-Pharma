@@ -5,8 +5,8 @@
 
   /* Font sizes */
   --text-h1: clamp(2.2rem, 5vw, 3.75rem);
-  --text-h2: clamp(2rem, 4vw, 3.125rem);
-  --text-h3: clamp(1.375rem, 4vw, 2rem);
+  --text-h2: clamp(2rem, 3vw, 3.125rem);
+  --text-h3: clamp(1.375rem, 2vw, 2rem);
 
   --text-h4: clamp(1.25rem, 2vw, 1.5rem);
   --text-h5: 1.125rem;
