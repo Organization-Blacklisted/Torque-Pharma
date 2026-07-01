@@ -14,5 +14,6 @@ export interface SectionHeaderProps {
   theme?: "light" | "dark";
   className?: string;
   headingClassName?: string;
+  descriptionClassName?: string;
   variant?: "default" | "split";
 }

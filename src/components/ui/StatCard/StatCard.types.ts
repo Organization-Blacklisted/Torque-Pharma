@@ -4,8 +4,8 @@ export interface StatCardProps {
   suffix?: string;
   description: string;
   theme?: "light" | "dark";
+  animated?: boolean;
   className?: string;
-
-showDots?: boolean;
-isFirstDotActive?: boolean;
+  showDots?: boolean;
+  isFirstDotActive?: boolean;
 }

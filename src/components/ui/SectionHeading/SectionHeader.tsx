@@ -15,6 +15,7 @@ export default function SectionHeader({
   theme = "light",
   className = "",
   headingClassName = "",
+  descriptionClassName = "",
   variant = "default",
 }: SectionHeaderProps) {
   const HeadingTag = as;
@@ -99,6 +100,7 @@ export default function SectionHeader({
               text-body
               leading-6
               ${descriptionColor}
+              ${descriptionClassName}
             `}
           >
             {description}

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import CTA from "@/components/ui/CTA";
 import StatCard from "@/components/ui/StatCard";
 import Marquee from "@/components/ui/Marquee";
@@ -6,12 +7,14 @@ import VideoBackground from "@/components/ui/VideoBackground";
 import SectionHeader from "@/components/ui/SectionHeading";
 import { SplitButton } from "@/components/ui/SplitButton";
 import ContentMediaSection from "@/components/sections/shared/ContentMediaSection";
+import MissionVisionSection from "@/components/sections/about/MissionVisionSection";
+import ValuesSection from "@/components/sections/about/ValuesSection";
+import BuiltOnSection from "@/components/sections/about/BuiltOnSection";
+import ConnectSection from "@/components/sections/about/ConnectSection";
 import Container from "@/components/layouts/Container";
 import Section from "@/components/layouts/Section";
-import { aboutUsPage } from "@/data/about-us.mock";
 import { getAboutUsPage } from "@/lib/api/about";
 
-const MARQUEE_ITEMS = ["Better Together", "Better Health", "Better Life", "Better People", "Better Planet"];
 
 export const metadata: Metadata = {
   title: "About Us | Torque Pharma",
@@ -20,8 +23,7 @@ export const metadata: Metadata = {
 };
 
 export default async function AboutUsPage() {
-  const { overview, cta } = aboutUsPage;
-  const { contentMedia, stats } = await getAboutUsPage();
+  const { contentMedia, overview, missionVision, values, builtOn, connect, stats, cta } = await getAboutUsPage();
 
   return (
     <>
@@ -44,21 +46,34 @@ export default async function AboutUsPage() {
             description={overview.description}
             align="center"
             size="h2"
+            headingClassName="max-w-[650px] mx-auto"
+            descriptionClassName="max-w-[1098px] mx-auto"
           />
         </Container>
         <div className="relative mt-[var(--spacing-subsection)]">
           {/* Video — sets the height, sits above the marquee */}
-          <Container size="standard">
-            <div className="relative z-10 aspect-video overflow-hidden">
-              <VideoBackground
-                sources={[{ src: overview.video, type: "video/mp4" }]}
-                showAudioToggle
-              />
+          <Container size="reading">
+            <div className="relative z-10 aspect-video overflow-hidden rounded-lg">
+              {overview.video ? (
+                <VideoBackground
+                  sources={[{ src: overview.video, type: "video/mp4" }]}
+                  poster={overview.videoPoster}
+                  showAudioToggle
+                />
+              ) : (
+                <Image
+                  src={overview.videoPoster}
+                  alt={overview.heading}
+                  fill
+                  sizes="100vw"
+                  className="object-cover"
+                />
+              )}
             </div>
           </Container>
           {/* Marquee — full section width, vertically centred behind the video */}
-          <div className="pointer-events-none absolute inset-0 flex items-center overflow-hidden">
-            <Marquee items={MARQUEE_ITEMS} speed={30} />
+          <div className="pointer-events-none absolute inset-0 flex items-center">
+            <Marquee items={overview.marqueeItems} speed={30} className="w-full" />
           </div>
         </div>
       </Section>
@@ -68,9 +83,39 @@ export default async function AboutUsPage() {
         <Container>
           <div className="grid gap-[var(--spacing-gutter)] sm:grid-cols-2 xl:grid-cols-4">
             {stats.map((stat, i) => (
-              <StatCard key={i} {...stat} />
+              <StatCard key={i} {...stat} animated />
             ))}
           </div>
+        </Container>
+      </Section>
+
+      {/* Mission & Vision */}
+      <Section>
+        <Container size="narrow">
+          <MissionVisionSection items={missionVision.items} />
+        </Container>
+      </Section>
+
+      {/* Our Values */}
+      <Section>
+        <Container size="wide">
+          <ValuesSection
+            eyebrow={values.eyebrow}
+            subTitle={values.subTitle}
+            items={values.items}
+            cta={values.cta}
+          />
+        </Container>
+      </Section>
+
+      {/* What Torque Is Built On */}
+      <Section>
+        <Container size="narrow">
+          <BuiltOnSection
+            eyebrow={builtOn.eyebrow}
+            subTitle={builtOn.subTitle}
+            items={builtOn.items}
+          />
         </Container>
       </Section>
 
@@ -87,6 +132,17 @@ export default async function AboutUsPage() {
               {cta.button.label}
             </SplitButton>
           </CTA>
+        </Container>
+      </Section>
+
+      {/* Connect With Us */}
+      <Section>
+        <Container size="large">
+          <ConnectSection
+            eyebrow={connect.eyebrow}
+            subTitle={connect.subTitle}
+            image={connect.image}
+          />
         </Container>
       </Section>
     </>

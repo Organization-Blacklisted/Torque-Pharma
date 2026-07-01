@@ -5,7 +5,7 @@ import type { MarqueeProps } from "./Marquee.types";
 export default function Marquee({
   items,
   separator = "·",
-  speed = 30,
+  speed = 80,
   className = "",
 }: MarqueeProps) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -32,17 +32,17 @@ export default function Marquee({
   const renderSet = (keyPrefix: number) =>
     items.map((item, i) => (
       <span key={`${keyPrefix}-${i}`} className="flex items-center whitespace-nowrap">
-        <span className="px-8 text-[100px] font-semibold leading-none text-mint/35">
+        <span className="px-8 text-[100px] font-semibold text-mint/35">
           {item}
         </span>
-        <span className="text-[100px] font-semibold leading-none text-mint/35" aria-hidden="true">
+        <span className="text-[100px] font-semibold text-mint/35" aria-hidden="true">
           {separator}
         </span>
       </span>
     ));
 
   return (
-    <div ref={containerRef} className={`relative overflow-hidden ${className}`}>
+    <div ref={containerRef} className={`relative overflow-x-hidden ${className}`}>
       {/* Hidden single set — measured to calculate copy count */}
       <div
         ref={measureRef}

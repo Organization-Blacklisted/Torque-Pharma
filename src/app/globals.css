@@ -20,7 +20,7 @@ html {
 }
 
 body {
-  background: radial-gradient(ellipse at 50% 25%, #ffffff 0%, var(--background) 70%) fixed;
+  background: var(--background);
   color: var(--foreground);
   font-family: var(--font-body);
 }
@@ -58,4 +58,87 @@ body {
 
 .hero-eyebrow-gradient {
   background: linear-gradient(92deg, var(--color-vivid-blue) -13.36%, var(--color-dark-blue) 118.24%);
+}
+
+/* react-phone-number-input overrides */
+.connect-phone-input {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.connect-phone-input .PhoneInputCountry {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0 0.875rem;
+  background: rgba(91, 196, 160, 0.2);
+  flex-shrink: 0;
+  cursor: pointer;
+  min-height: 48px;
+  margin-right: 0;
+  border-radius: 0;
+}
+
+.connect-phone-input .PhoneInputCountrySelect {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.connect-phone-input .PhoneInputCountryIcon {
+  width: 1.75rem;
+  height: 1.25rem;
+  overflow: hidden;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.connect-phone-input .PhoneInputCountryIconImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.connect-phone-input .PhoneInputCountrySelectArrow {
+  display: none;
+}
+
+.connect-phone-input .PhoneInputCountry::after {
+  content: "";
+  display: block;
+  width: 16px;
+  height: 12px;
+  background-image: url("/images/icons/chevron-down.svg");
+  background-repeat: no-repeat;
+  background-size: contain;
+  flex-shrink: 0;
+  pointer-events: none;
+}
+
+.connect-phone-input .PhoneInputInput {
+  flex: 1;
+  background: var(--color-surface);
+  border: none;
+  outline: none;
+  padding: 0.75rem 1rem;
+  font-size: var(--text-body);
+  color: var(--color-primary);
+  min-width: 0;
+  min-height: 48px;
+}
+
+.connect-phone-input .PhoneInputInput::placeholder {
+  color: color-mix(in srgb, var(--color-secondary) 60%, transparent);
+}
+
+.connect-phone-input--error {
+  box-shadow: 0 0 0 1px rgb(239 68 68);
 }
