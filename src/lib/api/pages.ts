@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { apiFetch, type ApiResponse } from "./fetcher";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -33,10 +34,10 @@ export type CmsPage = {
 
 // Single function covers every CMS page — terms, privacy, cookies, disclaimer, etc.
 // Slug must match the API exactly e.g. "terms-and-conditions", "privacy-policy"
-export async function getPage(slug: string): Promise<CmsPage> {
+export const getPage = cache(async function getPage(slug: string): Promise<CmsPage> {
   const res = await apiFetch<ApiResponse<CmsPage>>(`/pages/${slug}`, {
     revalidate: 3600,
     tags: [slug],
   });
   return res.data;
-}
+});

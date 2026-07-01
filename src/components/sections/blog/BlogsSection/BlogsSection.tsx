@@ -11,6 +11,9 @@ import type { BlogsSectionProps } from "./BlogsSection.types";
 const PER_PAGE = 6;
 const ALL_BLOGS = "All Blogs";
 
+const tabId = (cat: string) =>
+  `tab-${cat.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/-$/, "")}`;
+
 export default function BlogsSection({ data: { posts }, className = "" }: BlogsSectionProps) {
   const [activeCategory, setActiveCategory] = useState(ALL_BLOGS);
   const [currentPage, setCurrentPage] = useState(1);
@@ -75,6 +78,7 @@ export default function BlogsSection({ data: { posts }, className = "" }: BlogsS
           {categories.map((category) => (
             <Tab
               key={category}
+              id={tabId(category)}
               isActive={activeCategory === category}
               panelId="blogs-tab-panel"
               onClick={() => handleCategoryChange(category)}
@@ -88,6 +92,7 @@ export default function BlogsSection({ data: { posts }, className = "" }: BlogsS
       <div
         id="blogs-tab-panel"
         role="tabpanel"
+        aria-labelledby={tabId(activeCategory)}
         className="grid grid-cols-1 gap-[var(--spacing-gutter)] sm:grid-cols-2 lg:grid-cols-3"
       >
         {paginatedPosts.map((post) => (

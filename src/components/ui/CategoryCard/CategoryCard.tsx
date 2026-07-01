@@ -44,6 +44,6 @@ export default function CategoryCard({ image, title, href, className = "" }: Cat
     </div>
   );
 
-  if (href) return <Link href={href}>{inner}</Link>;
+  if (href) return <Link href={href} aria-label={title}>{inner}</Link>;
   return inner;
 }

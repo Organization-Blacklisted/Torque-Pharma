@@ -17,6 +17,7 @@ export interface BlogPost {
   description: string;        // HTML — strip for card previews, SafeHtml for detail page
   publish_date: string;       // "YYYY-MM-DD"
   status: "published" | "draft";
+  medically_reviewed_by: string | null;
   featured_image: string;     // absolute URL from API
   is_featured: boolean;
   author: string;

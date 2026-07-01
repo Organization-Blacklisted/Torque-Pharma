@@ -14,12 +14,12 @@ export default async function BlogsPage() {
   const posts = await getBlogs();
 
   return (
-    <main>
+    <>
       <Section first>
         <Container size="wide">
           <BlogsSection data={{ posts }} />
         </Container>
       </Section>
-    </main>
+    </>
   );
 }

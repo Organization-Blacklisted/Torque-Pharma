@@ -7,9 +7,6 @@ import Link from "next/link";
 import type { BlogPost } from "@/types/blog";
 import type { FeaturedBlogSliderProps } from "./FeaturedBlogSlider.types";
 
-// Placeholder until the API exposes a real medical-review field
-const PLACEHOLDER_REVIEWER = "Dr Anika Rao";
-
 function formatDate(dateStr: string) {
   return new Date(dateStr).toLocaleDateString("en-US", {
     month: "long",
@@ -42,9 +39,11 @@ function FeaturedSlide({ post }: { post: BlogPost }) {
             <p>
               Written by · <span className="text-secondary">{post.author}</span>
             </p>
-            <p>
-              Medically reviewed by · <span className="text-secondary">{PLACEHOLDER_REVIEWER}</span>
-            </p>
+            {post.medically_reviewed_by && (
+              <p>
+                Medically reviewed by · <span className="text-secondary">{post.medically_reviewed_by}</span>
+              </p>
+            )}
           </div>
 
           <Link

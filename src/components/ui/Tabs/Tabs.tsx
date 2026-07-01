@@ -4,9 +4,30 @@ import { useRef } from "react";
 import type { TabListProps, TabProps } from "./Tabs.types";
 
 export function TabList({ children, className = "" }: TabListProps) {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    const tabs = Array.from(
+      e.currentTarget.querySelectorAll<HTMLButtonElement>('[role="tab"]'),
+    );
+    const currentIndex = tabs.indexOf(document.activeElement as HTMLButtonElement);
+    if (currentIndex === -1) return;
+
+    let nextIndex: number | null = null;
+    if (e.key === "ArrowRight") nextIndex = (currentIndex + 1) % tabs.length;
+    if (e.key === "ArrowLeft") nextIndex = (currentIndex - 1 + tabs.length) % tabs.length;
+    if (e.key === "Home") nextIndex = 0;
+    if (e.key === "End") nextIndex = tabs.length - 1;
+
+    if (nextIndex !== null) {
+      e.preventDefault();
+      tabs[nextIndex].focus();
+      tabs[nextIndex].click();
+    }
+  };
+
   return (
     <div
       role="tablist"
+      onKeyDown={handleKeyDown}
       className={`flex overflow-x-auto border-b border-black/20 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${className}`}
     >
       {children}
@@ -34,6 +55,7 @@ export function Tab({ children, isActive, onClick, id, panelId, className = "" }
       ref={ref}
       role="tab"
       id={id}
+      tabIndex={isActive ? 0 : -1}
       aria-selected={isActive}
       aria-controls={panelId}
       onClick={handleClick}

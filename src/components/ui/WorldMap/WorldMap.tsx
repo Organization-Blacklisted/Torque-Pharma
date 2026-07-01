@@ -183,18 +183,14 @@ export default function WorldMap({ items, className = "" }: WorldMapProps) {
           >
             <div className="flex min-w-[141px] min-h-[86px] flex-col items-center justify-center rounded-lg border border-primary/30 bg-white p-2 shadow-[0_4px_10.1px_0_color-mix(in_srgb,var(--color-dark-grey)_25%,transparent)]">
               <div className="relative h-14 w-14 overflow-hidden rounded-full border border-gray-100">
-                {items.map((item, i) => (
-                  <Image
-                    key={item.title}
-                    src={item.image}
-                    alt={i === displayedIndex ? item.title : ""}
-                    width={56}
-                    height={56}
-                    className={`absolute inset-0 h-full w-full object-cover ${
-                      i === displayedIndex ? "opacity-100" : "opacity-0"
-                    }`}
-                  />
-                ))}
+                <Image
+                  key={displayed.title}
+                  src={displayed.image}
+                  alt={displayed.title}
+                  width={56}
+                  height={56}
+                  className="absolute inset-0 h-full w-full object-cover"
+                />
               </div>
               <p className="mt-1.5 whitespace-nowrap text-body-sm font-medium leading-6 capitalize text-center text-primary">
                 {displayed.title}
@@ -216,18 +212,14 @@ export default function WorldMap({ items, className = "" }: WorldMapProps) {
           `}
         >
           <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full border border-primary/20">
-            {items.map((item, i) => (
-              <Image
-                key={item.title}
-                src={item.image}
-                alt={i === displayedIndex ? item.title : ""}
-                width={40}
-                height={40}
-                className={`absolute inset-0 h-full w-full object-cover ${
-                  i === displayedIndex ? "opacity-100" : "opacity-0"
-                }`}
-              />
-            ))}
+            <Image
+              key={displayed.title}
+              src={displayed.image}
+              alt={displayed.title}
+              width={40}
+              height={40}
+              className="absolute inset-0 h-full w-full object-cover"
+            />
           </div>
           <p className="text-body-sm font-semibold text-dark-grey">{displayed.title}</p>
         </div>

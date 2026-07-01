@@ -35,7 +35,7 @@ export default async function Home() {
   } = await getHomePage();
 
   return (
-    <main>
+    <>
       <HeroVideo data={hero} />
       <Section first>
         <Container size="large">
@@ -75,6 +75,6 @@ export default async function Home() {
         </Container>
       </Section>
    
-    </main>
+    </>
   );
 }

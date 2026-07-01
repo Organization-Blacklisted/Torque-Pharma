@@ -1,11 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import DOMPurify from "dompurify";
-
-const sanitize = (html: string) =>
-  typeof window !== "undefined" ? DOMPurify.sanitize(html) : html;
-
+import { sanitize } from "@/lib/sanitize";
 import { AccordionProps } from "./Accordion.types";
 import { AccordionCloseIcon } from "./icons";
 

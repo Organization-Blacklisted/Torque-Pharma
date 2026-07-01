@@ -3,22 +3,22 @@ import localFont from 'next/font/local'
 export const bwDarius = localFont({
   src: [
     {
-      path: "./bw-darius/BwDariusDEMO-Light.woff2",
+      path: "./bw-darius/BwDarius-Light.woff2",
       weight: "300",
       style: "normal",
     },
     {
-      path: "./bw-darius/BwDariusDEMO-Regular.woff2",
+      path: "./bw-darius/BwDarius-Regular.woff2",
       weight: "400",
       style: "normal",
     },
     {
-      path: "./bw-darius/BwDariusDEMO-Bold.woff2",
+      path: "./bw-darius/BwDarius-Bold.woff2",
       weight: "700",
       style: "normal",
     },
     {
-      path: "./bw-darius/BwDariusDEMO-Black.woff2",
+      path: "./bw-darius/BwDarius-Black.woff2",
       weight: "900",
       style: "normal",
     },

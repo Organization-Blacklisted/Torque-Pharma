@@ -75,7 +75,8 @@ export default function VideoBackground({
         muted
         loop
         playsInline
-        preload="none"
+        preload="metadata"
+        title="Background video"
         onPlaying={() => setVideoPlaying(true)}
         aria-hidden="true"
       >
