@@ -39,17 +39,6 @@ export default function ConnectForm() {
   const [isSuccess, setIsSuccess] = useState(false);
   const [serverError, setServerError] = useState("");
 
-  const nameField = (field: "firstName" | "lastName") => {
-    const reg = register(field);
-    return {
-      ...reg,
-      onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
-        e.target.value = e.target.value.replace(/[^a-zA-Z\s]/g, "");
-        reg.onChange(e);
-      },
-    };
-  };
-
   const {
     register,
     control,
@@ -65,6 +54,17 @@ export default function ConnectForm() {
       message: "",
     },
   });
+
+  const nameField = (field: "firstName" | "lastName") => {
+    const reg = register(field);
+    return {
+      ...reg,
+      onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
+        e.target.value = e.target.value.replace(/[^a-zA-Z\s]/g, "");
+        reg.onChange(e);
+      },
+    };
+  };
 
   const onSubmit = async (data: FormValues) => {
     setServerError("");
