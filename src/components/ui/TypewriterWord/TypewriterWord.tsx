@@ -61,9 +61,9 @@ export default function TypewriterWord({
   }, [displayText, wordIndex, isDeleting, isPaused, words, typingSpeed, deletingSpeed, pauseMs]);
 
   return (
-    <span className={className}>
+    <span className={className} aria-live="polite" aria-atomic="true">
       {displayText}
-      <span className="inline-block w-[0.55em] h-[1.5px] bg-current align-baseline animate-[blink_1s_step-end_infinite] ml-[1px] translate-y-[-1px]" />
+      <span aria-hidden="true" className="inline-block w-[0.55em] h-[1.5px] bg-current align-baseline animate-[blink_1s_step-end_infinite] ml-[1px] translate-y-[-1px]" />
     </span>
   );
 }
