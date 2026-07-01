@@ -31,7 +31,7 @@ export default function AlternatingItemsList({
             </div>
 
             {/* Spacing via padding so image edges share the same 50% vertical line across rows */}
-            <div className={imageLeft ? "md:pl-10 lg:pl-16" : "md:pr-10 lg:pr-16"}>
+            <div className={imageLeft ? "mt-6 md:mt-0 md:pl-10 lg:pl-16" : "mt-6 md:mt-0 md:pr-10 lg:pr-16"}>
               {headingFont === "body" ? (
                 <h3 className="text-[24px] font-medium leading-normal text-primary">
                   {item.title}
