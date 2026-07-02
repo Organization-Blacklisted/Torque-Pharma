@@ -6,7 +6,7 @@ import { SplitButton } from "@/components/ui/SplitButton";
 import ContentMediaSection from "@/components/sections/shared/ContentMediaSection";
 import Container from "@/components/layouts/Container";
 import Section from "@/components/layouts/Section";
-import { manufacturingFacilityPage } from "@/data/manufacturing-facility.mock";
+import { getManufacturingPage } from "@/lib/api/manufacturing";
 import ManufacturingStatsSection from "./sections/ManufacturingStatsSection";
 
 export const metadata: Metadata = {
@@ -15,12 +15,11 @@ export const metadata: Metadata = {
     "World-class pharmaceutical manufacturing — 43.5 billion units annually across diverse dosage forms.",
 };
 
-export default function ManufacturingFacilityPage() {
-  const { contentMedia, stats, cta, faq } = manufacturingFacilityPage;
+export default async function ManufacturingFacilityPage() {
+  const { contentMedia, stats, cta, faq } = await getManufacturingPage();
 
   return (
     <>
-      {/* Centered video section */}
       <Section first>
         <Container size="xl">
           <ContentMediaSection {...contentMedia} headingClassName="max-w-[900px] mx-auto text-pretty" />
@@ -29,7 +28,6 @@ export default function ManufacturingFacilityPage() {
 
       <ManufacturingStatsSection {...stats} />
 
-      {/* CTA — wide container */}
       <Section as="div">
         <Container size="wide">
           <CTA eyebrow={cta.eyebrow} title={cta.title} variant="gradient">
@@ -40,7 +38,6 @@ export default function ManufacturingFacilityPage() {
         </Container>
       </Section>
 
-      {/* FAQ — reading container */}
       <Section>
         <Container size="reading">
           <SectionHeader

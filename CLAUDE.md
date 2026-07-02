@@ -167,6 +167,8 @@ Body: { "tag": "blogs" }          // or { "tags": ["blogs", "homepage"] }
 | `blogs` | `blogs.ts` |
 | `code-of-conduct` | `code-of-conduct.ts` |
 | `about-us` | `about.ts` |
+| `manufacturing` | `manufacturing.ts` |
+| `events` | `events.ts` |
 | `{slug}` (e.g. `privacy-policy`) | `pages.ts` — tag is the page slug itself |
 
 When adding a new fetcher with a `tags: [...]` option, add its tag to this table so Laravel knows what to send.
@@ -205,7 +207,7 @@ When adding a new fetcher with a `tags: [...]` option, add its tag to this table
 |---|---|---|
 | `/` | Active — 7 sections built | API (6 sections) + mock (statsMedia) |
 | `/about-us` | Active — fully laid out | `getAboutUsPage()` for contentMedia + stats; overview + cta still mock — API has more sections (mission/vision, values, built-on, connect) not wired up yet |
-| `/manufacturing-facility` | Active — fully laid out | Mock only — no API fetcher yet |
+| `/manufacturing-facility` | Active — 4 sections API-driven | `getManufacturingPage()` — video/poster, stats, CTA, FAQ. 5 remaining sections (production, process, certifications, quality-assessment, production-scale) not yet built |
 | `/board-of-directors` | Active — fully laid out | Mock only — no API fetcher yet |
 | `/company` `/global-presence` `/products` `/capabilities` `/life-at-torque` | Stub — h1 only | None |
 | `/blogs` | Active — featured slider, category tabs, paginated grid | `getBlogs()` |

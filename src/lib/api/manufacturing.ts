@@ -1,0 +1,142 @@
+import { apiFetch, type ApiResponse } from "./fetcher";
+import { parseStatValue } from "./utils";
+import type { ContentMediaData } from "@/types/content-media";
+import type { StatCardProps } from "@/components/ui/StatCard/StatCard.types";
+import type { AccordionItem } from "@/components/ui/Accordion/Accordion.types";
+
+// ─── Raw API shape ────────────────────────────────────────────────────────────
+
+type ManufacturingApiResponse = {
+  content: {
+    video_section: {
+      title: string;
+      sub_title: string;
+      desc: string;
+      video: string | null;
+      video_poster: string;
+      button_text: string;
+      button_link: string;
+      pdf: string | null;
+    };
+    quality_driven_section: {
+      title: string;
+      sub_title: string;
+      desc: string;
+      items: { title: string; sub_title: string; desc: string }[];
+    };
+    act_with_purpose_section: {
+      title: string;
+      sub_title: string;
+      button_text: string;
+      button_link: string;
+    };
+    faq_section: {
+      title: string;
+      sub_title: string;
+      desc: string;
+      items: { title: string; desc: string }[];
+    };
+  };
+};
+
+// ─── Transformed shape ────────────────────────────────────────────────────────
+
+export type ManufacturingPageData = {
+  contentMedia: ContentMediaData;
+  stats: {
+    eyebrow: string;
+    title: string;
+    description: string;
+    stats: StatCardProps[];
+  };
+  cta: {
+    eyebrow: string;
+    title: string;
+    button: { label: string; href: string };
+  };
+  faq: {
+    eyebrow: string;
+    heading: string;
+    description: string;
+    items: AccordionItem[];
+  };
+};
+
+// ─── Fetcher ──────────────────────────────────────────────────────────────────
+
+export async function getManufacturingPage(): Promise<ManufacturingPageData> {
+  const { data } = await apiFetch<ApiResponse<ManufacturingApiResponse>>(
+    "/pages/manufacturing-facilities",
+    { revalidate: 3600, tags: ["manufacturing"] },
+  );
+
+  const vs = data.content.video_section;
+  const qds = data.content.quality_driven_section;
+  const awps = data.content.act_with_purpose_section;
+  const faqs = data.content.faq_section;
+
+  return {
+    contentMedia: {
+      eyebrow: vs.title,
+      heading: vs.sub_title,
+      description: vs.desc,
+      layout: "centered",
+      // When the API has no video yet, render the poster as a cover image.
+      // Once `video` is populated the branch flips to a video player automatically.
+      media: vs.video
+        ? {
+            type: "video",
+            sources: [{ src: vs.video, type: "video/mp4" as const }],
+            poster: vs.video_poster,
+          }
+        : {
+            type: "image",
+            src: vs.video_poster,
+            alt: vs.sub_title,
+          },
+      actions: [
+        {
+          label: vs.button_text,
+          // Prefer the dedicated PDF URL; fall back to the generic button link.
+          href: vs.pdf ?? vs.button_link,
+          variant: "primary",
+        },
+      ],
+    },
+
+    stats: {
+      eyebrow: qds.title,
+      title: qds.sub_title,
+      description: qds.desc,
+      stats: qds.items.map((item) => {
+        const { value, suffix } = parseStatValue(item.sub_title);
+        return {
+          label: item.title,
+          value,
+          suffix,
+          description: item.desc,
+          theme: "dark" as const,
+        };
+      }),
+    },
+
+    cta: {
+      eyebrow: awps.title,
+      title: awps.sub_title,
+      button: {
+        label: awps.button_text,
+        href: awps.button_link,
+      },
+    },
+
+    faq: {
+      eyebrow: faqs.title,
+      heading: faqs.sub_title,
+      description: faqs.desc,
+      items: faqs.items.map((item) => ({
+        title: item.title,
+        content: `<p>${item.desc}</p>`,
+      })),
+    },
+  };
+}
