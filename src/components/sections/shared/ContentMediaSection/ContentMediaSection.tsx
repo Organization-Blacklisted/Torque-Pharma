@@ -98,6 +98,7 @@ export default function ContentMediaSection({
   actions,
   className = "",
   headingClassName = "",
+  descriptionClassName = "",
 }: ContentMediaSectionProps) {
   if (layout === "centered") {
     return (
@@ -109,6 +110,7 @@ export default function ContentMediaSection({
           align="center"
           size="h1"
           headingClassName={headingClassName}
+          descriptionClassName={descriptionClassName}
         />
         <div className="mt-[var(--spacing-subsection)]">
           <MediaBlock media={media} layout={layout} />
