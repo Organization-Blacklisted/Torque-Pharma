@@ -150,10 +150,10 @@ export default function SectionHeader({
         <p
           className={`
             mt-5
-          
             text-body
             leading-6
             ${descriptionColor}
+            ${descriptionClassName}
           `}
         >
           {description}
