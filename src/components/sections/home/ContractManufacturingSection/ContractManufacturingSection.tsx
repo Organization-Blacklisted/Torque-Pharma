@@ -9,7 +9,7 @@ export default function ContractManufacturingSection({
   className = "",
 }: ContractManufacturingSectionProps) {
   return (
-    <div className={`bg-dark-blue py-[var(--spacing-section-inner)] ${className}`}>
+    <div className={`rounded-lg bg-dark-blue py-[var(--spacing-section-inner)] ${className}`}>
       <Container size="wide">
         <SectionHeader
           eyebrow={eyebrow}

@@ -18,11 +18,23 @@ type ManufacturingApiResponse = {
       button_link: string;
       pdf: string | null;
     };
+    process_section: {
+      title: string;
+      sub_title: string;
+      desc: string;
+      items: { title: string; desc: string }[];
+    };
     quality_driven_section: {
       title: string;
       sub_title: string;
       desc: string;
       items: { title: string; sub_title: string; desc: string }[];
+    };
+    production_scale_section: {
+      title: string;
+      sub_title: string;
+      desc: string;
+      items: { image: string; title: string; desc: string; link: string }[];
     };
     act_with_purpose_section: {
       title: string;
@@ -43,11 +55,23 @@ type ManufacturingApiResponse = {
 
 export type ManufacturingPageData = {
   contentMedia: ContentMediaData;
+  process: {
+    eyebrow: string;
+    title: string;
+    description: string;
+    items: { title: string; description: string }[];
+  };
   stats: {
     eyebrow: string;
     title: string;
     description: string;
     stats: StatCardProps[];
+  };
+  productionScale: {
+    eyebrow: string;
+    title: string;
+    description: string;
+    items: { image: string; name: string; capacity: string }[];
   };
   cta: {
     eyebrow: string;
@@ -71,7 +95,9 @@ export async function getManufacturingPage(): Promise<ManufacturingPageData> {
   );
 
   const vs = data.content.video_section;
+  const ps = data.content.process_section;
   const qds = data.content.quality_driven_section;
+  const pss = data.content.production_scale_section;
   const awps = data.content.act_with_purpose_section;
   const faqs = data.content.faq_section;
 
@@ -104,6 +130,16 @@ export async function getManufacturingPage(): Promise<ManufacturingPageData> {
       ],
     },
 
+    process: {
+      eyebrow: ps.title,
+      title: ps.sub_title,
+      description: ps.desc,
+      items: ps.items.map((item) => ({
+        title: item.title,
+        description: item.desc.replace(/\r\n/g, " ").trim(),
+      })),
+    },
+
     stats: {
       eyebrow: qds.title,
       title: qds.sub_title,
@@ -116,8 +152,20 @@ export async function getManufacturingPage(): Promise<ManufacturingPageData> {
           suffix,
           description: item.desc,
           theme: "dark" as const,
+          animated: true,
         };
       }),
+    },
+
+    productionScale: {
+      eyebrow: pss.title,
+      title: pss.sub_title,
+      description: pss.desc,
+      items: pss.items.map((item) => ({
+        image: item.image,
+        name: item.title,
+        capacity: item.desc,
+      })),
     },
 
     cta: {

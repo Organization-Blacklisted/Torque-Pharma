@@ -35,10 +35,13 @@ export default function StatCard({
           hasAnimated.current = true;
           const duration = 1800;
           const start = performance.now();
+          const decimals = (String(numericPart).split(".")[1] ?? "").length;
           const tick = (now: number) => {
             const progress = Math.min((now - start) / duration, 1);
             const eased = 1 - Math.pow(1 - progress, 3);
-            setDisplayValue(`${Math.round(eased * numericPart)}${trail}`);
+            const raw = eased * numericPart;
+            const formatted = decimals > 0 ? raw.toFixed(decimals) : String(Math.round(raw));
+            setDisplayValue(`${formatted}${trail}`);
             if (progress < 1) requestAnimationFrame(tick);
           };
           requestAnimationFrame(tick);
