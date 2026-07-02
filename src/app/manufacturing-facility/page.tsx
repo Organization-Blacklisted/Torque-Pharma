@@ -9,6 +9,7 @@ import Section from "@/components/layouts/Section";
 import { getManufacturingPage } from "@/lib/api/manufacturing";
 import ManufacturingProcessSection from "@/components/sections/manufacturing/ManufacturingProcessSection";
 import ProductionScaleSection from "@/components/sections/manufacturing/ProductionScaleSection";
+import QualityAssessmentSection from "@/components/sections/manufacturing/QualityAssessmentSection";
 import ManufacturingStatsSection from "./sections/ManufacturingStatsSection";
 
 export const metadata: Metadata = {
@@ -18,7 +19,7 @@ export const metadata: Metadata = {
 };
 
 export default async function ManufacturingFacilityPage() {
-  const { contentMedia, process, stats, productionScale, cta, faq } = await getManufacturingPage();
+  const { contentMedia, process, stats, qualityAssessment, productionScale, cta, faq } = await getManufacturingPage();
 
   return (
     <>
@@ -31,6 +32,8 @@ export default async function ManufacturingFacilityPage() {
       <ManufacturingProcessSection {...process} className="mx-2" />
 
       <ManufacturingStatsSection {...stats} />
+
+      <QualityAssessmentSection {...qualityAssessment} />
 
       <ProductionScaleSection {...productionScale} />
 

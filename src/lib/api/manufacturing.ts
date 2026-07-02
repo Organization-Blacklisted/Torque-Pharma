@@ -30,6 +30,11 @@ type ManufacturingApiResponse = {
       desc: string;
       items: { title: string; sub_title: string; desc: string }[];
     };
+    quality_assessment_section: {
+      title: string;
+      sub_title: string;
+      items: { image: string; title: string; desc: string }[];
+    };
     production_scale_section: {
       title: string;
       sub_title: string;
@@ -67,6 +72,11 @@ export type ManufacturingPageData = {
     description: string;
     stats: StatCardProps[];
   };
+  qualityAssessment: {
+    eyebrow: string;
+    title: string;
+    items: { image: string; title: string; description: string }[];
+  };
   productionScale: {
     eyebrow: string;
     title: string;
@@ -97,6 +107,7 @@ export async function getManufacturingPage(): Promise<ManufacturingPageData> {
   const vs = data.content.video_section;
   const ps = data.content.process_section;
   const qds = data.content.quality_driven_section;
+  const qas = data.content.quality_assessment_section;
   const pss = data.content.production_scale_section;
   const awps = data.content.act_with_purpose_section;
   const faqs = data.content.faq_section;
@@ -155,6 +166,16 @@ export async function getManufacturingPage(): Promise<ManufacturingPageData> {
           animated: true,
         };
       }),
+    },
+
+    qualityAssessment: {
+      eyebrow: qas.title,
+      title: qas.sub_title,
+      items: qas.items.map((item) => ({
+        image: item.image,
+        title: item.title,
+        description: item.desc,
+      })),
     },
 
     productionScale: {
