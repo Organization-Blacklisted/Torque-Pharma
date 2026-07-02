@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { apiFetch, type ApiResponse } from "./fetcher";
 import type { AwardsPageData } from "@/types/awards";
 
@@ -26,7 +27,7 @@ type AwardsApiResponse = {
   };
 };
 
-export async function getAwardsPage(): Promise<AwardsPageData> {
+export const getAwardsPage = cache(async function getAwardsPage(): Promise<AwardsPageData> {
   const { data } = await apiFetch<ApiResponse<AwardsApiResponse>>(
     "/pages/certifications",
     { revalidate: 3600, tags: ["awards"] }
@@ -50,4 +51,4 @@ export async function getAwardsPage(): Promise<AwardsPageData> {
       })),
     })),
   };
-}
+});

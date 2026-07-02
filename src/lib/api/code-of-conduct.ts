@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { apiFetch, type ApiResponse } from "./fetcher";
 import type { CodeOfConductData } from "@/types/code-of-conduct";
 
@@ -28,7 +29,7 @@ type CodeOfConductApiResponse = {
   };
 };
 
-export async function getCodeOfConductPage(): Promise<CodeOfConductData> {
+export const getCodeOfConductPage = cache(async function getCodeOfConductPage(): Promise<CodeOfConductData> {
   const { data } = await apiFetch<ApiResponse<CodeOfConductApiResponse>>(
     "/pages/code-of-conduct",
     { revalidate: 3600, tags: ["code-of-conduct"] }
@@ -48,4 +49,4 @@ export async function getCodeOfConductPage(): Promise<CodeOfConductData> {
       description: item.description,
     })),
   };
-}
+});
