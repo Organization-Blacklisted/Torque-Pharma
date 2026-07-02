@@ -24,9 +24,9 @@ export default function BlogsSection({ data: { posts }, className = "" }: BlogsS
 
   const categories = useMemo(() => {
     const byId = new Map<number, string>();
-    posts.forEach((p) => byId.set(p.category.id, p.category.name));
+    regularPosts.forEach((p) => byId.set(p.category.id, p.category.name));
     return [ALL_BLOGS, ...[...byId.entries()].sort((a, b) => a[0] - b[0]).map(([, name]) => name)];
-  }, [posts]);
+  }, [regularPosts]);
 
   const filteredPosts = useMemo(
     () =>
