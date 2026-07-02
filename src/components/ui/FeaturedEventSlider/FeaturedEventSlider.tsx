@@ -4,47 +4,29 @@ import { useCallback, useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Image from "next/image";
 import Link from "next/link";
-import type { BlogPost } from "@/types/blog";
-import type { FeaturedBlogSliderProps } from "./FeaturedBlogSlider.types";
+import type { Event } from "@/types/event";
+import type { FeaturedEventSliderProps } from "./FeaturedEventSlider.types";
 
-function formatDate(dateStr: string) {
-  return new Date(dateStr).toLocaleDateString("en-US", {
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-  });
-}
-
-function FeaturedSlide({ post }: { post: BlogPost }) {
-  const description = post.description.replace(/<[^>]*>/g, "").trim();
-  const href = `/blogs/${post.slug}`;
+function FeaturedSlide({ event }: { event: Event }) {
+  const href = `/events/${event.slug}`;
 
   return (
     <div className="grid overflow-hidden rounded-lg bg-white/20 md:h-[424px] md:grid-cols-2">
       <div className="flex flex-col justify-center gap-4 overflow-hidden p-[clamp(1.5rem,_3vw,_3rem)]">
         <span className="inline-flex h-8 w-fit items-center rounded-full bg-mint px-3.5 py-1 text-h6 font-medium uppercase text-white">
-          Featured Blog
+          Upcoming Event
         </span>
 
-        <span className="text-h5 text-secondary">{formatDate(post.publish_date)}</span>
+        <span className="text-h5 text-secondary">{event.event_date}</span>
 
         <h3 className="line-clamp-2 font-body text-h4 font-normal text-primary">
-          <Link href={href}>{post.title}</Link>
+          <Link href={href}>{event.title}</Link>
         </h3>
 
-        <p className="line-clamp-3 text-body text-secondary">{description}</p>
+        <p className="line-clamp-3 text-body text-secondary">{event.desc_text}</p>
 
         <div className="mt-2 flex flex-col items-start gap-4 lg:flex-row lg:items-end lg:justify-between">
-          <div className="flex flex-col gap-1 text-body italic text-secondary/60">
-            <p>
-              Written by · <span className="text-secondary">{post.author}</span>
-            </p>
-            {post.medically_reviewed_by && (
-              <p>
-                Medically reviewed by · <span className="text-secondary">{post.medically_reviewed_by}</span>
-              </p>
-            )}
-          </div>
+          <p className="text-body italic text-secondary/60">{event.created_by}</p>
 
           <Link
             href={href}
@@ -72,8 +54,8 @@ function FeaturedSlide({ post }: { post: BlogPost }) {
 
       <div className="relative aspect-[4/3] md:aspect-auto">
         <Image
-          src={post.featured_image}
-          alt={post.title}
+          src={event.featured_image}
+          alt={event.title}
           fill
           draggable={false}
           sizes="(max-width: 768px) 100vw, 50vw"
@@ -84,8 +66,8 @@ function FeaturedSlide({ post }: { post: BlogPost }) {
   );
 }
 
-export default function FeaturedBlogSlider({ posts, className = "" }: FeaturedBlogSliderProps) {
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: posts.length > 1 });
+export default function FeaturedEventSlider({ events, className = "" }: FeaturedEventSliderProps) {
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: events.length > 1 });
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   const onSelect = useCallback(() => {
@@ -102,27 +84,27 @@ export default function FeaturedBlogSlider({ posts, className = "" }: FeaturedBl
     };
   }, [emblaApi, onSelect]);
 
-  if (posts.length === 0) return null;
+  if (events.length === 0) return null;
 
   return (
     <div className={className}>
       <div className="overflow-hidden" ref={emblaRef}>
         <div className="flex cursor-grab active:cursor-grabbing">
-          {posts.map((post) => (
-            <div key={post.id} className="min-w-0 flex-[0_0_100%]">
-              <FeaturedSlide post={post} />
+          {events.map((event) => (
+            <div key={event.id} className="min-w-0 flex-[0_0_100%]">
+              <FeaturedSlide event={event} />
             </div>
           ))}
         </div>
       </div>
 
-      {posts.length > 1 && (
+      {events.length > 1 && (
         <div className="mt-6 flex items-center justify-center gap-2">
-          {posts.map((p, i) => (
+          {events.map((e, i) => (
             <button
-              key={p.id}
+              key={e.id}
               type="button"
-              aria-label={`Show featured post ${i + 1}`}
+              aria-label={`Show featured event ${i + 1}`}
               aria-current={i === selectedIndex}
               onClick={() => emblaApi?.scrollTo(i)}
               className={`h-2 w-2 rounded-full transition-colors duration-300 ${

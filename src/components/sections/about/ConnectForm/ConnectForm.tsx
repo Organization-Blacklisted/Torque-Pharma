@@ -104,8 +104,8 @@ export default function ConnectForm() {
             <path d="M5 13l4 4L19 7" />
           </svg>
         </div>
-        <h3 className="font-heading text-h3 text-primary">Thank you!</h3>
-        <p className="text-body text-secondary">We'll get back to you within 24 hours.</p>
+        <h3 className="font-heading text-h3 text-primary">Submission Successful</h3>
+        <p className="text-body text-secondary">Thank you for showing interest in partnering with Torque Pharma. Our team will connect with you soon.</p>
       </div>
     );
   }

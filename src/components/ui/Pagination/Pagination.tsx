@@ -19,10 +19,10 @@ function getPageNumbers(current: number, total: number): (number | "ellipsis")[]
 }
 
 const arrowButton =
-  "flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-primary transition-colors duration-200 hover:bg-surface disabled:pointer-events-none disabled:opacity-30";
+  "flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-full text-primary transition-colors duration-200 hover:bg-surface disabled:pointer-events-none disabled:opacity-30";
 
 const pageButton =
-  "flex h-8 w-8 shrink-0 items-center justify-center rounded-full font-body text-body-sm transition-colors duration-200";
+  "flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-full font-body text-body-sm transition-colors duration-200";
 
 export default function Pagination({ currentPage, totalPages, onPageChange, className = "" }: PaginationProps) {
   if (totalPages <= 1) return null;

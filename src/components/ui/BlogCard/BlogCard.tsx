@@ -14,7 +14,7 @@ export default function BlogCard({
   return (
     <article className={`group relative flex flex-col ${className}`}>
       <div className="overflow-hidden rounded-lg">
-        <div className="relative aspect-[4/3] bg-surface">
+        <div className="relative aspect-[544/300] bg-surface">
           {featured_image && (
             <Image
               src={featured_image}
@@ -29,12 +29,12 @@ export default function BlogCard({
 
       <div className="mt-4 flex flex-1 flex-col gap-3">
         {category && (
-          <span className="inline-flex h-8 w-fit items-center rounded-full bg-mint px-3.5 py-1 text-h5 font-normal uppercase text-mint-dark">
+          <span className="inline-flex h-8 w-fit items-center rounded-full bg-mint px-3.5 py-1 text-h5 font-normal capitalize text-mint-dark">
             {category.name}
           </span>
         )}
 
-        <h3 className="font-body font-medium text-body leading-[1.2] text-secondary">
+        <h3 className="font-body font-medium text-body text-secondary">
           {/* Stretched link covers the entire card */}
           <Link href={href} className="after:absolute after:inset-0">
             {title}
