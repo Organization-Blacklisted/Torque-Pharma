@@ -34,7 +34,7 @@ const baseRoot =
   "group inline-flex items-stretch gap-1 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mint focus-visible:ring-offset-2 disabled:pointer-events-none aria-disabled:pointer-events-none disabled:opacity-50 aria-disabled:opacity-50";
 
 const baseLabel =
-  "flex items-center rounded-sm px-6 py-3 font-body text-sm font-medium uppercase tracking-[0.08em] transition-colors duration-300 ease-out";
+  "flex items-center rounded-sm px-3 py-3 font-body text-sm font-medium uppercase tracking-[0.08em] transition-colors duration-300 ease-out md:px-6";
 
 const baseIcon =
   "relative flex min-h-[52px] w-[52px] shrink-0 items-center justify-center overflow-hidden rounded-sm border transition-colors duration-300 ease-out";
