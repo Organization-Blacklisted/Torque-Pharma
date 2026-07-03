@@ -28,7 +28,7 @@ export default function QualityAssessmentSection({
               <div
                 key={item.title}
                 className={[
-                  "relative p-8 lg:p-12",
+                  "relative p-4 sm:p-8 lg:p-12",
                   // Vertical line — left column, 35px inset from top and bottom of each cell
                   isLeft ? "sm:after:absolute sm:after:content-[''] sm:after:right-0 sm:after:top-[35px] sm:after:bottom-[35px] sm:after:w-0.5 sm:after:bg-primary/10" : "",
                   // Horizontal line — top row, 35px inset from left and right of each cell
