@@ -5,5 +5,6 @@ export interface TocItem {
 
 export interface TableOfContentsProps {
   items: TocItem[];
+  label?: string;
   className?: string;
 }

@@ -3,6 +3,15 @@
   Uses project tokens so it stays in sync with the design system automatically.
 */
 
+/* Base typography inherited by all descendants, including orphaned text nodes
+   produced when browsers implicitly close <p> before block-level children. */
+.rich-text {
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  color: var(--color-secondary);
+  line-height: 120%;
+}
+
 .rich-text h1 {
   font-family: var(--font-heading);
   font-size: var(--text-h1);
@@ -42,10 +51,6 @@
 }
 
 .rich-text p {
-  font-family: var(--font-body);
-  font-size: var(--text-body);
-  color: var(--color-secondary);
-  line-height: 120%;
   margin-bottom: 1rem;
 }
 
@@ -69,6 +74,11 @@
 
 .rich-text ol {
   list-style-type: decimal;
+}
+
+.rich-text ul li::marker,
+.rich-text ol li::marker {
+  color: var(--color-primary);
 }
 
 .rich-text li {
@@ -95,13 +105,22 @@
   margin-top: var(--spacing-icon);
 }
 
+.rich-text--blog h3,
+.rich-text--blog h4 {
+  font-family: var(--font-body);
+  font-size: 24px;
+  font-weight: 500;
+  line-height: normal;
+}
+
 .rich-text img {
   max-width: 100%;
   height: auto;
   border-radius: 4px;
 }
 
-.rich-text strong {
+.rich-text strong,
+.rich-text b {
   font-weight: 500;
-  color: var(--color-secondary);
+  color: var(--color-primary);
 }

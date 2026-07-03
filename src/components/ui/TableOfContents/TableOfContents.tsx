@@ -42,7 +42,7 @@ function TocList({
   );
 }
 
-export default function TableOfContents({ items, className = "" }: TableOfContentsProps) {
+export default function TableOfContents({ items, label = "Table of Contents", className = "" }: TableOfContentsProps) {
   const [activeId, setActiveId] = useState(items[0]?.id ?? "");
   const [isOpen, setIsOpen] = useState(false);
   const isScrollingRef = useRef(false);
@@ -85,7 +85,7 @@ export default function TableOfContents({ items, className = "" }: TableOfConten
       <div className={`hidden lg:block ${className}`}>
         <div className="sticky top-8">
           <p className="mb-5 text-h4 font-normal uppercase tracking-[1.4px] text-primary/60">
-            Table of Contents
+            {label}
           </p>
           <TocList items={items} activeId={activeId} onItemClick={scrollToSection} />
         </div>
@@ -119,7 +119,7 @@ export default function TableOfContents({ items, className = "" }: TableOfConten
       >
         <div className="mb-6 flex items-center justify-between">
           <p className="text-h4 font-normal uppercase tracking-[1.4px] text-primary/60">
-            Table of Contents
+            {label}
           </p>
           <button
             onClick={() => setIsOpen(false)}

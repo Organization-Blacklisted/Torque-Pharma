@@ -8,6 +8,12 @@ import type { AccordionItem } from "@/components/ui/Accordion/Accordion.types";
 
 type ManufacturingApiResponse = {
   content: {
+    production_section: {
+      title: string;
+      sub_title: string;
+      desc: string;
+      items: { image: string; title: string; desc: string }[];
+    };
     video_section: {
       title: string;
       sub_title: string;
@@ -29,6 +35,12 @@ type ManufacturingApiResponse = {
       sub_title: string;
       desc: string;
       items: { title: string; sub_title: string; desc: string }[];
+    };
+    certifications_section: {
+      title: string;
+      sub_title: string;
+      desc: string;
+      items: { image: string }[];
     };
     quality_assessment_section: {
       title: string;
@@ -59,6 +71,12 @@ type ManufacturingApiResponse = {
 // ─── Transformed shape ────────────────────────────────────────────────────────
 
 export type ManufacturingPageData = {
+  production: {
+    eyebrow: string;
+    title: string;
+    description: string;
+    items: { image: string; title: string; description: string }[];
+  };
   contentMedia: ContentMediaData;
   process: {
     eyebrow: string;
@@ -76,6 +94,12 @@ export type ManufacturingPageData = {
     eyebrow: string;
     title: string;
     items: { image: string; title: string; description: string }[];
+  };
+  certifications: {
+    eyebrow: string;
+    title: string;
+    description: string;
+    items: { image: string }[];
   };
   productionScale: {
     eyebrow: string;
@@ -104,15 +128,28 @@ export async function getManufacturingPage(): Promise<ManufacturingPageData> {
     { revalidate: 3600, tags: ["manufacturing"] },
   );
 
+  const prods = data.content.production_section;
   const vs = data.content.video_section;
   const ps = data.content.process_section;
   const qds = data.content.quality_driven_section;
+  const certs = data.content.certifications_section;
   const qas = data.content.quality_assessment_section;
   const pss = data.content.production_scale_section;
   const awps = data.content.act_with_purpose_section;
   const faqs = data.content.faq_section;
 
   return {
+    production: {
+      eyebrow: prods.title,
+      title: prods.sub_title,
+      description: prods.desc,
+      items: prods.items.map((item) => ({
+        image: item.image,
+        title: item.title,
+        description: item.desc,
+      })),
+    },
+
     contentMedia: {
       eyebrow: vs.title,
       heading: vs.sub_title,
@@ -166,6 +203,13 @@ export async function getManufacturingPage(): Promise<ManufacturingPageData> {
           animated: true,
         };
       }),
+    },
+
+    certifications: {
+      eyebrow: certs.title,
+      title: certs.sub_title,
+      description: certs.desc,
+      items: certs.items.map((item) => ({ image: item.image })),
     },
 
     qualityAssessment: {

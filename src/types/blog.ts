@@ -48,6 +48,39 @@ export interface HomeBlogPreviewItem {
   link: string;
 }
 
+export interface BlogPostContentSection {
+  id: string;          // slugified from title
+  title: string;
+  description: string; // HTML or plain text
+}
+
+export interface BlogPostFaqItem {
+  title: string;
+  desc: string;
+}
+
+export interface BlogPostFaqSection {
+  title: string;
+  sub_title: string;
+  desc: string;
+  items: BlogPostFaqItem[];
+}
+
+export interface BlogPostSeo {
+  title: string;
+  description: string;
+  keywords: string | null;
+  index: boolean;
+  schema: string | null;
+}
+
+export interface BlogPostDetail extends BlogPost {
+  short_description?: string | null;
+  content: BlogPostContentSection[];
+  faq_section: BlogPostFaqSection | null;
+  seo: BlogPostSeo;
+}
+
 export interface HomeBlogsPreviewData {
   title: string;      // "OUR Blogs" — used as eyebrow in SectionHeader
   sub_title: string;  // "Insights for Lasting Wellness" — used as heading
