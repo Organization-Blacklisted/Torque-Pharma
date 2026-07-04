@@ -45,6 +45,12 @@ export default function RootLayout({
     >
       <head>
         {apiOrigin && <link rel="preconnect" href={apiOrigin} />}
+        {process.env.CDN_URL && (
+          <>
+            <link rel="preconnect" href={process.env.CDN_URL} />
+            <link rel="dns-prefetch" href={process.env.CDN_URL} />
+          </>
+        )}
       </head>
       <body className="min-h-full flex flex-col">
           {/* Skip-to-content — invisible until focused, first tab stop for keyboard/screen-reader users */}

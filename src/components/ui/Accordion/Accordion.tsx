@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { memo, useCallback, useEffect, useRef, useState } from "react";
 import { AccordionProps } from "./Accordion.types";
 import { AccordionCloseIcon } from "./icons";
 
@@ -13,11 +13,9 @@ export default function Accordion({
     defaultOpenIndex
   );
 
-  const handleToggle = (index: number) => {
-    setActiveIndex((prev) =>
-      prev === index ? -1 : index
-    );
-  };
+  const handleToggle = useCallback((index: number) => {
+    setActiveIndex((prev) => prev === index ? -1 : index);
+  }, []);
 
   return (
     <div className={`w-full ${className}`}>
@@ -27,7 +25,7 @@ export default function Accordion({
           item={item}
           index={index}
           isOpen={activeIndex === index}
-          onToggle={() => handleToggle(index)}
+          onToggle={handleToggle}
         />
       ))}
     </div>
@@ -41,10 +39,10 @@ type AccordionItemProps = {
   };
   index: number;
   isOpen: boolean;
-  onToggle: () => void;
+  onToggle: (index: number) => void;
 };
 
-function AccordionItem({
+const AccordionItem = memo(function AccordionItem({
   item,
   index,
   isOpen,
@@ -71,7 +69,7 @@ function AccordionItem({
       <button
         id={`accordion-trigger-${index}`}
         type="button"
-        onClick={onToggle}
+        onClick={() => onToggle(index)}
         aria-expanded={isOpen}
         aria-controls={`accordion-content-${index}`}
         className="
@@ -162,4 +160,4 @@ function AccordionItem({
       </div>
     </div>
   );
-}
+});

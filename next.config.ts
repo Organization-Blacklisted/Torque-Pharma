@@ -1,5 +1,9 @@
 import type { NextConfig } from "next";
 
+const cdnHostname = process.env.CDN_URL
+  ? new URL(process.env.CDN_URL).hostname
+  : "blacklistedagency.com";
+
 const nextConfig: NextConfig = {
   poweredByHeader: false,
 
@@ -10,7 +14,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "blacklistedagency.com",
+        hostname: cdnHostname,
         pathname: "/projects/torque-main-backend/**",
       },
     ],

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import React from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import type { ResponsiveCount, SliderProps } from "./Slider.types";
@@ -63,7 +63,7 @@ export default function Slider({
   showProgress = true,
   controlsAlign = "end",
 }: SliderProps) {
-  const items = React.Children.toArray(children);
+  const items = useMemo(() => React.Children.toArray(children), [children]);
   const total = items.length;
 
   const [emblaRef, emblaApi] = useEmblaCarousel({ align: "start", containScroll: "trimSnaps" });

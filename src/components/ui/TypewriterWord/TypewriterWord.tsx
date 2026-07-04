@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 
 interface TypewriterWordProps {
   words: string[];
@@ -17,52 +17,47 @@ export default function TypewriterWord({
   pauseMs = 2800,
   className = "",
 }: TypewriterWordProps) {
-  const [displayText, setDisplayText] = useState("");
-  const [wordIndex, setWordIndex] = useState(0);
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [isPaused, setIsPaused] = useState(false);
+  const spanRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
     if (!words.length) return;
+    const el = spanRef.current;
+    if (!el) return;
 
-    const currentWord = words[wordIndex];
+    let wordIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
+    let timer: ReturnType<typeof setTimeout>;
 
-    if (isPaused) {
-      const t = setTimeout(() => {
-        setIsPaused(false);
-        setIsDeleting(true);
-      }, pauseMs);
-      return () => clearTimeout(t);
-    }
-
-    if (isDeleting) {
-      if (displayText.length === 0) {
-        setIsDeleting(false);
-        setWordIndex((i) => (i + 1) % words.length);
-        return;
+    const tick = () => {
+      const current = words[wordIndex];
+      if (isDeleting) {
+        el.textContent = current.slice(0, --charIndex);
+        if (charIndex === 0) {
+          isDeleting = false;
+          wordIndex = (wordIndex + 1) % words.length;
+          timer = setTimeout(tick, typingSpeed);
+        } else {
+          timer = setTimeout(tick, deletingSpeed);
+        }
+      } else {
+        el.textContent = current.slice(0, ++charIndex);
+        if (charIndex === current.length) {
+          isDeleting = true;
+          timer = setTimeout(tick, pauseMs);
+        } else {
+          timer = setTimeout(tick, typingSpeed);
+        }
       }
-      const t = setTimeout(
-        () => setDisplayText((s) => s.slice(0, -1)),
-        deletingSpeed
-      );
-      return () => clearTimeout(t);
-    }
+    };
 
-    if (displayText.length === currentWord.length) {
-      setIsPaused(true);
-      return;
-    }
-
-    const t = setTimeout(
-      () => setDisplayText(currentWord.slice(0, displayText.length + 1)),
-      typingSpeed
-    );
-    return () => clearTimeout(t);
-  }, [displayText, wordIndex, isDeleting, isPaused, words, typingSpeed, deletingSpeed, pauseMs]);
+    timer = setTimeout(tick, typingSpeed);
+    return () => clearTimeout(timer);
+  }, [words, typingSpeed, deletingSpeed, pauseMs]);
 
   return (
     <span className={className} aria-live="polite" aria-atomic="true">
-      {displayText}
+      <span ref={spanRef} />
       <span aria-hidden="true" className="inline-block w-[0.55em] h-[1.5px] bg-current align-baseline animate-[blink_1s_step-end_infinite] ml-[1px] translate-y-[-1px]" />
     </span>
   );

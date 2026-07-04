@@ -8,6 +8,13 @@ import RelatedBlogsSection from "@/components/sections/blog/RelatedBlogsSection"
 import Container from "@/components/layouts/Container";
 import Section from "@/components/layouts/Section";
 
+export async function generateStaticParams() {
+  const posts = await getBlogs();
+  return posts.map((post) => ({ slug: post.slug }));
+}
+
+export const dynamicParams = true;
+
 export async function generateMetadata({
   params,
 }: {
@@ -48,8 +55,7 @@ export default async function BlogPostPage({
         </Container>
       </Section>
 
-
-<Section>
+      <Section>
         <Container size="wide">
           <RelatedBlogsSection posts={relatedPosts} />
         </Container>

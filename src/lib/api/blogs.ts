@@ -20,5 +20,6 @@ export async function getBlogs(): Promise<BlogPost[]> {
       featured_image: post.featured_image.startsWith("http")
         ? post.featured_image
         : `${STORAGE_BASE}/${post.featured_image}`,
+      plain_description: post.description.replace(/<[^>]*>/g, ""),
     }));
 }

@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import Accordion from "@/components/ui/Accordion";
 import SafeHtml from "@/components/ui/SafeHtml";
 import TableOfContents from "@/components/ui/TableOfContents";
@@ -8,7 +9,10 @@ import type { BlogPostBodyProps } from "./BlogPostBody.types";
 export default function BlogPostBody({ post, className = "" }: BlogPostBodyProps) {
   const { content, tags, faq_section } = post;
 
-  const tocItems = content.map(({ id, title }) => ({ id, title }));
+  const tocItems = useMemo(
+    () => content.map(({ id, title }) => ({ id, title })),
+    [content]
+  );
 
   return (
     <div className={`flex gap-[clamp(2rem,_5vw,_5rem)] ${className}`}>

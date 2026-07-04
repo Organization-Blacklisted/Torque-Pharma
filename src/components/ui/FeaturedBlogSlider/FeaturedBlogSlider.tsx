@@ -16,7 +16,7 @@ function formatDate(dateStr: string) {
 }
 
 function FeaturedSlide({ post }: { post: BlogPost }) {
-  const description = post.description.replace(/<[^>]*>/g, "").trim();
+  const description = post.plain_description;
   const href = `/blogs/${post.slug}`;
 
   return (

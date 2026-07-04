@@ -15,6 +15,7 @@ export interface BlogPost {
   title: string;
   slug: string;
   description: string;        // HTML — strip for card previews, SafeHtml for detail page
+  plain_description: string;  // HTML-stripped version for card previews — computed at fetch time
   publish_date: string;       // "YYYY-MM-DD"
   status: "published" | "draft";
   medically_reviewed_by: string | null;

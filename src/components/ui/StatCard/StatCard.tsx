@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { StatCardProps } from "./StatCard.types";
 
 export default function StatCard({
@@ -22,12 +22,14 @@ export default function StatCard({
   const trail = numericMatch ? numericMatch[2] : "";
 
   const canAnimate = animated && !isNaN(numericPart);
-  const [displayValue, setDisplayValue] = useState(canAnimate ? `0${trail}` : value);
   const cardRef = useRef<HTMLDivElement>(null);
+  const valueRef = useRef<HTMLSpanElement>(null);
   const hasAnimated = useRef(false);
 
   useEffect(() => {
     if (!canAnimate) return;
+
+    let rafId: number;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -36,15 +38,16 @@ export default function StatCard({
           const duration = 1800;
           const start = performance.now();
           const decimals = (String(numericPart).split(".")[1] ?? "").length;
+          const el = valueRef.current;
           const tick = (now: number) => {
             const progress = Math.min((now - start) / duration, 1);
             const eased = 1 - Math.pow(1 - progress, 3);
             const raw = eased * numericPart;
             const formatted = decimals > 0 ? raw.toFixed(decimals) : String(Math.round(raw));
-            setDisplayValue(`${formatted}${trail}`);
-            if (progress < 1) requestAnimationFrame(tick);
+            if (el) el.textContent = `${formatted}${trail}`;
+            if (progress < 1) rafId = requestAnimationFrame(tick);
           };
-          requestAnimationFrame(tick);
+          rafId = requestAnimationFrame(tick);
           observer.disconnect();
         }
       },
@@ -52,7 +55,10 @@ export default function StatCard({
     );
 
     if (cardRef.current) observer.observe(cardRef.current);
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      cancelAnimationFrame(rafId);
+    };
   }, [canAnimate, numericPart, trail]);
 
   return (
@@ -110,6 +116,7 @@ export default function StatCard({
 
       <div className={`mb-3 ${label ? "mt-[80px]" : "mt-auto"}`}>
         <span
+          ref={valueRef}
           className={`
             font-heading
             text-xl-h
@@ -117,7 +124,7 @@ export default function StatCard({
             ${isDark ? "text-mint" : "text-mint"}
           `}
         >
-          {displayValue}
+          {canAnimate ? `0${trail}` : value}
         </span>
         {suffix && (
           <span
