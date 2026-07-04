@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller, type UseFormRegister, type Control } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import PhoneInput, { isValidPhoneNumber } from "react-phone-number-input/min";
@@ -103,7 +103,7 @@ function AboutForm() {
           <FormInput placeholder="Last Name" hasError={!!errors.lastName} {...nameField("lastName")} />
         </FormField>
       </div>
-      <SharedEmailPhoneRow errors={errors} register={register} control={control} />
+      <SharedEmailPhoneRow errors={errors} register={register} control={control as Control<any>} />
       <SharedMessageRow errors={errors} register={register} />
       <ServerError message={serverError} variant="light" />
       <SubmitButton isSubmitting={isSubmitting} label="Submit" />
@@ -168,7 +168,7 @@ function WhiteLabelForm() {
           <FormInput placeholder="Company Name" hasError={!!errors.companyName} className="!bg-white" {...register("companyName")} />
         </FormField>
       </div>
-      <SharedEmailPhoneRow errors={errors} register={register} control={control} white />
+      <SharedEmailPhoneRow errors={errors} register={register} control={control as Control<any>} white />
       <SharedMessageRow errors={errors} register={register} white />
       <ServerError message={serverError} variant="dark" />
       <SubmitButton isSubmitting={isSubmitting} label="Request a Quote" />
@@ -178,10 +178,11 @@ function WhiteLabelForm() {
 
 // ─── Shared sub-components ────────────────────────────────────────────────────
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type SharedRowProps = {
   errors: Record<string, { message?: string } | undefined>;
-  register: ReturnType<typeof useForm>["register"];
-  control?: ReturnType<typeof useForm>["control"];
+  register: UseFormRegister<any>;
+  control?: Control<any>;
   white?: boolean;
 };
 
