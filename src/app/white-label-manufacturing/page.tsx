@@ -3,6 +3,7 @@ import { getWhiteLabelPage } from "@/lib/api/white-label";
 import ContentMediaSection from "@/components/sections/shared/ContentMediaSection";
 import FeatureGridSection from "@/components/sections/shared/FeatureGridSection";
 import ConnectSection from "@/components/sections/shared/ConnectSection";
+import WhiteLabelPartnerSection from "@/components/sections/white-label/WhiteLabelPartnerSection";
 import CertificationsSection from "@/components/sections/manufacturing/CertificationsSection";
 import Accordion from "@/components/ui/Accordion";
 import CTA from "@/components/ui/CTA";
@@ -18,7 +19,7 @@ export const metadata: Metadata = {
 };
 
 export default async function WhiteLabelManufacturingPage() {
-  const { hero, partnering, connect, compliance, faq, cta } = await getWhiteLabelPage();
+  const { hero, partnering, partner, connect, compliance, faq, cta } = await getWhiteLabelPage();
 
   return (
     <>
@@ -35,6 +36,10 @@ export default async function WhiteLabelManufacturingPage() {
           <FeatureGridSection {...partnering} />
         </Container>
       </Section>
+      <Section>
+        <WhiteLabelPartnerSection {...partner} className="mx-2" />
+      </Section>
+
       <Section padded className="bg-dark-blue">
         <Container size="xl">
           <ConnectSection variant="white-label" {...connect} />

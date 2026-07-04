@@ -23,6 +23,12 @@ type WhiteLabelApiResponse = {
       sub_title: string;
       items: { image: string; title: string; desc: string }[];
     };
+    partner_section: {
+      title: string;
+      sub_title: string;
+      desc: string;
+      items: { image: string; title: string; desc: string }[];
+    };
     connect_section: {
       title: string;
       sub_title: string;
@@ -58,6 +64,12 @@ export type WhiteLabelPageData = {
     title: string;
     items: { icon: string; title: string; description: string }[];
   };
+  partner: {
+    eyebrow: string;
+    heading: string;
+    description: string;
+    items: { image: string; title: string; description: string }[];
+  };
   connect: {
     eyebrow: string;
     title: string;
@@ -92,6 +104,7 @@ export async function getWhiteLabelPage(): Promise<WhiteLabelPageData> {
 
   const vs   = data.content.video_section;
   const ps   = data.content.partnering_section;
+  const part = data.content.partner_section;
   const conn = data.content.connect_section;
   const comp = data.content.compliance_section;
   const faqs = data.content.faq_section;
@@ -125,6 +138,17 @@ export async function getWhiteLabelPage(): Promise<WhiteLabelPageData> {
       title: ps.sub_title,
       items: ps.items.map((item) => ({
         icon: item.image,
+        title: item.title,
+        description: item.desc,
+      })),
+    },
+
+    partner: {
+      eyebrow: part.title,
+      heading: part.sub_title,
+      description: part.desc,
+      items: part.items.map((item) => ({
+        image: item.image,
         title: item.title,
         description: item.desc,
       })),

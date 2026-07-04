@@ -20,6 +20,21 @@ type DealerApiResponse = {
       sub_title: string;
       items: { image: string; title: string; desc: string }[];
     };
+    eligibility_section: {
+      title: string;
+      sub_title: string;
+      desc: string;
+      items: {
+        title: string;
+        content: { text: string }[];
+      }[];
+    };
+    network_section: {
+      title: string;
+      sub_title: string;
+      desc: string;
+      image: string;
+    };
     cta_section: {
       title: string;
       sub_title: string;
@@ -44,6 +59,18 @@ export type DealerPageData = {
     title: string;
     items: { icon: string; title: string; description: string }[];
   };
+  eligibility: {
+    eyebrow: string;
+    heading: string;
+    description: string;
+    items: { title: string; content: { text: string }[] }[];
+  };
+  network: {
+    eyebrow: string;
+    heading: string;
+    description: string;
+    image: string;
+  };
   cta: {
     eyebrow: string;
     title: string;
@@ -67,6 +94,8 @@ export async function getDealerPage(): Promise<DealerPageData> {
 
   const b = data.content.banner_section;
   const ben = data.content.benefits_section;
+  const elig = data.content.eligibility_section;
+  const net = data.content.network_section;
   const cta = data.content.cta_section;
   const faqs = data.content.faqs_section;
   
@@ -98,6 +127,20 @@ export async function getDealerPage(): Promise<DealerPageData> {
         title: item.title,
         description: item.desc,
       })),
+    },
+
+    eligibility: {
+      eyebrow: elig.title,
+      heading: elig.sub_title,
+      description: elig.desc,
+      items: elig.items,
+    },
+
+    network: {
+      eyebrow: net.title,
+      heading: net.sub_title,
+      description: net.desc,
+      image: net.image,
     },
 
     cta: {

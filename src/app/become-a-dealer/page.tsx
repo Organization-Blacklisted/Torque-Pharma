@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { getDealerPage } from "@/lib/api/dealer";
 import ContentMediaSection from "@/components/sections/shared/ContentMediaSection";
 import FeatureGridSection from "@/components/sections/shared/FeatureGridSection";
+import DealerNetworkSection from "@/components/sections/dealer/DealerNetworkSection";
+import DealerEligibilitySection from "@/components/sections/dealer/DealerEligibilitySection";
 import Accordion from "@/components/ui/Accordion";
 import CTA from "@/components/ui/CTA";
 import SectionHeader from "@/components/ui/SectionHeading";
@@ -16,7 +18,7 @@ export const metadata: Metadata = {
 };
 
 export default async function BecomeADealerPage() {
-  const { banner, benefits, cta, faq } = await getDealerPage();
+  const { banner, benefits, eligibility, network, cta, faq } = await getDealerPage();
 
   return (
     <>
@@ -32,6 +34,18 @@ export default async function BecomeADealerPage() {
       <Section>
         <Container size="wide">
           <FeatureGridSection {...benefits} />
+        </Container>
+      </Section>
+
+      <Section>
+        <Container size="wide">
+          <DealerEligibilitySection {...eligibility} />
+        </Container>
+      </Section>
+
+      <Section padded className="bg-dark-blue">
+        <Container size="xl">
+          <DealerNetworkSection {...network} />
         </Container>
       </Section>
 
