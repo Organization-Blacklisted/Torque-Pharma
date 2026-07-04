@@ -34,14 +34,14 @@ export default function Error({
             <h1 className="font-heading text-h2 font-light leading-[1.1] text-primary">
               Something went wrong
             </h1>
-            <p className="max-w-[480px] text-body text-secondary">
+            <p className="text-body text-secondary">
               We ran into an issue loading this page. This is usually
               temporary — please try again or return to the homepage.
             </p>
           </div>
 
           <div className="flex flex-wrap items-center justify-center gap-4">
-            <SplitButton variant="primary" onClick={reset}>
+            <SplitButton variant="primary" onClick={reset} className="cursor-pointer">
               Try again
             </SplitButton>
             <SplitButton variant="outline-dark" href="/">

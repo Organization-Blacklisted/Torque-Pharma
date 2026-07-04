@@ -76,6 +76,9 @@ body {
   width: 100%;
   border-radius: 8px;
   overflow: hidden;
+  background: var(--color-surface);
+  padding: 0 4px;
+  gap: 4px;
 }
 
 .connect-phone-input .PhoneInputCountry {
@@ -83,13 +86,12 @@ body {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0 0.875rem;
+  padding: 0 0.75rem;
   background: rgba(91, 196, 160, 0.2);
   flex-shrink: 0;
   cursor: pointer;
-  min-height: 48px;
-  margin-right: 0;
-  border-radius: 0;
+  border-radius: 6px;
+  margin: 4px 0;
 }
 
 .connect-phone-input .PhoneInputCountrySelect {
@@ -104,9 +106,9 @@ body {
 
 .connect-phone-input .PhoneInputCountryIcon {
   width: 1.75rem;
-  height: 1.25rem;
+  height: 1.75rem;
   overflow: hidden;
-  border-radius: 3px;
+  border-radius: 50%;
   flex-shrink: 0;
 }
 
@@ -123,8 +125,8 @@ body {
 .connect-phone-input .PhoneInputCountry::after {
   content: "";
   display: block;
-  width: 16px;
-  height: 12px;
+  width: 14px;
+  height: 10px;
   background-image: url("/images/icons/chevron-down.svg");
   background-repeat: no-repeat;
   background-size: contain;
@@ -141,7 +143,6 @@ body {
   font-size: var(--text-body);
   color: var(--color-primary);
   min-width: 0;
-  min-height: 48px;
 }
 
 .connect-phone-input .PhoneInputInput::placeholder {
@@ -150,4 +151,17 @@ body {
 
 .connect-phone-input--error {
   box-shadow: 0 0 0 1px rgb(239 68 68);
+}
+
+/* White-field variant (white-label form) */
+.connect-phone-input--white {
+  background: #ffffff;
+}
+
+.connect-phone-input--white .PhoneInputCountry {
+  background: rgba(91, 196, 160, 0.15);
+}
+
+.connect-phone-input--white .PhoneInputInput {
+  background: transparent;
 }

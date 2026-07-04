@@ -12,16 +12,6 @@ export const bwDarius = localFont({
       weight: "400",
       style: "normal",
     },
-    {
-      path: "./bw-darius/BwDarius-Bold.woff2",
-      weight: "700",
-      style: "normal",
-    },
-    {
-      path: "./bw-darius/BwDarius-Black.woff2",
-      weight: "900",
-      style: "normal",
-    },
   ],
   variable: "--font-heading",
   display: "swap",

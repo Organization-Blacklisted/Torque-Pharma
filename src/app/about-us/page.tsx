@@ -10,7 +10,7 @@ import ContentMediaSection from "@/components/sections/shared/ContentMediaSectio
 import MissionVisionSection from "@/components/sections/about/MissionVisionSection";
 import ValuesSection from "@/components/sections/about/ValuesSection";
 import BuiltOnSection from "@/components/sections/about/BuiltOnSection";
-import ConnectSection from "@/components/sections/about/ConnectSection";
+import ConnectSection from "@/components/sections/shared/ConnectSection";
 import Container from "@/components/layouts/Container";
 import Section from "@/components/layouts/Section";
 import { getAboutUsPage } from "@/lib/api/about";
@@ -139,8 +139,9 @@ export default async function AboutUsPage() {
       <Section>
         <Container size="large">
           <ConnectSection
+            variant="about"
             eyebrow={connect.eyebrow}
-            subTitle={connect.subTitle}
+            title={connect.subTitle}
             image={connect.image}
           />
         </Container>

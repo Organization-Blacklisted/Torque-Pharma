@@ -19,7 +19,7 @@ export const navItems: NavItem[] = [
   {
     label: "Capabilities",
     children: [
-      { label: "White Label Manufacturing", href: "/capabilities/white-label-manufacturing" },
+      { label: "White Label Manufacturing", href: "/white-label-manufacturing" },
     ],
   },
   {
@@ -33,10 +33,10 @@ export const navItems: NavItem[] = [
     children: [
       { label: "Blogs", href: "/blogs" },
       { label: "Events", href: "/events" },
-      { label: "Become a Dealer", href: "/resources/become-a-dealer" },
-      { label: "Media Center", href: "/resources/media-center" },
+      { label: "Become a Dealer", href: "/become-a-dealer" },
+      { label: "Media Center", href: "/media-center" },
       { label: "Certifications & Accreditations", href: "/certifications" },
-      { label: "Product Dossiers", href: "/resources/product-dossiers" },
+      { label: "Product Dossiers", href: "/product-dossiers" },
     ],
   },
 ];

@@ -1,4 +1,5 @@
 import { apiFetch, type ApiResponse } from "./fetcher";
+import { sanitize } from "@/lib/sanitize";
 import { parseStatValue } from "./utils";
 import type { ContentMediaData } from "@/types/content-media";
 import type { StatCardProps } from "@/components/ui/StatCard/StatCard.types";
@@ -248,7 +249,7 @@ export async function getManufacturingPage(): Promise<ManufacturingPageData> {
       description: faqs.desc,
       items: faqs.items.map((item) => ({
         title: item.title,
-        content: `<p>${item.desc}</p>`,
+        content: sanitize(`<p>${item.desc}</p>`),
       })),
     },
   };

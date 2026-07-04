@@ -1,5 +1,6 @@
 import { cache } from "react";
 import { apiFetch, type ApiResponse } from "./fetcher";
+import { sanitize } from "@/lib/sanitize";
 import type { BlogPostDetail, BlogPostContentSection } from "@/types/blog";
 
 // Sections from the API are sometimes plain text, sometimes HTML, sometimes mixed
@@ -58,5 +59,15 @@ export const getBlogPost = cache(async function getBlogPost(
     description: normalizeDescription(section.description),
   }));
 
-  return { ...data, content };
+  const faq_section = data.faq_section
+    ? {
+        ...data.faq_section,
+        items: data.faq_section.items.map((item) => ({
+          ...item,
+          desc: sanitize(item.desc),
+        })),
+      }
+    : null;
+
+  return { ...data, content, faq_section };
 });

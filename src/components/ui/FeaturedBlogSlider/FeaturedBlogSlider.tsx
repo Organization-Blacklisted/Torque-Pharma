@@ -32,7 +32,7 @@ function FeaturedSlide({ post }: { post: BlogPost }) {
           <Link href={href}>{post.title}</Link>
         </h3>
 
-        <p className="line-clamp-3 text-body text-secondary">{description}</p>
+        <p className="line-clamp-2 text-body text-secondary">{description}</p>
 
         <div className="mt-2 flex flex-col items-start gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div className="flex flex-col gap-1 text-body italic text-secondary/60">

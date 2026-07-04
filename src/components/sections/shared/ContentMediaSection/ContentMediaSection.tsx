@@ -97,6 +97,7 @@ export default function ContentMediaSection({
   media,
   actions,
   className = "",
+  headerClassName = "",
   headingClassName = "",
   descriptionClassName = "",
 }: ContentMediaSectionProps) {
@@ -109,6 +110,7 @@ export default function ContentMediaSection({
           description={description}
           align="center"
           size="h1"
+          className={headerClassName}
           headingClassName={headingClassName}
           descriptionClassName={descriptionClassName}
         />

@@ -1,6 +1,15 @@
 import SafeHtml from "@/components/ui/SafeHtml/SafeHtml";
 import { SectionHeaderProps } from "./SectionHeader.types";
 
+const headingSizes: Record<"h1" | "h2" | "h3" | "h4" | "h5" | "h6", string> = {
+  h1: "text-h1",
+  h2: "text-h2",
+  h3: "text-h3",
+  h4: "text-h4",
+  h5: "text-h5",
+  h6: "text-h6",
+};
+
 export default function SectionHeader({
   eyebrow,
   title,
@@ -30,18 +39,6 @@ export default function SectionHeader({
 
   const descriptionColor =
     theme === "dark" ? "text-white/80" : "text-secondary";
-
-  const headingSizes: Record<
-    "h1" | "h2" | "h3" | "h4" | "h5" | "h6",
-    string
-  > = {
-    h1: "text-h1",
-    h2: "text-h2",
-    h3: "text-h3",
-    h4: "text-h4",
-    h5: "text-h5",
-    h6: "text-h6",
-  };
 
   if (variant === "split") {
     return (

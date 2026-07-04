@@ -54,9 +54,8 @@ export default function ProductionSection({
                         src={item.image}
                         alt={item.title}
                         fill
-                        sizes="100vw"
+                        sizes="(max-width: 768px) 100vw"
                         className="object-cover"
-                        unoptimized
                       />
                     </div>
                     <p className="pt-4 text-body-sm text-secondary">{item.description}</p>
@@ -122,8 +121,7 @@ export default function ProductionSection({
             fill
             sizes="50vw"
             className="object-cover"
-            unoptimized
-            priority
+            priority={activeIndex === 0}
           />
         </div>
       </div>

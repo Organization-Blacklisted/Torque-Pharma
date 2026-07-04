@@ -36,8 +36,17 @@ export default function BlogsSection({ data: { posts }, className = "" }: BlogsS
     [regularPosts, activeCategory]
   );
 
-  const totalPages = Math.max(1, Math.ceil(filteredPosts.length / PER_PAGE));
-  const paginatedPosts = filteredPosts.slice((currentPage - 1) * PER_PAGE, currentPage * PER_PAGE);
+  const totalPages = useMemo(
+    () => Math.max(1, Math.ceil(filteredPosts.length / PER_PAGE)),
+    [filteredPosts]
+  );
+
+  const paginatedPosts = useMemo(
+    () => filteredPosts.slice((currentPage - 1) * PER_PAGE, currentPage * PER_PAGE),
+    [filteredPosts, currentPage]
+  );
+
+  const activeTabId = useMemo(() => tabId(activeCategory), [activeCategory]);
 
   const handleCategoryChange = (category: string) => {
     setActiveCategory(category);
@@ -92,7 +101,7 @@ export default function BlogsSection({ data: { posts }, className = "" }: BlogsS
       <div
         id="blogs-tab-panel"
         role="tabpanel"
-        aria-labelledby={tabId(activeCategory)}
+        aria-labelledby={activeTabId}
         className="grid grid-cols-1 gap-[var(--spacing-gutter)] sm:grid-cols-2 lg:grid-cols-3"
       >
         {paginatedPosts.map((post) => (

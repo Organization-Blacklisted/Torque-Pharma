@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { sanitize } from "@/lib/sanitize";
 import { AccordionProps } from "./Accordion.types";
 import { AccordionCloseIcon } from "./icons";
 
@@ -157,7 +156,7 @@ function AccordionItem({
             [&>p+p]:mt-6
           "
           dangerouslySetInnerHTML={{
-            __html: sanitize(item.content),
+            __html: item.content,
           }}
         />
       </div>

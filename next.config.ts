@@ -1,6 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  poweredByHeader: false,
+
   // Serve modern image formats — Next.js will auto-convert JPG/PNG to avif/webp
   // and pick the best format the browser supports
   images: {
