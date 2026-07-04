@@ -4,7 +4,7 @@ import { SplitButton } from "@/components/ui/SplitButton";
 import ContentMediaSection from "@/components/sections/shared/ContentMediaSection";
 import Container from "@/components/layouts/Container";
 import Section from "@/components/layouts/Section";
-import { boardOfDirectorsPage } from "@/data/board-of-directors.mock";
+import { getBoardPage } from "@/lib/api/board";
 
 export const metadata: Metadata = {
   title: "Board of Directors | Torque Pharma",
@@ -12,8 +12,8 @@ export const metadata: Metadata = {
     "Meet the visionary leaders of Torque Pharma — a board of experienced professionals driving people-first healthcare progress since 1985.",
 };
 
-export default function BoardOfDirectorsPage() {
-  const { contentMedia, cta } = boardOfDirectorsPage;
+export default async function BoardOfDirectorsPage() {
+  const { contentMedia, cta } = await getBoardPage();
 
   return (
     <>

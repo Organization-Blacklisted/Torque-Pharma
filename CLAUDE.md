@@ -169,6 +169,7 @@ Body: { "tag": "blogs" }          // or { "tags": ["blogs", "homepage"] }
 | `about-us` | `about.ts` |
 | `manufacturing` | `manufacturing.ts` |
 | `events` | `events.ts` |
+| `board-of-directors` | `board.ts` |
 | `{slug}` (e.g. `privacy-policy`) | `pages.ts` — tag is the page slug itself |
 
 When adding a new fetcher with a `tags: [...]` option, add its tag to this table so Laravel knows what to send.
@@ -208,7 +209,7 @@ When adding a new fetcher with a `tags: [...]` option, add its tag to this table
 | `/` | Active — 7 sections built | API (6 sections) + mock (statsMedia) |
 | `/about-us` | Active — fully laid out | `getAboutUsPage()` for contentMedia + stats; overview + cta still mock — API has more sections (mission/vision, values, built-on, connect) not wired up yet |
 | `/manufacturing-facility` | Active — 4 sections API-driven | `getManufacturingPage()` — video/poster, stats, CTA, FAQ. 5 remaining sections (production, process, certifications, quality-assessment, production-scale) not yet built |
-| `/board-of-directors` | Active — fully laid out | Mock only — no API fetcher yet |
+| `/board-of-directors` | Active — 2 sections API-driven | `getBoardPage()` — executive_board + cta wired; founder, director, executive_directorate sections not yet built |
 | `/company` `/global-presence` `/products` `/capabilities` `/life-at-torque` | Stub — h1 only | None |
 | `/blogs` | Active — featured slider, category tabs, paginated grid | `getBlogs()` |
 | `/blogs/[slug]` | **Does not exist** — causes 404 on every blog card click | None |
@@ -225,7 +226,7 @@ When adding a new fetcher with a `tags: [...]` option, add its tag to this table
 - `src/lib/api/blogs.ts` — `/blogs` endpoint path is a guess based on REST convention; confirm against the real Laravel route. "Medically reviewed by" name in `FeaturedBlogSlider` is a hardcoded placeholder — API has no reviewer field yet
 - `src/app/error.tsx`, `loading.tsx`, `not-found.tsx` — none exist; API failures produce unhandled crashes
 - `src/components/sections/HomeStatsMediaSection` — permanently on mock data; no `stats_media_section` defined in API yet. Track with backend
-- `src/lib/api/about.ts`, `manufacturing.ts`, `board.ts` — do not exist; About Us, Manufacturing, and Board pages serve mock data in production. Build once backend delivers endpoints
+- `src/lib/api/about.ts`, `manufacturing.ts` — do not exist; About Us and Manufacturing pages serve mock data in production. Build once backend delivers endpoints
 - `src/components/ui/WorldMap/WorldMap.tsx` — `POSITIONS` object is hardcoded for 26 countries. If API returns a new country with no entry, the pin silently does not render. Add new countries to `POSITIONS` manually until the API delivers coordinates
 
 ## Rich text
