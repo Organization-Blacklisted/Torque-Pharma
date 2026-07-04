@@ -155,7 +155,7 @@ function WhiteLabelForm() {
   };
 
   if (isSuccess) {
-    return <SuccessState title="Request Received" message="Thank you for your interest in our white label manufacturing services. Our team will be in touch shortly." dark />;
+    return <SuccessState title="Request Submitted Successfully" message="We have received your white-label manufacturing enquiry. Our team will reach out to you shortly." dark />;
   }
 
   return (
