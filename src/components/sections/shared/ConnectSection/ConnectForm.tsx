@@ -155,7 +155,7 @@ function WhiteLabelForm() {
   };
 
   if (isSuccess) {
-    return <SuccessState title="Request Received" message="Thank you for your interest in our white label manufacturing services. Our team will be in touch shortly." />;
+    return <SuccessState title="Request Received" message="Thank you for your interest in our white label manufacturing services. Our team will be in touch shortly." dark />;
   }
 
   return (
@@ -260,7 +260,7 @@ function SubmitButton({ isSubmitting, label }: { isSubmitting: boolean; label: s
   );
 }
 
-function SuccessState({ title, message }: { title: string; message: string }) {
+function SuccessState({ title, message, dark }: { title: string; message: string; dark?: boolean }) {
   return (
     <div className="flex flex-col items-center justify-center gap-4 py-16 text-center">
       <div className="flex h-16 w-16 items-center justify-center rounded-full bg-mint">
@@ -277,8 +277,8 @@ function SuccessState({ title, message }: { title: string; message: string }) {
           <path d="M5 13l4 4L19 7" />
         </svg>
       </div>
-      <h3 className="font-heading text-h3 text-primary">{title}</h3>
-      <p className="text-body text-secondary">{message}</p>
+      <h3 className={`font-heading text-h3 ${dark ? "text-white" : "text-primary"}`}>{title}</h3>
+      <p className={`text-body ${dark ? "text-white/70" : "text-secondary"}`}>{message}</p>
     </div>
   );
 }
