@@ -19,7 +19,7 @@ export default async function CareerPage() {
   return (
     <>
       <Section>
-        <Container size="content">
+        <Container size="standard">
           <QuoteSection quote={testimonial.quote} attribution={testimonial.attribution} />
         </Container>
       </Section>

@@ -17,26 +17,36 @@ export default function QuoteSection({ quote, attribution, className = "" }: Quo
 
       {/* Content + quote marks — overlay centered on text block */}
       <div className="absolute inset-0 flex items-center">
-        <div className="relative w-full px-16 text-center">
-          <Image
-            aria-hidden
-            src="/images/icons/quote-left.svg"
-            alt=""
-            width={56}
-            height={56}
-            className="absolute left-0 top-0"
-          />
-          <p className="text-h3 italic font-normal leading-[1.3] text-secondary">{quote}</p>
-          <p className="mt-6 text-body font-semibold text-secondary">{attribution}</p>
-          <Image
-            aria-hidden
-            src="/images/icons/quote-right.svg"
-            alt=""
-            width={56}
-            height={56}
-            className="absolute bottom-0 right-0"
-          />
-        </div>
+ <div className="relative w-full text-center">
+<div className="flex flex-col  gap-2 text-center">
+  <div className="flex">
+    <Image
+      aria-hidden
+      src="/images/icons/quote-left.svg"
+      alt=""
+      width={56}
+      height={56}
+      className="h-[clamp(36px,4vw,56px)] w-[clamp(36px,4vw,56px)] shrink-0"
+    />
+
+    <p className="text-h3 italic font-normal leading-[1.3] text-secondary mb-4">
+      {quote}
+    </p>
+        <Image
+      aria-hidden
+      src="/images/icons/quote-right.svg"
+      alt=""
+      width={56}
+      height={56}
+      className="h-[clamp(36px,4vw,56px)] w-[clamp(36px,4vw,56px)] shrink-0 self-end"
+    />
+    </div>
+     <p className="text-body font-medium text-secondary">
+    {attribution}
+  </p>
+
+  </div>
+</div>
       </div>
     </div>
   );
