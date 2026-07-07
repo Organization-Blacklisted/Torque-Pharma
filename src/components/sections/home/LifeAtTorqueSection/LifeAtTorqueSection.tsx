@@ -49,10 +49,10 @@ export default function LifeAtTorqueSection({
         {/* Col 1: stat → tall cycler */}
         <div className="flex w-[30%] shrink-0 flex-col gap-3 md:gap-6">
           <div className="shrink-0">
-            <p className="font-heading font-light leading-none text-mint text-xl-h">
+            <p className="font-heading font-light leading-none text-mint text-xl-h font-medium">
               {stat.value}
             </p>
-            <p className="mt-2 text-body-sm text-secondary">{stat.label}</p>
+            <p className="mt-2 text-body text-secondary">{stat.label}</p>
           </div>
 
           <ImageCycler
