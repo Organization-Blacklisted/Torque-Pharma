@@ -22,7 +22,7 @@ export default function FounderSection({
   className = "",
 }: FounderSectionProps) {
   return (
-    <div className={`rounded-lg border-[3px] border-gold-vivid p-10 grid gap-[var(--spacing-column-gap)] items-center lg:grid-cols-[1fr_1.2fr] ${className}`}>
+    <div className={`rounded-lg border-[3px] border-gold-vivid p-[var(--spacing-subsection)] grid gap-[var(--spacing-column-gap)] items-center lg:grid-cols-[1fr_1.2fr] ${className}`}>
       {/* Image */}
       <div className="rounded-lg overflow-hidden">
         <Image
