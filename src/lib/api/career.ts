@@ -9,6 +9,16 @@ interface RawCareerPage {
       sub_title: string;
       items: { title: string; desc: string }[];
     };
+    cta_section: {
+      title: string;
+      sub_title: string;
+      button_text: string;
+      button_link: string;
+    };
+    testimonial_section: {
+      title: string;
+      desc: string;
+    };
   };
 }
 
@@ -20,8 +30,21 @@ export interface CareerFaqData {
   items: { title: string; content: string }[];
 }
 
+export interface CareerCtaData {
+  eyebrow: string;
+  title: string;
+  button: { label: string; href: string };
+}
+
+export interface CareerTestimonialData {
+  quote: string;
+  attribution: string;
+}
+
 export interface CareerPageData {
   faq: CareerFaqData;
+  cta: CareerCtaData;
+  testimonial: CareerTestimonialData;
 }
 
 // ─── Fetcher ──────────────────────────────────────────────────────────────────
@@ -33,6 +56,8 @@ export async function getCareerPage(): Promise<CareerPageData> {
   });
 
   const faqRaw = raw.content.faq_section;
+  const ctaRaw = raw.content.cta_section;
+  const testimonialRaw = raw.content.testimonial_section;
 
   return {
     faq: {
@@ -42,6 +67,15 @@ export async function getCareerPage(): Promise<CareerPageData> {
         title: item.title,
         content: item.desc,
       })),
+    },
+    cta: {
+      eyebrow: ctaRaw.title,
+      title: ctaRaw.sub_title,
+      button: { label: ctaRaw.button_text, href: ctaRaw.button_link },
+    },
+    testimonial: {
+      quote: testimonialRaw.desc,
+      attribution: testimonialRaw.title,
     },
   };
 }

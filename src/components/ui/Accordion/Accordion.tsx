@@ -85,7 +85,7 @@ const AccordionItem = memo(function AccordionItem({
       >
         <h3
           className={`
-            text-h4
+            text-body
             font-medium
             transition-colors
             duration-500

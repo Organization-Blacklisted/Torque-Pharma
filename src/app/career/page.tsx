@@ -3,6 +3,9 @@ import Section from "@/components/layouts/Section";
 import Container from "@/components/layouts/Container";
 import SectionHeader from "@/components/ui/SectionHeading";
 import Accordion from "@/components/ui/Accordion";
+import CTA from "@/components/ui/CTA";
+import { SplitButton } from "@/components/ui/SplitButton";
+import QuoteSection from "@/components/sections/shared/QuoteSection";
 import { getCareerPage } from "@/lib/api/career";
 
 export const metadata: Metadata = {
@@ -11,11 +14,16 @@ export const metadata: Metadata = {
 };
 
 export default async function CareerPage() {
-  const { faq } = await getCareerPage();
+  const { faq, cta, testimonial } = await getCareerPage();
 
   return (
     <>
-      <Section first>
+      <Section>
+        <Container size="content">
+          <QuoteSection quote={testimonial.quote} attribution={testimonial.attribution} />
+        </Container>
+      </Section>
+      <Section>
         <Container size="reading">
           <SectionHeader
             eyebrow={faq.heading}
@@ -24,6 +32,16 @@ export default async function CareerPage() {
             className="mb-12"
           />
           <Accordion items={faq.items} />
+        </Container>
+      </Section>
+
+      <Section as="div">
+        <Container size="wide">
+          <CTA eyebrow={cta.eyebrow} title={cta.title} variant="gradient">
+            <SplitButton variant="secondary" href={cta.button.href}>
+              {cta.button.label}
+            </SplitButton>
+          </CTA>
         </Container>
       </Section>
     </>
