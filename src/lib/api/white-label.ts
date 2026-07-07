@@ -18,6 +18,11 @@ type WhiteLabelApiResponse = {
       button2_text: string;
       button2_link: string;
     };
+    scale_section: {
+      title: string;
+      sub_title: string;
+      desc: string;
+    };
     partnering_section: {
       title: string;
       sub_title: string;
@@ -28,6 +33,12 @@ type WhiteLabelApiResponse = {
       sub_title: string;
       desc: string;
       items: { image: string; title: string; desc: string }[];
+    };
+    white_label_section: {
+      title: string;
+      sub_title: string;
+      desc: string;
+      items: { image: string; title: string; desc: string; link: string }[];
     };
     connect_section: {
       title: string;
@@ -59,6 +70,11 @@ type WhiteLabelApiResponse = {
 
 export type WhiteLabelPageData = {
   hero: ContentMediaData;
+  scale: {
+    eyebrow: string;
+    heading: string;
+    description: string;
+  };
   partnering: {
     eyebrow: string;
     title: string;
@@ -69,6 +85,12 @@ export type WhiteLabelPageData = {
     heading: string;
     description: string;
     items: { image: string; title: string; description: string }[];
+  };
+  productionScale: {
+    eyebrow: string;
+    title: string;
+    description: string;
+    items: { image: string; name: string; capacity: string }[];
   };
   connect: {
     eyebrow: string;
@@ -103,8 +125,10 @@ export async function getWhiteLabelPage(): Promise<WhiteLabelPageData> {
   );
 
   const vs   = data.content.video_section;
+  const sc   = data.content.scale_section;
   const ps   = data.content.partnering_section;
   const part = data.content.partner_section;
+  const wl   = data.content.white_label_section;
   const conn = data.content.connect_section;
   const comp = data.content.compliance_section;
   const faqs = data.content.faq_section;
@@ -133,6 +157,12 @@ export async function getWhiteLabelPage(): Promise<WhiteLabelPageData> {
       ],
     },
 
+    scale: {
+      eyebrow: sc.title,
+      heading: sc.sub_title,
+      description: sc.desc,
+    },
+
     partnering: {
       eyebrow: ps.title,
       title: ps.sub_title,
@@ -151,6 +181,17 @@ export async function getWhiteLabelPage(): Promise<WhiteLabelPageData> {
         image: item.image,
         title: item.title,
         description: item.desc,
+      })),
+    },
+
+    productionScale: {
+      eyebrow: wl.title,
+      title: wl.sub_title,
+      description: wl.desc,
+      items: wl.items.map((item) => ({
+        image: item.image,
+        name: item.title,
+        capacity: item.desc,
       })),
     },
 

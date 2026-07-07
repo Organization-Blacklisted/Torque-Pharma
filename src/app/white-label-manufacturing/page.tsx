@@ -5,6 +5,7 @@ import FeatureGridSection from "@/components/sections/shared/FeatureGridSection"
 import ConnectSection from "@/components/sections/shared/ConnectSection";
 import WhiteLabelPartnerSection from "@/components/sections/white-label/WhiteLabelPartnerSection";
 import CertificationsSection from "@/components/sections/manufacturing/CertificationsSection";
+import ProductionScaleSection from "@/components/sections/manufacturing/ProductionScaleSection";
 import Accordion from "@/components/ui/Accordion";
 import CTA from "@/components/ui/CTA";
 import SectionHeader from "@/components/ui/SectionHeading";
@@ -19,7 +20,7 @@ export const metadata: Metadata = {
 };
 
 export default async function WhiteLabelManufacturingPage() {
-  const { hero, partnering, partner, connect, compliance, faq, cta } = await getWhiteLabelPage();
+  const { hero, scale, partnering, partner, productionScale, connect, compliance, faq, cta } = await getWhiteLabelPage();
 
   return (
     <>
@@ -31,6 +32,17 @@ export default async function WhiteLabelManufacturingPage() {
           />
         </Container>
       </Section>
+      <Section padded className="bg-white/50">
+        <Container size="wide">
+          <SectionHeader
+            eyebrow={scale.eyebrow}
+            title={scale.heading}
+            description={scale.description}
+            variant="split"
+            className="[&>div:first-child]:lg:col-span-5 [&>div:last-child]:lg:col-span-7"
+          />
+        </Container>
+      </Section>
       <Section>
         <Container size="wide">
           <FeatureGridSection {...partnering} />
@@ -39,6 +51,8 @@ export default async function WhiteLabelManufacturingPage() {
       <Section>
         <WhiteLabelPartnerSection {...partner} className="mx-2" />
       </Section>
+
+      <ProductionScaleSection {...productionScale} />
 
       <Section padded className="bg-dark-blue">
         <Container size="xl">

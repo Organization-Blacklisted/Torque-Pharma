@@ -57,6 +57,9 @@ export default async function Home() {
       </Section>
       <HomeStatsMediaSection data={statsMedia} />
       <Section>
+        <ContractManufacturingSection data={contractManufacturing} className="mx-2" />
+      </Section>
+      <Section>
         <Container size="standard">
           <HomeImpactSection data={impact} />
         </Container>
@@ -65,9 +68,6 @@ export default async function Home() {
         <Container size="wide">
           <LifeAtTorqueSection data={lifeAtTorque} />
         </Container>
-      </Section>
-      <Section>
-        <ContractManufacturingSection data={contractManufacturing} className="mx-2" />
       </Section>
       <Section>
         <Container>
