@@ -6,5 +6,6 @@ export interface StatsMediaSectionProps {
   description?: string;
   children: ReactNode;
   footer?: ReactNode;
+  headingClassName?: string;
   className?: string;
 }

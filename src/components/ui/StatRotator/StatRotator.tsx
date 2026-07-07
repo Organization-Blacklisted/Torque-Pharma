@@ -45,10 +45,10 @@ function StatSlot({
   }, [emblaApi, onSelect]);
 
   return (
-    <div className="min-w-0 overflow-hidden" ref={emblaRef}>
-      <div className="-ml-[var(--spacing-gutter)] flex cursor-grab active:cursor-grabbing">
+    <div className="min-w-0 h-full overflow-hidden" ref={emblaRef}>
+      <div className="-ml-[var(--spacing-gutter)] flex h-full cursor-grab active:cursor-grabbing">
         {items.map((item, i) => (
-          <div key={i} className="min-w-0 flex-[0_0_100%] pl-[var(--spacing-gutter)]">
+          <div key={i} className="min-w-0 h-full flex-[0_0_100%] pl-[var(--spacing-gutter)]">
             <StatCard {...item} showDots={rotates} isFirstDotActive={selectedIndex === 0} />
           </div>
         ))}
@@ -81,7 +81,7 @@ export default function StatRotator({ slots, interval = 4000, className = "" }: 
   }, []);
 
   return (
-    <div ref={containerRef} className={`grid gap-[var(--spacing-gutter)] md:grid-cols-2 ${className}`}>
+    <div ref={containerRef} className={`grid auto-rows-fr gap-[var(--spacing-gutter)] md:grid-cols-2 ${className}`}>
       {slots.map((items, i) => (
         <StatSlot key={i} items={items} interval={interval} active={isVisible && isPageVisible} />
       ))}

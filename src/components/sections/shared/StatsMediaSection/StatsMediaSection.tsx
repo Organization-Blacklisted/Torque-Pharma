@@ -8,6 +8,7 @@ export default function StatsMediaSection({
   description,
   children,
   footer,
+  headingClassName = "",
   className = "",
 }: StatsMediaSectionProps) {
   return (
@@ -17,6 +18,7 @@ export default function StatsMediaSection({
         title={title}
         description={description}
         variant="split"
+        headingClassName={headingClassName}
       />
 
       <div className="mt-[var(--spacing-subsection)]">
