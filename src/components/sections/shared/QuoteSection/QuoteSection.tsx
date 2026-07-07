@@ -5,7 +5,7 @@ export default function QuoteSection({ quote, attribution, className = "" }: Quo
   return (
     <div className={`relative ${className}`}>
       {/* Watermark — in normal flow, drives section height */}
-      <div aria-hidden className="pointer-events-none flex justify-center overflow-hidden">
+      <div aria-hidden className="pointer-events-none flex justify-center overflow-hidden sm:overflow-visible">
         <Image
           src="/images/icons/large-quote-center.svg"
           alt=""
