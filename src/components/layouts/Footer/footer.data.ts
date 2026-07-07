@@ -6,7 +6,7 @@ export const quickLinksCol1: NavLink[] = [
   { label: "Life at Torque", href: "/life-at-torque" },
   { label: "Our Presence", href: "/our-presence" },
   { label: "History", href: "/history" },
-  { label: "Careers", href: "/careers" },
+  { label: "Careers", href: "/career" },
   { label: "Manufacturing Units", href: "/manufacturing-facility" },
 ];
 

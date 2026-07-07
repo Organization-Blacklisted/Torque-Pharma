@@ -1,13 +1,13 @@
 import { ContainerProps } from "./Container.types";
 
 const sizes = {
-  wide: "max-w-[1680px]",
-  xl: "max-w-[1500px]",
-  large: "max-w-[1410px]",
-  standard: "max-w-[1360px]",
-  content: "max-w-[1264px]",
-  narrow: "max-w-[1152px]",
-  reading: "max-w-[1065px]",
+  wide: "max-w-[1764px]",
+  xl: "max-w-[1564px]",
+  large: "max-w-[1494px]",
+  standard: "max-w-[1424px]",
+  content: "max-w-[1328px]",
+  narrow: "max-w-[1216px]",
+  reading: "max-w-[1129px]",
 };
 
 export default function Container({

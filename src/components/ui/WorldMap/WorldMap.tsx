@@ -222,6 +222,7 @@ export default function WorldMap({ items, className = "" }: WorldMapProps) {
           <p className="text-body-sm font-semibold text-dark-grey">{displayed.title}</p>
         </div>
       )}
+
     </div>
   );
 }

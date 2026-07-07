@@ -25,7 +25,7 @@ export const navItems: NavItem[] = [
   {
     label: "Life at Torque",
     children: [
-      { label: "Career", href: "/life-at-torque/career" },
+      { label: "Career", href: "/career" },
     ],
   },
   {

@@ -171,6 +171,7 @@ Body: { "tag": "blogs" }          // or { "tags": ["blogs", "homepage"] }
 | `events` | `events.ts` |
 | `board-of-directors` | `board.ts` |
 | `contact-us` | `contact.ts` |
+| `career` | `career.ts` |
 | `{slug}` (e.g. `privacy-policy`) | `pages.ts` — tag is the page slug itself |
 
 When adding a new fetcher with a `tags: [...]` option, add its tag to this table so Laravel knows what to send.
@@ -200,7 +201,7 @@ When adding a new fetcher with a `tags: [...]` option, add its tag to this table
 | `Pagination` | `ui/Pagination` | Numbered pagination with ellipsis collapsing. Controlled: `currentPage`/`totalPages`/`onPageChange` |
 | `Tabs` (`TabList`/`Tab`) | `ui/Tabs` | Underline tab bar — parent owns active-index state, `Tab` takes `isActive`/`onClick` |
 | `BlogsSection` | `sections/blog/BlogsSection` | `/blogs` page body — derives category tabs + client-side pagination from the full post list |
-| `Container` | `layouts/Container` | Max-width wrapper. Sizes: wide (1680px), xl (1500px), large (1410px), standard (1360px), content (1264px), reading (1065px) |
+| `Container` | `layouts/Container` | Max-width wrapper. Usable content widths (after px-8 gutter): wide (1700px), xl (1500px), large (1430px), standard (1360px), content (1264px), narrow (1152px), reading (1065px). max-w values are 64px larger to compensate for padding. |
 | `Section` | `layouts/Section` | Semantic section with spacing tokens. `spacing="default"` \| `"none"`. Use `first` prop on the first section of every page |
 
 ## Pages
