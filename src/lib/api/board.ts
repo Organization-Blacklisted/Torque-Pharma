@@ -4,21 +4,43 @@ import type { ContentMediaData } from "@/types/content-media";
 // ─── Raw API shape ────────────────────────────────────────────────────────────
 
 type BoardApiResponse = {
-  content: {
-    executive_board_section: {
-      title: string;
-      sub_title: string;
-      desc: string;
+  executive_board_section: {
+    title: string;
+    sub_title: string;
+    desc: string;
+    image: string;
+    button_text: string;
+    button_link: string;
+  };
+  founder_section: {
+    image: string;
+    title: string;
+    birth_death_date: string;
+    sub_title: string;
+    desc: string;
+  };
+  director_section: {
+    image: string;
+    title: string;
+    designation: string;
+    about: string;
+    desc: string;
+  };
+  executive_directorate: {
+    title: string;
+    items: {
       image: string;
-      button_text: string;
-      button_link: string;
-    };
-    cta_section: {
       title: string;
-      sub_title: string;
-      button_text: string;
-      button_link: string;
-    };
+      designation: string;
+      about: string;
+      experts: { text: string }[];
+    }[];
+  };
+  cta_section: {
+    title: string;
+    sub_title: string;
+    button_text: string;
+    button_link: string;
   };
 };
 
@@ -26,6 +48,30 @@ type BoardApiResponse = {
 
 export type BoardPageData = {
   contentMedia: ContentMediaData;
+  founder: {
+    image: string;
+    name: string;
+    dates: string;
+    quote: string;
+    bio: string;
+  };
+  director: {
+    image: string;
+    name: string;
+    designation: string;
+    about: string;
+    quote: string;
+  };
+  executiveDirectorate: {
+    title: string;
+    items: {
+      image: string;
+      title: string;
+      designation: string;
+      about: string;
+      experts: { text: string }[];
+    }[];
+  };
   cta: {
     eyebrow: string;
     title: string;
@@ -41,8 +87,11 @@ export async function getBoardPage(): Promise<BoardPageData> {
     { revalidate: 3600, tags: ["board-of-directors"] },
   );
 
-  const eb  = data.content.executive_board_section;
-  const cta = data.content.cta_section;
+  const eb   = data.executive_board_section;
+  const fo   = data.founder_section;
+  const dir  = data.director_section;
+  const ed   = data.executive_directorate;
+  const cta  = data.cta_section;
 
   return {
     contentMedia: {
@@ -59,6 +108,33 @@ export async function getBoardPage(): Promise<BoardPageData> {
       actions: [
         { label: eb.button_text, href: eb.button_link, variant: "primary" },
       ],
+    },
+
+    founder: {
+      image: fo.image,
+      name: fo.title,
+      dates: fo.birth_death_date,
+      quote: fo.sub_title,
+      bio: fo.desc,
+    },
+
+    director: {
+      image: dir.image,
+      name: dir.title,
+      designation: dir.designation,
+      about: dir.about,
+      quote: dir.desc,
+    },
+
+    executiveDirectorate: {
+      title: ed.title,
+      items: ed.items.map((item) => ({
+        image: item.image,
+        title: item.title,
+        designation: item.designation,
+        about: item.about,
+        experts: item.experts,
+      })),
     },
 
     cta: {

@@ -5,6 +5,9 @@ import ContentMediaSection from "@/components/sections/shared/ContentMediaSectio
 import Container from "@/components/layouts/Container";
 import Section from "@/components/layouts/Section";
 import { getBoardPage } from "@/lib/api/board";
+import FounderSection from "@/components/sections/board/FounderSection";
+import DirectorSection from "@/components/sections/board/DirectorSection";
+import ExecutiveDirectorateSection from "@/components/sections/board/ExecutiveDirectorateSection";
 
 export const metadata: Metadata = {
   title: "Board of Directors | Torque Pharma",
@@ -13,7 +16,7 @@ export const metadata: Metadata = {
 };
 
 export default async function BoardOfDirectorsPage() {
-  const { contentMedia, cta } = await getBoardPage();
+  const { contentMedia, founder, director, executiveDirectorate, cta } = await getBoardPage();
 
   return (
     <>
@@ -24,6 +27,25 @@ export default async function BoardOfDirectorsPage() {
             {...contentMedia}
             headingClassName="max-w-[900px] mx-auto text-pretty"
           />
+        </Container>
+      </Section>
+
+      {/* Founder */}
+      <Section>
+        <Container size="wide">
+          <FounderSection {...founder} />
+        </Container>
+      </Section>
+
+      {/* Managing Director */}
+      <Section>
+        <DirectorSection {...director} className="mx-2" />
+      </Section>
+
+      {/* Executive Directorate */}
+      <Section>
+        <Container size="large">
+          <ExecutiveDirectorateSection {...executiveDirectorate} />
         </Container>
       </Section>
 

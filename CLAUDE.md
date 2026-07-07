@@ -170,6 +170,7 @@ Body: { "tag": "blogs" }          // or { "tags": ["blogs", "homepage"] }
 | `manufacturing` | `manufacturing.ts` |
 | `events` | `events.ts` |
 | `board-of-directors` | `board.ts` |
+| `contact-us` | `contact.ts` |
 | `{slug}` (e.g. `privacy-policy`) | `pages.ts` — tag is the page slug itself |
 
 When adding a new fetcher with a `tags: [...]` option, add its tag to this table so Laravel knows what to send.
@@ -207,21 +208,19 @@ When adding a new fetcher with a `tags: [...]` option, add its tag to this table
 | Route | Status | Data source |
 |---|---|---|
 | `/` | Active — 7 sections built | API (6 sections) + mock (statsMedia) |
-| `/about-us` | Active — fully laid out | `getAboutUsPage()` for contentMedia + stats; overview + cta still mock — API has more sections (mission/vision, values, built-on, connect) not wired up yet |
-| `/manufacturing-facility` | Active — 4 sections API-driven | `getManufacturingPage()` — video/poster, stats, CTA, FAQ. 5 remaining sections (production, process, certifications, quality-assessment, production-scale) not yet built |
+| `/about-us` | Active — fully built | `getAboutUsPage()` — all sections wired: contentMedia, overview, stats, mission/vision, values, built-on, connect, cta |
+| `/manufacturing-facility` | Active — fully built | `getManufacturingPage()` — all sections wired: hero, production, process, stats, certifications, quality-assessment, production-scale, cta, faq |
 | `/board-of-directors` | Active — 2 sections API-driven | `getBoardPage()` — executive_board + cta wired; founder, director, executive_directorate sections not yet built |
 | `/company` `/global-presence` `/products` `/capabilities` `/life-at-torque` | Stub — h1 only | None |
 | `/blogs` | Active — featured slider, category tabs, paginated grid | `getBlogs()` |
-| `/blogs/[slug]` | **Does not exist** — causes 404 on every blog card click | None |
+| `/blogs/[slug]` | Active — fully built | `getBlogPost(slug)` — hero, body, related posts; SSG via `generateStaticParams` |
 | `/resources` | **Does not exist** — no nav link points here directly (Resources dropdown links straight to children) | None |
-| `/contact-us` | Stub — placeholder content | None |
+| `/contact-us` | Active — ContactInfoSection wired | `getContactPage()` — info section live; enquiry form section not yet built |
 | `/disclaimer` `/privacy-policy` `/terms-and-conditions` | Active — API-driven | `getPage(slug)` |
 
 ## Known issues to fix before launch
 
 - `src/app/globals.css` `.cta-gradient` — uses raw `color-mix()` percentages, should reference CSS tokens
-- `src/app/contact-us/page.tsx` — placeholder content, broken layout, needs real build
-- `src/app/blogs/[slug]/` — route does not exist; every BlogCard / FeaturedBlogSlider click is a live 404
 - `src/lib/api/about.ts` — `/pages/about-us` response includes `mission_vision_section`, `values_section`, `built_on_section`, and `connect_section` that aren't wired to any UI yet; only `contentMedia` and `counter_section` (stats) are consumed so far
 - `src/lib/api/blogs.ts` — `/blogs` endpoint path is a guess based on REST convention; confirm against the real Laravel route. "Medically reviewed by" name in `FeaturedBlogSlider` is a hardcoded placeholder — API has no reviewer field yet
 - `src/app/error.tsx`, `loading.tsx`, `not-found.tsx` — none exist; API failures produce unhandled crashes

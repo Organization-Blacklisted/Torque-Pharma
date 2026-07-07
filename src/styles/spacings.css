@@ -12,6 +12,7 @@
 
     /* Layout */
   --spacing-gutter: 1.5rem;           /* 24px */
+  --spacing-column-gap: clamp(2.5rem, 5.56vw, 5rem);   /* 40px → 80px */
   --spacing-card: clamp(1.25rem, 2.5vw, 2rem);   /* 20px → 32px */
 
     /* Icon sizes */

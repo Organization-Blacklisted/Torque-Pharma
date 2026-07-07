@@ -106,9 +106,9 @@ export default function DealerForm() {
             <path d="M5 13l4 4L19 7" />
           </svg>
         </div>
-        <h3 className="font-heading text-h3 text-white">Request Received</h3>
+        <h3 className="font-heading text-h3 text-white">Dealer Enquiry Received</h3>
         <p className="text-body text-white/70">
-          Thank you for your interest in becoming a Torque Pharma dealer. Our team will review your details and be in touch shortly.
+         Thank you for your interest in becoming a Torque Pharma dealer. Our team will review your details and contact you shortly.
         </p>
       </div>
     );
