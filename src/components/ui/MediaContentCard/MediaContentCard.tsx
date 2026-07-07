@@ -30,9 +30,9 @@ export default function MediaContentCard({
 
       <p
         className="
-          text-body-sm
+          text-body
           
-          text-white/80
+          text-white
         "
       >
         {description}
