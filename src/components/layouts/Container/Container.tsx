@@ -1,7 +1,7 @@
 import { ContainerProps } from "./Container.types";
 
 const sizes = {
-  wide: "max-w-[1700px]",
+  wide: "max-w-[1680px]",
   xl: "max-w-[1500px]",
   large: "max-w-[1410px]",
   standard: "max-w-[1360px]",

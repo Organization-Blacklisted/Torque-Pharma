@@ -38,7 +38,7 @@ export default function HomeOverviewSection({
         <div>
           <SafeHtml
             html={description}
-            className="text-lead leading-relaxed text-secondary [&_strong]:font-normal [&_strong]:italic [&_strong]:text-primary"
+            className="text-lead leading-[1.35] text-secondary [&_strong]:font-normal [&_strong]:italic [&_strong]:text-primary"
           />
         </div>
       </div>

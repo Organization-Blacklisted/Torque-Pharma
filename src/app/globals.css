@@ -153,6 +153,11 @@ body {
   box-shadow: 0 0 0 1px rgb(239 68 68);
 }
 
+/* Placeholder-like colour when no number has been typed yet */
+.connect-phone-input--empty .PhoneInputInput {
+  color: color-mix(in srgb, var(--color-secondary) 60%, transparent);
+}
+
 /* White-field variant (white-label form) */
 .connect-phone-input--white {
   background: #ffffff;

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Section from "@/components/layouts/Section";
 import Container from "@/components/layouts/Container";
 import ContactInfoSection from "@/components/sections/contact/ContactInfoSection";
+import EnquirySupportSection from "@/components/sections/contact/EnquirySupportSection";
 import { getContactPage } from "@/lib/api/contact";
 
 export const metadata: Metadata = {
@@ -10,13 +11,18 @@ export const metadata: Metadata = {
 };
 
 export default async function ContactUsPage() {
-  const { info } = await getContactPage();
+  const { info, enquiry } = await getContactPage();
 
   return (
     <>
       <Section first>
         <Container size="wide">
           <ContactInfoSection {...info} />
+        </Container>
+      </Section>
+      <Section>
+        <Container size="wide">
+          <EnquirySupportSection {...enquiry} />
         </Container>
       </Section>
     </>

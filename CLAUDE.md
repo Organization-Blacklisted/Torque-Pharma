@@ -200,7 +200,7 @@ When adding a new fetcher with a `tags: [...]` option, add its tag to this table
 | `Pagination` | `ui/Pagination` | Numbered pagination with ellipsis collapsing. Controlled: `currentPage`/`totalPages`/`onPageChange` |
 | `Tabs` (`TabList`/`Tab`) | `ui/Tabs` | Underline tab bar — parent owns active-index state, `Tab` takes `isActive`/`onClick` |
 | `BlogsSection` | `sections/blog/BlogsSection` | `/blogs` page body — derives category tabs + client-side pagination from the full post list |
-| `Container` | `layouts/Container` | Max-width wrapper. Sizes: wide (1700px), xl (1500px), large (1410px), standard (1360px), content (1264px), reading (1065px) |
+| `Container` | `layouts/Container` | Max-width wrapper. Sizes: wide (1680px), xl (1500px), large (1410px), standard (1360px), content (1264px), reading (1065px) |
 | `Section` | `layouts/Section` | Semantic section with spacing tokens. `spacing="default"` \| `"none"`. Use `first` prop on the first section of every page |
 
 ## Pages
