@@ -65,6 +65,7 @@
   color: var(--color-secondary);
   line-height: 1.75;
   padding-left: 1.5rem;
+  margin-top: 1rem;
   margin-bottom: 1rem;
 }
 
