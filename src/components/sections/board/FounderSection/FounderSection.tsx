@@ -49,7 +49,7 @@ export default function FounderSection({
           <div className="absolute -top-[13px] -left-[13px]">
             <QuoteIcon />
           </div>
-          <p className="font-body text-body font-medium italic text-[#0A1D4B]">{quote}</p>
+          <SafeHtml html={quote} className="font-body text-body font-medium italic text-[#0A1D4B]" />
         </blockquote>
 
         {/* Rich-text bio */}

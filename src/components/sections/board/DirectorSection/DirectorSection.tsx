@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Container from "@/components/layouts/Container";
+import SafeHtml from "@/components/ui/SafeHtml";
 import type { DirectorSectionProps } from "./DirectorSection.types";
 
 function QuoteIcon() {
@@ -43,7 +44,7 @@ export default function DirectorSection({
           <div className="absolute -top-[13px] -left-[13px]">
             <QuoteIcon />
           </div>
-          <p className="font-body text-body font-medium italic leading-6 text-white/60">{quote}</p>
+          <SafeHtml html={quote} className="font-body text-body font-medium italic leading-6 text-white/60" />
         </blockquote>
       </div>
 
