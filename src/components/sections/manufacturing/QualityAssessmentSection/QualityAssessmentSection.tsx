@@ -8,11 +8,12 @@ export default function QualityAssessmentSection({
   eyebrow,
   title,
   items,
+  containerSize = "content",
   className = "",
 }: QualityAssessmentSectionProps) {
   return (
     <Section className={className}>
-      <Container size="content">
+      <Container size={containerSize}>
         <SectionHeader
           eyebrow={eyebrow}
           title={title}
@@ -40,6 +41,7 @@ export default function QualityAssessmentSection({
                 <IconCard
                   image={item.image}
                   title={item.title}
+                  subtitle={item.subtitle}
                   description={item.description}
                   align="center"
                 />

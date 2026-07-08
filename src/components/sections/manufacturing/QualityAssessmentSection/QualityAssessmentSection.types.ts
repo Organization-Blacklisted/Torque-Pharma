@@ -1,6 +1,7 @@
 export interface QualityAssessmentSectionProps {
-  eyebrow: string;
+  eyebrow?: string;
   title: string;
-  items: { image: string; title: string; description: string }[];
+  items: { image: string; title: string; subtitle?: string; description: string }[];
+  containerSize?: "wide" | "large" | "standard" | "content" | "reading";
   className?: string;
 }
