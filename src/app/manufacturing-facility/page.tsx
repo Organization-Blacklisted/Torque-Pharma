@@ -1,8 +1,4 @@
 import type { Metadata } from "next";
-import Accordion from "@/components/ui/Accordion";
-import CTA from "@/components/ui/CTA";
-import SectionHeader from "@/components/ui/SectionHeading";
-import { SplitButton } from "@/components/ui/SplitButton";
 import ContentMediaSection from "@/components/sections/shared/ContentMediaSection";
 import Container from "@/components/layouts/Container";
 import Section from "@/components/layouts/Section";
@@ -13,6 +9,8 @@ import ProductionSection from "@/components/sections/manufacturing/ProductionSec
 import CertificationsSection from "@/components/sections/manufacturing/CertificationsSection";
 import QualityAssessmentSection from "@/components/sections/manufacturing/QualityAssessmentSection";
 import ManufacturingStatsSection from "./sections/ManufacturingStatsSection";
+import CtaSection from "@/components/sections/shared/CtaSection";
+import FaqSection from "@/components/sections/shared/FaqSection";
 
 export const metadata: Metadata = {
   title: "Manufacturing Facility | Torque Pharma",
@@ -51,28 +49,18 @@ export default async function ManufacturingFacilityPage() {
 
       <ProductionScaleSection {...productionScale} />
 
-      <Section as="div">
-        <Container size="wide">
-          <CTA eyebrow={cta.eyebrow} title={cta.title} variant="gradient">
-            <SplitButton variant="secondary" href={cta.button.href}>
-              {cta.button.label}
-            </SplitButton>
-          </CTA>
-        </Container>
-      </Section>
+      <CtaSection
+        eyebrow={cta.eyebrow}
+        title={cta.title}
+        button={{ label: cta.button.label, href: cta.button.href }}
+      />
 
-      <Section>
-        <Container size="reading">
-          <SectionHeader
-            eyebrow={faq.eyebrow}
-            title={faq.heading}
-            description={faq.description}
-            align="center"
-            className="mb-12"
-          />
-          <Accordion items={faq.items} />
-        </Container>
-      </Section>
+      <FaqSection
+        eyebrow={faq.eyebrow}
+        title={faq.heading}
+        description={faq.description}
+        items={faq.items}
+      />
     </>
   );
 }

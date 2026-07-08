@@ -4,7 +4,7 @@ import { apiFetch, type ApiResponse } from "./fetcher";
 
 interface RawCareerPage {
   content: {
-    top_section: {
+    career_top_section: {
       title: string;
       sub_title: string;
       desc: string;
@@ -26,12 +26,12 @@ interface RawCareerPage {
       center_items: { image: string }[];
       right_items: { image: string; title: string; desc: string }[];
     };
-    faq_section: {
+    career_faq_section: {
       title: string;
       sub_title: string;
       items: { title: string; desc: string }[];
     };
-    cta_section: {
+    career_cta_section: {
       title: string;
       sub_title: string;
       button_text: string;
@@ -48,11 +48,11 @@ interface RawCareerPage {
         video: string | null;
       }[];
     };
-    form_section: {
+    career_form_section: {
       title: string;
       desc: string;
     };
-    testimonial_section: {
+    career_testimonial_section: {
       title: string;
       desc: string;
     };
@@ -162,14 +162,14 @@ export async function getCareerPage(): Promise<CareerPageData> {
     revalidate: 3600,
   });
 
-  const topRaw = raw.content.top_section;
+  const topRaw = raw.content.career_top_section;
   const whyJoinRaw = raw.content.why_join_section;
   const openPositionsRaw = raw.content.open_positions_section;
   const expertsRaw = raw.content.career_experts_section;
-  const faqRaw = raw.content.faq_section;
-  const ctaRaw = raw.content.cta_section;
-  const formRaw = raw.content.form_section;
-  const testimonialRaw = raw.content.testimonial_section;
+  const faqRaw = raw.content.career_faq_section;
+  const ctaRaw = raw.content.career_cta_section;
+  const formRaw = raw.content.career_form_section;
+  const testimonialRaw = raw.content.career_testimonial_section;
 
   return {
     topSection: {

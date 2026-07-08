@@ -187,6 +187,8 @@ When adding a new fetcher with a `tags: [...]` option, add its tag to this table
 | `Slider` | `ui/Slider` | Horizontal slider with progress bar, showing X/Y counter, custom prev/next arrows |
 | `HeroVideo` | `sections/HeroVideo` | Full-screen video hero with typewriter eyebrow. Data-driven |
 | `ContentMediaSection` | `sections/ContentMediaSection` | Reusable section: layouts centered/split-left/split-right, media type image or video |
+| `CtaSection` | `sections/shared/CtaSection` | Section wrapper for CTA card. Props: `eyebrow`, `title`, `description?`, `variant?` (gradient\|glass), `button?` ({label, href, variant?}), `children?` (custom button override). Used on 7 pages |
+| `FaqSection` | `sections/shared/FaqSection` | Section wrapper for SectionHeader + Accordion. Props: `eyebrow`, `title`, `description?`, `items`, `containerSize?` (default reading). Used on 4 pages |
 | `ContractManufacturingSection` | `sections/ContractManufacturingSection` | Dark-blue full-width section with FeatureCard grid. Wired to API |
 | `HomeStatsMediaSection` | `sections/HomeStatsMediaSection` | StatRotator + VideoBackground + MediaContentCard grid |
 | `StatsMediaSection` | `sections/StatsMediaSection` | Generic wrapper: split SectionHeader + children + optional footer |

@@ -1,6 +1,4 @@
 import type { Metadata } from "next";
-import CTA from "@/components/ui/CTA";
-import { SplitButton } from "@/components/ui/SplitButton";
 import ContentMediaSection from "@/components/sections/shared/ContentMediaSection";
 import Container from "@/components/layouts/Container";
 import Section from "@/components/layouts/Section";
@@ -8,6 +6,7 @@ import { getBoardPage } from "@/lib/api/board";
 import FounderSection from "@/components/sections/board/FounderSection";
 import DirectorSection from "@/components/sections/board/DirectorSection";
 import ExecutiveDirectorateSection from "@/components/sections/board/ExecutiveDirectorateSection";
+import CtaSection from "@/components/sections/shared/CtaSection";
 
 export const metadata: Metadata = {
   title: "Board of Directors | Torque Pharma",
@@ -50,15 +49,11 @@ export default async function BoardOfDirectorsPage() {
       </Section>
 
       {/* CTA */}
-      <Section as="div">
-        <Container size="wide">
-          <CTA eyebrow={cta.eyebrow} title={cta.title} variant="gradient">
-            <SplitButton variant="secondary" href={cta.button.href}>
-              {cta.button.label}
-            </SplitButton>
-          </CTA>
-        </Container>
-      </Section>
+      <CtaSection
+        eyebrow={cta.eyebrow}
+        title={cta.title}
+        button={{ label: cta.button.label, href: cta.button.href }}
+      />
     </>
   );
 }

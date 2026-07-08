@@ -6,12 +6,11 @@ import ConnectSection from "@/components/sections/shared/ConnectSection";
 import WhiteLabelPartnerSection from "@/components/sections/white-label/WhiteLabelPartnerSection";
 import CertificationsSection from "@/components/sections/manufacturing/CertificationsSection";
 import ProductionScaleSection from "@/components/sections/manufacturing/ProductionScaleSection";
-import Accordion from "@/components/ui/Accordion";
-import CTA from "@/components/ui/CTA";
-import SectionHeader from "@/components/ui/SectionHeading";
-import { SplitButton } from "@/components/ui/SplitButton";
+import WhiteLabelScaleSection from "@/components/sections/white-label/WhiteLabelScaleSection";
 import Container from "@/components/layouts/Container";
 import Section from "@/components/layouts/Section";
+import CtaSection from "@/components/sections/shared/CtaSection";
+import FaqSection from "@/components/sections/shared/FaqSection";
 
 export const metadata: Metadata = {
   title: "White Label Manufacturing | Torque Pharma",
@@ -32,17 +31,7 @@ export default async function WhiteLabelManufacturingPage() {
           />
         </Container>
       </Section>
-      <Section padded className="bg-white/50">
-        <Container size="wide">
-          <SectionHeader
-            eyebrow={scale.eyebrow}
-            title={scale.heading}
-            description={scale.description}
-            variant="split"
-            className="[&>div:first-child]:lg:col-span-5 [&>div:last-child]:lg:col-span-7"
-          />
-        </Container>
-      </Section>
+      <WhiteLabelScaleSection {...scale} />
       <Section>
         <Container size="wide">
           <FeatureGridSection {...partnering} />
@@ -65,28 +54,18 @@ export default async function WhiteLabelManufacturingPage() {
         </Container>
       </Section>
 
-      <Section>
-        <Container size="reading">
-          <SectionHeader
-            eyebrow={faq.eyebrow}
-            title={faq.heading}
-            description={faq.description}
-            align="center"
-            className="mb-12"
-          />
-          <Accordion items={faq.items} />
-        </Container>
-      </Section>
+      <FaqSection
+        eyebrow={faq.eyebrow}
+        title={faq.heading}
+        description={faq.description}
+        items={faq.items}
+      />
 
-      <Section as="div">
-        <Container size="wide">
-          <CTA eyebrow={cta.eyebrow} title={cta.title} variant="gradient">
-            <SplitButton variant="secondary" href={cta.button.href}>
-              {cta.button.label}
-            </SplitButton>
-          </CTA>
-        </Container>
-      </Section>
+      <CtaSection
+        eyebrow={cta.eyebrow}
+        title={cta.title}
+        button={{ label: cta.button.label, href: cta.button.href }}
+      />
     </>
   );
 }

@@ -4,12 +4,10 @@ import ContentMediaSection from "@/components/sections/shared/ContentMediaSectio
 import FeatureGridSection from "@/components/sections/shared/FeatureGridSection";
 import DealerNetworkSection from "@/components/sections/dealer/DealerNetworkSection";
 import DealerEligibilitySection from "@/components/sections/dealer/DealerEligibilitySection";
-import Accordion from "@/components/ui/Accordion";
-import CTA from "@/components/ui/CTA";
-import SectionHeader from "@/components/ui/SectionHeading";
-import { SplitButton } from "@/components/ui/SplitButton";
 import Container from "@/components/layouts/Container";
 import Section from "@/components/layouts/Section";
+import CtaSection from "@/components/sections/shared/CtaSection";
+import FaqSection from "@/components/sections/shared/FaqSection";
 
 export const metadata: Metadata = {
   title: "Become a Dealer | Torque Pharma",
@@ -49,28 +47,18 @@ export default async function BecomeADealerPage() {
         </Container>
       </Section>
 
-      <Section as="div">
-        <Container size="wide">
-          <CTA eyebrow={cta.eyebrow} title={cta.title} variant="gradient">
-            <SplitButton variant="secondary" href={cta.button.href}>
-              {cta.button.label}
-            </SplitButton>
-          </CTA>
-        </Container>
-      </Section>
+      <CtaSection
+        eyebrow={cta.eyebrow}
+        title={cta.title}
+        button={{ label: cta.button.label, href: cta.button.href }}
+      />
 
-      <Section>
-        <Container size="reading">
-          <SectionHeader
-            eyebrow={faq.eyebrow}
-            title={faq.heading}
-            description={faq.description}
-            align="center"
-            className="mb-12"
-          />
-          <Accordion items={faq.items} />
-        </Container>
-      </Section>
+      <FaqSection
+        eyebrow={faq.eyebrow}
+        title={faq.heading}
+        description={faq.description}
+        items={faq.items}
+      />
     </>
   );
 }
