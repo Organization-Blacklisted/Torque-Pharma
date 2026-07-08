@@ -18,6 +18,14 @@ interface RawCareerPage {
       desc: string;
       items: { image: string; title: string; desc: string }[];
     };
+    open_positions_section: {
+      title: string;
+      sub_title: string;
+      desc: string;
+      left_items: { image: string; title: string; desc: string }[];
+      center_items: { image: string }[];
+      right_items: { image: string; title: string; desc: string }[];
+    };
     faq_section: {
       title: string;
       sub_title: string;
@@ -91,9 +99,29 @@ export interface CareerFormData {
   disclaimer: string;
 }
 
+export interface OpenPositionItem {
+  image: string;
+  title: string;
+  description: string;
+}
+
+export interface OpenPositionCenterItem {
+  image: string;
+}
+
+export interface OpenPositionsData {
+  eyebrow: string;
+  heading: string;
+  description: string;
+  leftItems: OpenPositionItem[];
+  centerItems: OpenPositionCenterItem[];
+  rightItems: OpenPositionItem[];
+}
+
 export interface CareerPageData {
   topSection: CareerTopData;
   whyJoin: WhyJoinData;
+  openPositions: OpenPositionsData;
   faq: CareerFaqData;
   cta: CareerCtaData;
   testimonial: CareerTestimonialData;
@@ -110,6 +138,7 @@ export async function getCareerPage(): Promise<CareerPageData> {
 
   const topRaw = raw.content.top_section;
   const whyJoinRaw = raw.content.why_join_section;
+  const openPositionsRaw = raw.content.open_positions_section;
   const faqRaw = raw.content.faq_section;
   const ctaRaw = raw.content.cta_section;
   const formRaw = raw.content.form_section;
@@ -133,6 +162,24 @@ export async function getCareerPage(): Promise<CareerPageData> {
       description: whyJoinRaw.desc,
       items: whyJoinRaw.items.map((item) => ({
         icon: item.image,
+        title: item.title,
+        description: item.desc,
+      })),
+    },
+    openPositions: {
+      eyebrow: openPositionsRaw.title,
+      heading: openPositionsRaw.sub_title,
+      description: openPositionsRaw.desc,
+      leftItems: openPositionsRaw.left_items.map((item) => ({
+        image: item.image,
+        title: item.title,
+        description: item.desc,
+      })),
+      centerItems: openPositionsRaw.center_items.map((item) => ({
+        image: item.image,
+      })),
+      rightItems: openPositionsRaw.right_items.map((item) => ({
+        image: item.image,
         title: item.title,
         description: item.desc,
       })),

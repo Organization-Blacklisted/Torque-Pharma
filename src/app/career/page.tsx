@@ -9,6 +9,7 @@ import QuoteSection from "@/components/sections/shared/QuoteSection";
 import CareerFormSection from "@/components/sections/career/CareerFormSection";
 import WhyJoinSection from "@/components/sections/career/WhyJoinSection";
 import CareerTopSection from "@/components/sections/career/CareerTopSection";
+import OpenPositionsSection from "@/components/sections/career/OpenPositionsSection";
 import { getCareerPage } from "@/lib/api/career";
 
 export const metadata: Metadata = {
@@ -17,7 +18,7 @@ export const metadata: Metadata = {
 };
 
 export default async function CareerPage() {
-  const { topSection, whyJoin, faq, cta, testimonial, form } = await getCareerPage();
+  const { topSection, whyJoin, openPositions, faq, cta, testimonial, form } = await getCareerPage();
 
   return (
     <>
@@ -29,6 +30,12 @@ export default async function CareerPage() {
 
       <Section>
         <WhyJoinSection {...whyJoin} className="mx-2" />
+      </Section>
+
+      <Section>
+        <Container size="standard">
+          <OpenPositionsSection {...openPositions} />
+        </Container>
       </Section>
 
       <Section>

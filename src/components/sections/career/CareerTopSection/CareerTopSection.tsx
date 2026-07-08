@@ -36,7 +36,7 @@ export default function CareerTopSection({
       </div>
 
       {/* Right: animated accordion cards */}
-      <div className="flex h-[400px] gap-6 lg:h-[609px]">
+      <div className="flex h-[400px] gap-4 lg:h-[609px] lg:gap-6">
         {items.map((item, i) => {
           const isActive = i === activeIndex;
           return (
