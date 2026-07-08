@@ -60,7 +60,7 @@ export default function BlogPostBody({ post, className = "" }: BlogPostBodyProps
               {faq_section.title}
             </h2>
             {faq_section.sub_title && (
-              <p className="mb-8 text-body text-secondary">{faq_section.sub_title}</p>
+              <p className="mb-2 text-body text-secondary">{faq_section.sub_title}</p>
             )}
             <Accordion
               items={faq_section.items.map((item) => ({
