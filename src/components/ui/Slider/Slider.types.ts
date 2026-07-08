@@ -12,4 +12,6 @@ export interface SliderProps {
   showProgress?: boolean;
   /** Horizontal alignment of the controls row */
   controlsAlign?: "start" | "center" | "end";
+  /** Show a partial peek of the next slide (default true). Pass false for clean full-width N-per-view */
+  peek?: boolean;
 }

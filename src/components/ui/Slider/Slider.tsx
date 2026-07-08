@@ -17,11 +17,12 @@ function resolveCount(count: ResponsiveCount, width: number): number {
   return count.default;
 }
 
-// Computes the CSS flex-basis so N cards fill the container minus a fixed peek strip.
-// Formula: N × w + (N−1) × GAP + GAP + PEEK = W  →  w = (W − N×GAP − PEEK) / N
-//          expressed as a percentage: calc(100%/N − (GAP + PEEK/N)px)
-function slideWidth(count: number): string {
-  if (count === 1) return "85%"; // single-card: show a generous peek without math
+// Computes the CSS flex-basis so N cards fill the container.
+// With peek: N × w + (N−1) × GAP + GAP + PEEK = W  →  w = (W − N×GAP − PEEK) / N
+// No peek:   N × w + (N−1) × GAP = W              →  w = (W − (N−1)×GAP) / N
+function slideWidth(count: number, peek: boolean): string {
+  if (count === 1) return peek ? "85%" : "100%";
+  if (!peek) return `calc(${100 / count}% - ${(GAP * (count - 1)) / count}px)`;
   return `calc(${100 / count}% - ${GAP + PEEK / count}px)`;
 }
 
@@ -62,6 +63,7 @@ export default function Slider({
   overflowVisible = false,
   showProgress = true,
   controlsAlign = "end",
+  peek = true,
 }: SliderProps) {
   const items = useMemo(() => React.Children.toArray(children), [children]);
   const total = items.length;
@@ -75,7 +77,7 @@ export default function Slider({
   const [selectedSnap, setSelectedSnap] = useState(0);
 
   const effectiveCount = resolveCount(visibleCount, containerWidth);
-  const width = slideWidth(effectiveCount);
+  const width = slideWidth(effectiveCount, peek);
 
   // Derived — no state needed; updates automatically when effectiveCount or selectedSnap changes
   const showing = Math.min(selectedSnap + effectiveCount, total);

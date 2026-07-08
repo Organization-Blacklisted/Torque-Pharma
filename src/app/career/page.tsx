@@ -6,6 +6,9 @@ import Accordion from "@/components/ui/Accordion";
 import CTA from "@/components/ui/CTA";
 import { SplitButton } from "@/components/ui/SplitButton";
 import QuoteSection from "@/components/sections/shared/QuoteSection";
+import CareerFormSection from "@/components/sections/career/CareerFormSection";
+import WhyJoinSection from "@/components/sections/career/WhyJoinSection";
+import CareerTopSection from "@/components/sections/career/CareerTopSection";
 import { getCareerPage } from "@/lib/api/career";
 
 export const metadata: Metadata = {
@@ -14,10 +17,26 @@ export const metadata: Metadata = {
 };
 
 export default async function CareerPage() {
-  const { faq, cta, testimonial } = await getCareerPage();
+  const { topSection, whyJoin, faq, cta, testimonial, form } = await getCareerPage();
 
   return (
     <>
+      <Section first>
+        <Container size="wide">
+          <CareerTopSection {...topSection} />
+        </Container>
+      </Section>
+
+      <Section>
+        <WhyJoinSection {...whyJoin} className="mx-2" />
+      </Section>
+
+      <Section>
+        <Container size="reading">
+          <CareerFormSection title={form.title} disclaimer={form.disclaimer} />
+        </Container>
+      </Section>
+
       <Section>
         <Container size="standard">
           <QuoteSection quote={testimonial.quote} attribution={testimonial.attribution} />

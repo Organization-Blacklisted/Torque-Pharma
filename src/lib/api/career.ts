@@ -4,6 +4,20 @@ import { apiFetch, type ApiResponse } from "./fetcher";
 
 interface RawCareerPage {
   content: {
+    top_section: {
+      title: string;
+      sub_title: string;
+      desc: string;
+      button_text: string;
+      button_link: string;
+      items: { image: string; title: string }[];
+    };
+    why_join_section: {
+      title: string;
+      sub_title: string;
+      desc: string;
+      items: { image: string; title: string; desc: string }[];
+    };
     faq_section: {
       title: string;
       sub_title: string;
@@ -14,6 +28,10 @@ interface RawCareerPage {
       sub_title: string;
       button_text: string;
       button_link: string;
+    };
+    form_section: {
+      title: string;
+      desc: string;
     };
     testimonial_section: {
       title: string;
@@ -41,10 +59,45 @@ export interface CareerTestimonialData {
   attribution: string;
 }
 
+export interface CareerTopItem {
+  image: string;
+  title: string;
+}
+
+export interface CareerTopData {
+  eyebrow: string;
+  heading: string;
+  description: string;
+  buttonText: string;
+  buttonLink: string;
+  items: CareerTopItem[];
+}
+
+export interface WhyJoinItem {
+  icon: string;
+  title: string;
+  description: string;
+}
+
+export interface WhyJoinData {
+  eyebrow: string;
+  heading: string;
+  description: string;
+  items: WhyJoinItem[];
+}
+
+export interface CareerFormData {
+  title: string;
+  disclaimer: string;
+}
+
 export interface CareerPageData {
+  topSection: CareerTopData;
+  whyJoin: WhyJoinData;
   faq: CareerFaqData;
   cta: CareerCtaData;
   testimonial: CareerTestimonialData;
+  form: CareerFormData;
 }
 
 // ─── Fetcher ──────────────────────────────────────────────────────────────────
@@ -55,11 +108,35 @@ export async function getCareerPage(): Promise<CareerPageData> {
     revalidate: 3600,
   });
 
+  const topRaw = raw.content.top_section;
+  const whyJoinRaw = raw.content.why_join_section;
   const faqRaw = raw.content.faq_section;
   const ctaRaw = raw.content.cta_section;
+  const formRaw = raw.content.form_section;
   const testimonialRaw = raw.content.testimonial_section;
 
   return {
+    topSection: {
+      eyebrow: topRaw.title,
+      heading: topRaw.sub_title,
+      description: topRaw.desc,
+      buttonText: topRaw.button_text,
+      buttonLink: topRaw.button_link,
+      items: topRaw.items.map((item) => ({
+        image: item.image,
+        title: item.title,
+      })),
+    },
+    whyJoin: {
+      eyebrow: whyJoinRaw.title,
+      heading: whyJoinRaw.sub_title,
+      description: whyJoinRaw.desc,
+      items: whyJoinRaw.items.map((item) => ({
+        icon: item.image,
+        title: item.title,
+        description: item.desc,
+      })),
+    },
     faq: {
       heading: faqRaw.title,
       subTitle: faqRaw.sub_title,
@@ -76,6 +153,10 @@ export async function getCareerPage(): Promise<CareerPageData> {
     testimonial: {
       quote: testimonialRaw.desc,
       attribution: testimonialRaw.title,
+    },
+    form: {
+      title: formRaw.title,
+      disclaimer: formRaw.desc,
     },
   };
 }
