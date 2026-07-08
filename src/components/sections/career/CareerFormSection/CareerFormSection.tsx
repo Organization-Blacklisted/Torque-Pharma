@@ -96,6 +96,7 @@ export default function CareerFormSection({ title, disclaimer, className = "" }:
   const [isSuccess, setIsSuccess] = useState(false);
   const [serverError, setServerError] = useState("");
   const [resumeFile, setResumeFile] = useState<{ filename: string; base64: string } | null>(null);
+  const [fileError, setFileError] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const {
@@ -114,6 +115,12 @@ export default function CareerFormSection({ title, disclaimer, className = "" }:
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    if (file.size > 15 * 1024 * 1024) {
+      setFileError("File size must not exceed 15MB");
+      if (fileInputRef.current) fileInputRef.current.value = "";
+      return;
+    }
+    setFileError("");
     const reader = new FileReader();
     reader.onload = (ev) => {
       const base64 = (ev.target?.result as string).split(",")[1];
@@ -211,11 +218,11 @@ export default function CareerFormSection({ title, disclaimer, className = "" }:
             <FormField error={undefined}>
               <FormInput placeholder="LinkedIn URL" {...register("linkedinUrl")} />
             </FormField>
-            <FormField error={undefined}>
+            <FormField error={fileError}>
               <button
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
-                className="flex min-h-[52px] w-full items-center justify-between rounded-lg bg-surface px-4 py-3 text-left text-body text-secondary/60 outline-none transition-colors hover:ring-1 hover:ring-primary/30 focus:ring-1 focus:ring-primary/30"
+                className={`flex min-h-[52px] w-full items-center justify-between rounded-lg bg-surface px-4 py-3 text-left text-body text-secondary/60 outline-none transition-colors hover:ring-1 hover:ring-primary/30 focus:ring-1 focus:ring-primary/30 ${fileError ? "ring-1 ring-red-500" : ""}`}
               >
                 <span className={resumeFile ? "text-primary" : ""}>
                   {resumeFile ? resumeFile.filename : "Attach Resume"}
@@ -254,7 +261,7 @@ export default function CareerFormSection({ title, disclaimer, className = "" }:
               type="submit"
               variant="primary"
               disabled={isSubmitting}
-              className="shrink-0 cursor-pointer"
+              className="shrink-0"
             >
               {isSubmitting ? "Submitting..." : "Submit Application"}
             </SplitButton>

@@ -22,7 +22,7 @@ export default function OpenPositionsSection({
   className = "",
 }: OpenPositionsSectionProps) {
   return (
-    <div id="roles-opening" className={className}>
+    <div className={className}>
       <SectionHeader
         eyebrow={eyebrow}
         title={heading}

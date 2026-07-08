@@ -17,6 +17,12 @@ export default function CareerTopSection({
 }: CareerTopSectionProps) {
   const [activeIndex, setActiveIndex] = useState(0);
 
+  const handleScroll = () => {
+    if (buttonLink.startsWith("#")) {
+      document.getElementById(buttonLink.slice(1))?.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <div className={`grid grid-cols-1 items-center gap-12 lg:grid-cols-2 ${className}`}>
       {/* Left: text content */}
@@ -29,7 +35,7 @@ export default function CareerTopSection({
           size="h1"
         />
         <div>
-          <SplitButton variant="primary" href={buttonLink}>
+          <SplitButton variant="primary" onClick={handleScroll}>
             {buttonText}
           </SplitButton>
         </div>

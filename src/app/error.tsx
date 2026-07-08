@@ -41,7 +41,7 @@ export default function Error({
           </div>
 
           <div className="flex flex-wrap items-center justify-center gap-4">
-            <SplitButton variant="primary" onClick={reset} className="cursor-pointer">
+            <SplitButton variant="primary" onClick={reset}>
               Try again
             </SplitButton>
             <SplitButton variant="outline-dark" href="/">

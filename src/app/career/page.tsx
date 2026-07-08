@@ -4,12 +4,13 @@ import Container from "@/components/layouts/Container";
 import SectionHeader from "@/components/ui/SectionHeading";
 import Accordion from "@/components/ui/Accordion";
 import CTA from "@/components/ui/CTA";
-import { SplitButton } from "@/components/ui/SplitButton";
 import QuoteSection from "@/components/sections/shared/QuoteSection";
 import CareerFormSection from "@/components/sections/career/CareerFormSection";
 import WhyJoinSection from "@/components/sections/career/WhyJoinSection";
 import CareerTopSection from "@/components/sections/career/CareerTopSection";
 import OpenPositionsSection from "@/components/sections/career/OpenPositionsSection";
+import CareerExpertsSection from "@/components/sections/career/CareerExpertsSection";
+import CareerCtaButton from "@/components/sections/career/CareerCtaButton";
 import { getCareerPage } from "@/lib/api/career";
 
 export const metadata: Metadata = {
@@ -18,7 +19,7 @@ export const metadata: Metadata = {
 };
 
 export default async function CareerPage() {
-  const { topSection, whyJoin, openPositions, faq, cta, testimonial, form } = await getCareerPage();
+  const { topSection, whyJoin, openPositions, experts, faq, cta, testimonial, form } = await getCareerPage();
 
   return (
     <>
@@ -38,9 +39,17 @@ export default async function CareerPage() {
         </Container>
       </Section>
 
+      <div id="roles-opening" style={{ scrollMarginTop: "100px" }}>
+        <Section>
+          <Container size="reading">
+            <CareerFormSection title={form.title} disclaimer={form.disclaimer} />
+          </Container>
+        </Section>
+      </div>
+
       <Section>
-        <Container size="reading">
-          <CareerFormSection title={form.title} disclaimer={form.disclaimer} />
+        <Container size="content">
+          <CareerExpertsSection {...experts} />
         </Container>
       </Section>
 
@@ -64,9 +73,7 @@ export default async function CareerPage() {
       <Section as="div">
         <Container size="wide">
           <CTA eyebrow={cta.eyebrow} title={cta.title} variant="gradient">
-            <SplitButton variant="secondary" href={cta.button.href}>
-              {cta.button.label}
-            </SplitButton>
+            <CareerCtaButton label={cta.button.label} />
           </CTA>
         </Container>
       </Section>

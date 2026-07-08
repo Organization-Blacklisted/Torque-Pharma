@@ -37,6 +37,17 @@ interface RawCareerPage {
       button_text: string;
       button_link: string;
     };
+    career_experts_section: {
+      title: string;
+      sub_title: string;
+      items: {
+        name: string;
+        designation: string;
+        about: string;
+        poster_image: string;
+        video: string | null;
+      }[];
+    };
     form_section: {
       title: string;
       desc: string;
@@ -118,10 +129,25 @@ export interface OpenPositionsData {
   rightItems: OpenPositionItem[];
 }
 
+export interface CareerExpertItem {
+  name: string;
+  designation: string;
+  about: string;
+  posterImage: string;
+  video: string | null;
+}
+
+export interface CareerExpertsData {
+  eyebrow: string;
+  heading: string;
+  items: CareerExpertItem[];
+}
+
 export interface CareerPageData {
   topSection: CareerTopData;
   whyJoin: WhyJoinData;
   openPositions: OpenPositionsData;
+  experts: CareerExpertsData;
   faq: CareerFaqData;
   cta: CareerCtaData;
   testimonial: CareerTestimonialData;
@@ -139,6 +165,7 @@ export async function getCareerPage(): Promise<CareerPageData> {
   const topRaw = raw.content.top_section;
   const whyJoinRaw = raw.content.why_join_section;
   const openPositionsRaw = raw.content.open_positions_section;
+  const expertsRaw = raw.content.career_experts_section;
   const faqRaw = raw.content.faq_section;
   const ctaRaw = raw.content.cta_section;
   const formRaw = raw.content.form_section;
@@ -182,6 +209,17 @@ export async function getCareerPage(): Promise<CareerPageData> {
         image: item.image,
         title: item.title,
         description: item.desc,
+      })),
+    },
+    experts: {
+      eyebrow: expertsRaw.title,
+      heading: expertsRaw.sub_title,
+      items: expertsRaw.items.map((item) => ({
+        name: item.name,
+        designation: item.designation,
+        about: item.about,
+        posterImage: item.poster_image,
+        video: item.video,
       })),
     },
     faq: {

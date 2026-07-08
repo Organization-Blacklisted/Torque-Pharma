@@ -225,7 +225,7 @@ export default function DealerForm() {
         type="submit"
         variant="primary"
         disabled={isSubmitting}
-        className="w-full cursor-pointer"
+        className="w-full"
         labelClassName="flex-1 justify-center"
       >
         {isSubmitting ? "Sending..." : "Request a Quote"}
