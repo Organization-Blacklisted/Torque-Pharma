@@ -131,6 +131,10 @@ export default function CareerFormSection({ title, disclaimer, className = "" }:
 
   const onSubmit = async (data: FormValues) => {
     setServerError("");
+    if (!resumeFile) {
+      setFileError("Please attach your resume");
+      return;
+    }
     const parsed = parsePhoneNumber(data.phone);
     const result = await submitCareerApplication({
       page_name: "CAREER",
