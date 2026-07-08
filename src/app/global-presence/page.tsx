@@ -1,18 +1,26 @@
 import type { Metadata } from "next";
-import Section from "@/components/layouts/Section";
-import Container from "@/components/layouts/Container";
+import FaqSection from "@/components/sections/shared/FaqSection";
+import GpExportCredentialsSection from "@/components/sections/global-presence/GpExportCredentialsSection";
+import { getGlobalPresencePage } from "@/lib/api/global-presence";
 
 export const metadata: Metadata = {
   title: "Global Presence | Torque Pharma",
   description: "Torque Pharma's worldwide manufacturing and distribution footprint.",
 };
 
-export default function GlobalPresencePage() {
+export default async function GlobalPresencePage() {
+  const { credentials, faq } = await getGlobalPresencePage();
+
   return (
-    <Section>
-      <Container size="content">
-        <h1 className="font-heading text-h1 font-light text-primary">Global Presence</h1>
-      </Container>
-    </Section>
+    <>
+      <GpExportCredentialsSection {...credentials} />
+
+      <FaqSection
+        eyebrow={faq.eyebrow}
+        title={faq.title}
+        description={faq.description}
+        items={faq.items}
+      />
+    </>
   );
 }

@@ -172,6 +172,7 @@ Body: { "tag": "blogs" }          // or { "tags": ["blogs", "homepage"] }
 | `board-of-directors` | `board.ts` |
 | `contact-us` | `contact.ts` |
 | `career` | `career.ts` |
+| `global-presence` | `global-presence.ts` |
 | `{slug}` (e.g. `privacy-policy`) | `pages.ts` — tag is the page slug itself |
 
 When adding a new fetcher with a `tags: [...]` option, add its tag to this table so Laravel knows what to send.

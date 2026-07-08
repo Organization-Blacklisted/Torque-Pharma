@@ -21,7 +21,7 @@ export default function AccreditationCard({
           unoptimized
         />
       </div>
-      <p className="flex-1 text-h5 text-secondary">{desc}</p>
+      <p className="flex-1 whitespace-pre-line text-h5 text-secondary">{desc}</p>
       <p className="text-h5 font-medium uppercase text-secondary">{title}</p>
     </div>
   );
