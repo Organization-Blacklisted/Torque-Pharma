@@ -173,6 +173,8 @@ Body: { "tag": "blogs" }          // or { "tags": ["blogs", "homepage"] }
 | `contact-us` | `contact.ts` |
 | `career` | `career.ts` |
 | `global-presence` | `global-presence.ts` |
+| `category-{slug}` (e.g. `category-derma`) | `product-category.ts` — `getCategoryPage(slug)` |
+| `category-children-{parentSlug}` (e.g. `category-children-domestic`) | `product-category.ts` — `getSiblingCategories(parentSlug)` |
 | `{slug}` (e.g. `privacy-policy`) | `pages.ts` — tag is the page slug itself |
 
 When adding a new fetcher with a `tags: [...]` option, add its tag to this table so Laravel knows what to send.
@@ -215,6 +217,7 @@ When adding a new fetcher with a `tags: [...]` option, add its tag to this table
 | `/about-us` | Active — fully built | `getAboutUsPage()` — all sections wired: contentMedia, overview, stats, mission/vision, values, built-on, connect, cta |
 | `/manufacturing-facility` | Active — fully built | `getManufacturingPage()` — all sections wired: hero, production, process, stats, certifications, quality-assessment, production-scale, cta, faq |
 | `/board-of-directors` | Active — 2 sections API-driven | `getBoardPage()` — executive_board + cta wired; founder, director, executive_directorate sections not yet built |
+| `/category/[parent]/[slug]` | Active — fully built | `getCategoryPage(slug)` + `getSiblingCategories(parent)` — hero, disclaimer, product grid (client-filtered), CTA, FAQ; SSG via `generateStaticParams` |
 | `/company` `/global-presence` `/products` `/capabilities` `/life-at-torque` | Stub — h1 only | None |
 | `/blogs` | Active — featured slider, category tabs, paginated grid | `getBlogs()` |
 | `/blogs/[slug]` | Active — fully built | `getBlogPost(slug)` — hero, body, related posts; SSG via `generateStaticParams` |

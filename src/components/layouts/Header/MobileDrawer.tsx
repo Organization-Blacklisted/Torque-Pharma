@@ -8,21 +8,40 @@ import type { MobileDrawerProps } from "./MobileDrawer.types";
 
 const FOCUSABLE = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
+function ChevronDown({ isOpen }: { isOpen: boolean }) {
+  return (
+    <svg
+      width="12" height="7" viewBox="0 0 12 7" fill="none" aria-hidden="true"
+      className={`shrink-0 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
+    >
+      <path d="M1 1L6 6L11 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function ChevronRight() {
+  return (
+    <svg width="6" height="10" viewBox="0 0 6 10" fill="none" aria-hidden="true" className="shrink-0">
+      <path d="M1 1L5 5L1 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
 export default function MobileDrawer({ menuOpen, closeMenu, pathname }: MobileDrawerProps) {
   const [openAccordion, setOpenAccordion] = useState<string | null>(null);
+  const [openSubAccordion, setOpenSubAccordion] = useState<string | null>(null);
   const drawerRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
 
-  // Focus close button when drawer opens; reset accordion when it closes
   useEffect(() => {
     if (menuOpen) {
       closeButtonRef.current?.focus();
     } else {
       setOpenAccordion(null);
+      setOpenSubAccordion(null);
     }
   }, [menuOpen]);
 
-  // Focus trap + Escape
   useEffect(() => {
     if (!menuOpen) return;
 
@@ -80,13 +99,88 @@ export default function MobileDrawer({ menuOpen, closeMenu, pathname }: MobileDr
 
       <nav className="flex flex-col flex-1 overflow-y-auto px-6 py-6" aria-label="Mobile navigation">
         {navItems.map((item) => {
-          const hasChildren = !!item.children;
-          const isOpen = openAccordion === item.label;
-          const isActive = hasChildren
-            ? item.children.some((c) => pathname === c.href)
-            : pathname === item.href;
+          // ── Mega menu (Products) ───────────────────────────────────────────
+          if (item.mega) {
+            const isOpen = openAccordion === item.label;
+            const isActive = item.mega.some((p) =>
+              p.areas.some((a) => pathname === a.href || pathname.startsWith(a.href + "/"))
+            );
 
-          if (hasChildren) {
+            return (
+              <div key={item.label} className="border-b border-gray-100 last:border-0">
+                <button
+                  type="button"
+                  onClick={() => {
+                    const next = isOpen ? null : item.label;
+                    setOpenAccordion(next);
+                    if (!next) setOpenSubAccordion(null);
+                  }}
+                  className={[
+                    "flex w-full items-center justify-between py-3 font-body text-body-sm transition-colors duration-200",
+                    isActive ? "text-primary font-medium" : "text-dark-blue font-normal",
+                  ].join(" ")}
+                >
+                  {item.label}
+                  <ChevronDown isOpen={isOpen} />
+                </button>
+
+                {isOpen && (
+                  <div className="flex flex-col pb-3 pl-3">
+                    {item.mega.map((parent) => {
+                      const isSubOpen = openSubAccordion === parent.slug;
+                      const isSubActive = parent.areas.some(
+                        (a) => pathname === a.href || pathname.startsWith(a.href + "/")
+                      );
+
+                      return (
+                        <div key={parent.slug}>
+                          <button
+                            type="button"
+                            onClick={() => setOpenSubAccordion(isSubOpen ? null : parent.slug)}
+                            className={[
+                              "flex w-full items-center justify-between py-2.5 font-body text-body-sm transition-colors duration-200",
+                              isSubActive ? "text-primary font-medium" : "text-secondary font-normal",
+                            ].join(" ")}
+                          >
+                            {parent.label}
+                            <ChevronDown isOpen={isSubOpen} />
+                          </button>
+
+                          {isSubOpen && (
+                            <div className="flex flex-col pb-2 pl-3">
+                              {parent.areas.map((area) => (
+                                <Link
+                                  key={area.href}
+                                  href={area.href}
+                                  onClick={closeMenu}
+                                  aria-current={pathname === area.href ? "page" : undefined}
+                                  className={[
+                                    "flex items-center gap-2 py-2 font-body text-body-sm transition-colors duration-200",
+                                    pathname === area.href
+                                      ? "text-primary font-medium"
+                                      : "text-secondary/70 hover:text-primary",
+                                  ].join(" ")}
+                                >
+                                  <span className="text-secondary/30"><ChevronRight /></span>
+                                  {area.label}
+                                </Link>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            );
+          }
+
+          // ── Regular dropdown ───────────────────────────────────────────────
+          if (item.children) {
+            const isOpen = openAccordion === item.label;
+            const isActive = item.children.some((c) => pathname === c.href);
+
             return (
               <div key={item.label} className="border-b border-gray-100 last:border-0">
                 <button
@@ -98,12 +192,7 @@ export default function MobileDrawer({ menuOpen, closeMenu, pathname }: MobileDr
                   ].join(" ")}
                 >
                   {item.label}
-                  <svg
-                    width="12" height="7" viewBox="0 0 12 7" fill="none" aria-hidden="true"
-                    className={`shrink-0 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
-                  >
-                    <path d="M1 1L6 6L11 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
+                  <ChevronDown isOpen={isOpen} />
                 </button>
 
                 {isOpen && (
@@ -128,15 +217,16 @@ export default function MobileDrawer({ menuOpen, closeMenu, pathname }: MobileDr
             );
           }
 
+          // ── Plain link ─────────────────────────────────────────────────────
           return (
             <Link
               key={item.label}
               href={item.href}
-              aria-current={isActive ? "page" : undefined}
+              aria-current={pathname === item.href ? "page" : undefined}
               onClick={closeMenu}
               className={[
                 "border-b border-gray-100 last:border-0 py-3 font-body text-body-sm transition-colors duration-200",
-                isActive ? "text-primary font-medium" : "text-dark-blue font-normal hover:text-primary",
+                pathname === item.href ? "text-primary font-medium" : "text-dark-blue font-normal hover:text-primary",
               ].join(" ")}
             >
               {item.label}

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getBlogPost } from "@/lib/api/blog-post";
-import { getBlogs } from "@/lib/api/blogs";
+import { getBlogs, getRelatedBlogs } from "@/lib/api/blogs";
 import BlogPostHero from "@/components/sections/blog/BlogPostHero";
 import BlogPostBody from "@/components/sections/blog/BlogPostBody";
 import RelatedBlogsSection from "@/components/sections/blog/RelatedBlogsSection";
@@ -35,11 +35,9 @@ export default async function BlogPostPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const [post, allPosts] = await Promise.all([getBlogPost(slug), getBlogs()]);
+  const [post, relatedPosts] = await Promise.all([getBlogPost(slug), getRelatedBlogs(slug, 3)]);
 
   if (!post || post.status !== "published") notFound();
-
-  const relatedPosts = allPosts.filter((p) => p.slug !== slug).slice(0, 3);
 
   return (
     <>

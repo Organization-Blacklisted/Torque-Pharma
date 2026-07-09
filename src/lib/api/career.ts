@@ -1,4 +1,5 @@
 import { apiFetch, type ApiResponse } from "./fetcher";
+import { sanitize } from "@/lib/sanitize";
 
 // ─── Raw API types ────────────────────────────────────────────────────────────
 
@@ -227,7 +228,7 @@ export async function getCareerPage(): Promise<CareerPageData> {
       subTitle: faqRaw.sub_title,
       items: faqRaw.items.map((item) => ({
         title: item.title,
-        content: item.desc,
+        content: sanitize(item.desc),
       })),
     },
     cta: {

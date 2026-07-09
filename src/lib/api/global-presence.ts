@@ -1,5 +1,6 @@
 import { apiFetch, type ApiResponse } from "./fetcher";
 import type { AccordionItem } from "@/components/ui/Accordion/Accordion.types";
+import { sanitize } from "@/lib/sanitize";
 
 // ─── Raw API shape ────────────────────────────────────────────────────────────
 
@@ -127,7 +128,7 @@ export async function getGlobalPresencePage(): Promise<GlobalPresencePageData> {
       description: faqRaw.desc,
       items: faqRaw.items.map((item) => ({
         title: item.title,
-        content: item.desc,
+        content: sanitize(item.desc),
       })),
     },
   };

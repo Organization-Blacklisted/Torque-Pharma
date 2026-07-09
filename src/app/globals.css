@@ -50,6 +50,47 @@ body {
   to   { opacity: 1; }
 }
 
+/* Pill animated border — three-layer technique (no @property needed):
+   outer clips the rotating gradient to pill shape via overflow:hidden + 1px padding;
+   inner covers the centre with an opaque fill, revealing only the 1px gap as border. */
+.pill-outer {
+  position: relative;
+  border-radius: 149px;
+  overflow: hidden;
+  padding: 1px;
+}
+
+.pill-track {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 300%;
+  height: 300%;
+  background: conic-gradient(
+    from 0deg,
+    color-mix(in srgb, var(--color-mint) 25%, transparent)   0deg,
+    var(--color-mint)                                         60deg,
+    var(--color-mint)                                        150deg,
+    color-mix(in srgb, var(--color-mint) 25%, transparent)  210deg,
+    color-mix(in srgb, var(--color-mint) 25%, transparent)  360deg
+  );
+  animation: pill-track-spin 6s linear infinite;
+}
+
+@keyframes pill-track-spin {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to   { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Opaque: white 29% blended over the page bg = same visual as rgba(255,255,255,0.29)
+   but solid, so it fully masks the gradient behind — only the 1px gap shows. */
+.pill-inner {
+  position: relative;
+  z-index: 1;
+  border-radius: inherit;
+  background: color-mix(in srgb, white 29%, var(--background));
+}
+
 .animate-fadeIn {
   animation: fadeIn 0.35s ease-in-out;
 }

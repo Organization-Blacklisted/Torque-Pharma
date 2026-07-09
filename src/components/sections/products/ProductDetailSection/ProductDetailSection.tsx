@@ -40,7 +40,7 @@ export default function ProductDetailSection({
   content,
   className = "",
 }: ProductDetailSectionProps) {
-  const [activeImage, setActiveImage] = useState(featuredImage);
+  const [activeImage, setActiveImage] = useState<string | null>(featuredImage ?? gallery[0] ?? null);
   const [emblaRef, emblaApi] = useEmblaCarousel({
     align: "start",
     containScroll: "trimSnaps",
@@ -74,14 +74,16 @@ export default function ProductDetailSection({
           {/* Left: main image + gallery thumbnails */}
           <div className="lg:sticky lg:top-24">
             <div className="relative aspect-[4/3] w-full overflow-hidden bg-white/20">
-              <Image
-                src={activeImage}
-                alt={name}
-                fill
-                className="object-contain p-8"
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                priority
-              />
+              {activeImage && (
+                <Image
+                  src={activeImage}
+                  alt={name}
+                  fill
+                  className="object-contain p-8"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  priority
+                />
+              )}
             </div>
 
             {gallery.length > 0 && (

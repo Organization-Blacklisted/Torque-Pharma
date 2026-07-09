@@ -33,7 +33,7 @@ export interface ProductDetailData {
   name: string;
   slug: string;
   description: string;
-  featuredImage: string;
+  featuredImage: string | null;
   gallery: string[];
   content: ProductContentItem[];
   seo: {
@@ -56,8 +56,8 @@ export const getProduct = cache(async function getProduct(slug: string): Promise
     name: data.name,
     slug: data.slug,
     description: data.description,
-    featuredImage: data.featured_image,
-    gallery: data.gallery,
+    featuredImage: data.featured_image || null,
+    gallery: data.gallery.filter(Boolean),
     content: data.content,
     seo: {
       title: data.seo.title,
