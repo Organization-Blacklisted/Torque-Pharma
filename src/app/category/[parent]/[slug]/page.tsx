@@ -54,7 +54,7 @@ export default async function CategoryPage({
 
     return (
       <>
-        <ProductCategoryHero name={page.name} image={page.image} />
+        <ProductCategoryHero name={page.name} bannerImage={page.bannerImage} />
 
         {page.medicalDisclaimer && (
           <MedicalDisclaimerSection disclaimer={page.medicalDisclaimer} />

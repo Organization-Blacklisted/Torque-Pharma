@@ -1,5 +1,5 @@
 export interface ProductCategoryHeroProps {
   name: string;
-  image: string | null;
+  bannerImage: string | null;
   className?: string;
 }

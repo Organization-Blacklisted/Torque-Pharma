@@ -43,6 +43,7 @@ interface RawCategoryPage {
   parent_name: string;
   parent_slug: string;
   image: string;
+  banner_image: string | null;
   medical_disclaimer: string;
   faqs_section: {
     title: string;
@@ -86,6 +87,7 @@ export interface CategoryPageData {
   slug: string;
   parentSlug: string;
   image: string | null;
+  bannerImage: string | null;
   medicalDisclaimer: string;
   products: ProductListItem[];
   faq: CategoryFaqData;
@@ -114,6 +116,7 @@ export const getCategoryPage = cache(async function getCategoryPage(
     slug: data.slug,
     parentSlug: data.parent_slug,
     image: data.image || null,
+    bannerImage: data.banner_image || null,
     medicalDisclaimer: toHtmlParagraphs(data.medical_disclaimer),
     products: data.products.map((p) => ({
       id: p.id,

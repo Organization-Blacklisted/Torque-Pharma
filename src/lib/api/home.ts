@@ -9,6 +9,7 @@ import type { ContractManufacturingData } from "@/types/contract-manufacturing";
 import type { HomeOverviewData } from "@/types/home-overview";
 import type { StatsMediaData } from "@/types/homepage";
 import type { TorqueLineupData } from "@/types/torque-lineup";
+import type { TherapeuticAreasData } from "@/types/therapeutic-areas";
 
 // ─── Raw API shape ─────────────────────────────────────────────────────────────
 // Mirrors the /pages/home response exactly. Extend as more sections are wired up.
@@ -62,6 +63,14 @@ type HomeApiResponse = {
       view_text: string;
       view_link: string;
       items: { image: string; title: string; description: string }[];
+    };
+    therapeutic_areas_section: {
+      title: string;
+      sub_title: string;
+      description: string;
+      view_text: string;
+      view_link: string;
+      categories: { id: number; title: string; image: string; slug: string }[];
     };
     blogs_section: HomeBlogsPreviewData;
     zero_defect_section: {
@@ -121,6 +130,7 @@ export type HomePageData = {
   globalPresence: GlobalPresenceData;
   lifeAtTorque: LifeAtTorqueData;
   contractManufacturing: ContractManufacturingData;
+  therapeuticAreas: TherapeuticAreasData;
   blogsPreview: HomeBlogsPreviewData;
   statsMedia: StatsMediaData;
   torqueLineup: TorqueLineupData;
@@ -219,6 +229,20 @@ export async function getHomePage(): Promise<HomePageData> {
       cta: {
         label: c.contract_manufacturing_section.view_text,
         href: c.contract_manufacturing_section.view_link,
+      },
+    },
+    therapeuticAreas: {
+      eyebrow: c.therapeutic_areas_section.title,
+      heading: c.therapeutic_areas_section.sub_title,
+      description: c.therapeutic_areas_section.description,
+      items: c.therapeutic_areas_section.categories.map((cat) => ({
+        title: cat.title,
+        image: cat.image,
+        href: `/category/domestic/${cat.slug}`,
+      })),
+      cta: {
+        label: c.therapeutic_areas_section.view_text,
+        href: c.therapeutic_areas_section.view_link,
       },
     },
     blogsPreview: c.blogs_section,

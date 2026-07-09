@@ -12,8 +12,6 @@ import HomeOverviewSection from "@/components/sections/home/HomeOverviewSection"
 import TorqueLineupSection from "@/components/sections/home/TorqueLineupSection";
 import Container from "@/components/layouts/Container";
 import Section from "@/components/layouts/Section";
-import { homepageMock } from "@/data/homepage.mock";
-
 export const metadata: Metadata = {
   title: "Torque Pharma | People's Pharmaceutical Company",
   description:
@@ -21,7 +19,6 @@ export const metadata: Metadata = {
 };
 
 export default async function Home() {
-  const { therapeuticAreas } = homepageMock;
   const {
     hero,
     overview,
@@ -32,6 +29,7 @@ export default async function Home() {
     blogsPreview,
     statsMedia,
     torqueLineup,
+    therapeuticAreas,
   } = await getHomePage();
 
   return (

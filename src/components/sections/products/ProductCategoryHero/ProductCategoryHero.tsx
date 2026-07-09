@@ -5,7 +5,7 @@ import type { ProductCategoryHeroProps } from "./ProductCategoryHero.types";
 
 export default function ProductCategoryHero({
   name,
-  image,
+  bannerImage,
   className = "",
 }: ProductCategoryHeroProps) {
   return (
@@ -19,10 +19,10 @@ export default function ProductCategoryHero({
           {name}
         </h1>
       </Container>
-      {image && (
+      {bannerImage && (
         <div className="relative w-full aspect-[1920/730]">
           <Image
-            src={image}
+            src={bannerImage}
             alt={name}
             fill
             sizes="100vw"
