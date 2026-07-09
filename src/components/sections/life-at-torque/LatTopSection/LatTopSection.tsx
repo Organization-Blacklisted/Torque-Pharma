@@ -73,7 +73,7 @@ export default function LatTopSection({
                 />
               </div>
             ))}
-          </div>
+          </div> 
         )}
       </Container>
     </Section>
