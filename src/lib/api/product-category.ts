@@ -42,13 +42,13 @@ interface RawCategoryPage {
   parent_id: number;
   parent_name: string;
   parent_slug: string;
-  image: string;
+  image: string | null;
   banner_image: string | null;
-  medical_disclaimer: string;
+  medical_disclaimer: string | null;
   faqs_section: {
-    title: string;
-    sub_title: string;
-    desc: string;
+    title: string | null;
+    sub_title: string | null;
+    desc: string | null;
     items: { title: string; desc: string }[];
   };
   products: RawProduct[];
@@ -117,7 +117,7 @@ export const getCategoryPage = cache(async function getCategoryPage(
     parentSlug: data.parent_slug,
     image: data.image || null,
     bannerImage: data.banner_image || null,
-    medicalDisclaimer: toHtmlParagraphs(data.medical_disclaimer),
+    medicalDisclaimer: data.medical_disclaimer ? toHtmlParagraphs(data.medical_disclaimer) : "",
     products: data.products.map((p) => ({
       id: p.id,
       name: toTitleCase(p.name),
@@ -125,9 +125,9 @@ export const getCategoryPage = cache(async function getCategoryPage(
       image: p.featured_image,
     })),
     faq: {
-      eyebrow: faqRaw.title,
-      title: faqRaw.sub_title,
-      description: faqRaw.desc,
+      eyebrow: faqRaw.title ?? "",
+      title: faqRaw.sub_title ?? "",
+      description: faqRaw.desc ?? "",
       items: faqRaw.items.map((item) => ({
         title: item.title,
         content: sanitize(item.desc),

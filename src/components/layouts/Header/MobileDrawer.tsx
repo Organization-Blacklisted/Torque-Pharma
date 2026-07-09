@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { navItems } from "@/data/nav.config";
+import type { NavCategories } from "@/data/nav.config";
 import type { MobileDrawerProps } from "./MobileDrawer.types";
 
 const FOCUSABLE = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
@@ -27,7 +28,7 @@ function ChevronRight() {
   );
 }
 
-export default function MobileDrawer({ menuOpen, closeMenu, pathname }: MobileDrawerProps) {
+export default function MobileDrawer({ menuOpen, closeMenu, pathname, navCategories }: MobileDrawerProps) {
   const [openAccordion, setOpenAccordion] = useState<string | null>(null);
   const [openSubAccordion, setOpenSubAccordion] = useState<string | null>(null);
   const drawerRef = useRef<HTMLDivElement>(null);
@@ -102,8 +103,10 @@ export default function MobileDrawer({ menuOpen, closeMenu, pathname }: MobileDr
           // ── Mega menu (Products) ───────────────────────────────────────────
           if (item.mega) {
             const isOpen = openAccordion === item.label;
+            const getAreas = (slug: string) =>
+              navCategories[slug as keyof NavCategories] ?? [];
             const isActive = item.mega.some((p) =>
-              p.areas.some((a) => pathname === a.href || pathname.startsWith(a.href + "/"))
+              getAreas(p.slug).some((a) => pathname === a.href || pathname.startsWith(a.href + "/"))
             );
 
             return (
@@ -128,10 +131,10 @@ export default function MobileDrawer({ menuOpen, closeMenu, pathname }: MobileDr
                   <div className="flex flex-col pb-3 pl-3">
                     {item.mega.map((parent) => {
                       const isSubOpen = openSubAccordion === parent.slug;
-                      const isSubActive = parent.areas.some(
+                      const areas = getAreas(parent.slug);
+                      const isSubActive = areas.some(
                         (a) => pathname === a.href || pathname.startsWith(a.href + "/")
                       );
-
                       return (
                         <div key={parent.slug}>
                           <button
@@ -148,7 +151,7 @@ export default function MobileDrawer({ menuOpen, closeMenu, pathname }: MobileDr
 
                           {isSubOpen && (
                             <div className="flex flex-col pb-2 pl-3">
-                              {parent.areas.map((area) => (
+                              {areas.map((area) => (
                                 <Link
                                   key={area.href}
                                   href={area.href}

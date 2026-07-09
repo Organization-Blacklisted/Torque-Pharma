@@ -7,8 +7,9 @@ import { usePathname } from "next/navigation";
 import Container from "@/components/layouts/Container/Container";
 import DesktopNav from "./DesktopNav";
 import MobileDrawer from "./MobileDrawer";
+import type { NavCategories } from "@/data/nav.config";
 
-export default function Header() {
+export default function Header({ navCategories }: { navCategories: NavCategories }) {
   const [hidden, setHidden] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const lastScrollY = useRef(0);
@@ -66,7 +67,7 @@ export default function Header() {
                 <Image src="/torque-black.svg" alt="Torque Pharma" width={132} height={38} priority />
               </Link>
 
-              <DesktopNav pathname={pathname} />
+              <DesktopNav pathname={pathname} navCategories={navCategories} />
 
               <Link
                 href="/contact-us"
@@ -109,7 +110,7 @@ export default function Header() {
         ].join(" ")}
       />
 
-      <MobileDrawer menuOpen={menuOpen} closeMenu={closeMenu} pathname={pathname} />
+      <MobileDrawer menuOpen={menuOpen} closeMenu={closeMenu} pathname={pathname} navCategories={navCategories} />
     </>
   );
 }

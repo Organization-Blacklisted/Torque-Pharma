@@ -68,11 +68,11 @@ body {
   height: 300%;
   background: conic-gradient(
     from 0deg,
-    transparent                    0deg,
-    var(--color-mint)             60deg,
-    var(--color-mint)            150deg,
-    transparent                  210deg,
-    transparent                  360deg
+    color-mix(in srgb, var(--color-mint) 25%, transparent)   0deg,
+    var(--color-mint)                                         60deg,
+    var(--color-mint)                                        150deg,
+    color-mix(in srgb, var(--color-mint) 25%, transparent)  210deg,
+    color-mix(in srgb, var(--color-mint) 25%, transparent)  360deg
   );
   animation: pill-track-spin 6s linear infinite;
 }

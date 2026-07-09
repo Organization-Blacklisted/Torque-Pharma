@@ -21,16 +21,14 @@ export async function apiFetch<T>(
 ): Promise<T> {
   const url = `${API_BASE}${endpoint}`;
   const dev = process.env.NODE_ENV === "development";
-  const label = `[API] ${endpoint}`;
-
-  if (dev) console.time(label);
+  const t0 = dev ? performance.now() : 0;
   const res = await fetch(url, {
     next: {
       revalidate,
       ...(tags ? { tags } : {}),
     },
   });
-  if (dev) console.timeEnd(label);
+  if (dev) console.log(`[API] ${endpoint} — ${(performance.now() - t0).toFixed(0)}ms`);
 
   if (!res.ok) {
     throw new Error(`API error ${res.status}: ${res.statusText} — ${url}`);
