@@ -1,4 +1,8 @@
-export type NavLink = { label: string; href: string };
+export type NavLink = {
+  label: string;
+  href: string;
+  external?: boolean;
+};
 
 export const quickLinksCol1: NavLink[] = [
   { label: "About Us", href: "/about-us" },
@@ -11,7 +15,7 @@ export const quickLinksCol1: NavLink[] = [
 ];
 
 export const quickLinksCol2: NavLink[] = [
-  { label: "Distributor Connect", href: "https://directorque.com/login" },
+  { label: "Distributor Connect", href: "https://directorque.com/login",    external: true, },
   { label: "Depot", href: "/depot" },
   { label: "Torque Online Stores", href: "https://www.torqueonline.co.in/" },
   { label: "Torque HRMS", href: "https://torque.keka.com/" },
