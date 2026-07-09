@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { navItems } from "@/data/nav.config";
-import type { NavCategories } from "@/data/nav.config";
 import type { DesktopNavProps } from "./DesktopNav.types";
 
 function ChevronRight() {
@@ -14,7 +13,7 @@ function ChevronRight() {
   );
 }
 
-export default function DesktopNav({ pathname, navCategories }: DesktopNavProps) {
+export default function DesktopNav({ pathname }: DesktopNavProps) {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [activeMegaParent, setActiveMegaParent] = useState("domestic");
   const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -37,11 +36,8 @@ export default function DesktopNav({ pathname, navCategories }: DesktopNavProps)
       {navItems.map((item) => {
         // ── Mega menu (Products) ─────────────────────────────────────────────
         if (item.mega) {
-          const getAreas = (slug: string) =>
-            navCategories[slug as keyof NavCategories] ?? [];
-
           const isActive = item.mega.some((p) =>
-            getAreas(p.slug).some((a) => pathname === a.href || pathname.startsWith(a.href + "/"))
+            p.areas.some((a) => pathname === a.href || pathname.startsWith(a.href + "/"))
           );
           const isOpen = openDropdown === item.label;
           const activeParent = item.mega.find((p) => p.slug === activeMegaParent) ?? item.mega[0];
@@ -110,7 +106,7 @@ export default function DesktopNav({ pathname, navCategories }: DesktopNavProps)
                         Therapeutic Areas
                       </p>
                       <div className="grid grid-cols-2 gap-x-8 gap-y-[18px]">
-                        {getAreas(activeParent.slug).map((area) => (
+                        {activeParent.areas.map((area) => (
                           <Link
                             key={area.href}
                             href={area.href}

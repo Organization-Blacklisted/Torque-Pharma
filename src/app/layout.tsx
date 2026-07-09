@@ -3,8 +3,6 @@ import "./globals.css";
 import { bwDarius, graphik } from "@/fonts";
 import Footer from "@/components/layouts/Footer";
 import Header from "@/components/layouts/Header";
-import { getSiblingCategories } from "@/lib/api/product-category";
-import type { NavCategories } from "@/data/nav.config";
 
 export const metadata: Metadata = {
   title: {
@@ -33,26 +31,12 @@ function getApiOrigin(): string | null {
   }
 }
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   const apiOrigin = getApiOrigin();
-
-  const [domesticResult, exportResult] = await Promise.allSettled([
-    getSiblingCategories("domestic"),
-    getSiblingCategories("export"),
-  ]);
-
-  const navCategories: NavCategories = {
-    domestic: domesticResult.status === "fulfilled"
-      ? domesticResult.value.map((c) => ({ label: c.name, href: `/category/domestic/${c.slug}` }))
-      : [],
-    export: exportResult.status === "fulfilled"
-      ? exportResult.value.map((c) => ({ label: c.name, href: `/category/export/${c.slug}` }))
-      : [],
-  };
 
   return (
     <html
@@ -76,7 +60,7 @@ export default async function RootLayout({
           >
             Skip to main content
           </a>
-          <Header navCategories={navCategories} />
+          <Header />
           {/* pt accounts for fixed header: py-3 (12px) + card h-[68px] + py-3 (12px) = 92px mobile, 96px lg */}
           <main id="main-content" className="flex-1 pt-[92px] lg:pt-[96px]">{children}</main>
           <Footer />

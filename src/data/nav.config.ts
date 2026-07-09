@@ -1,6 +1,3 @@
-export type NavCategoryItem = { label: string; href: string };
-export type NavCategories = { domestic: NavCategoryItem[]; export: NavCategoryItem[] };
-
 export type NavChild = { label: string; href: string };
 
 export type MegaParent = {
