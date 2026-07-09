@@ -236,7 +236,7 @@ export default function ProductListingSection({
               <button
                 type="button"
                 onClick={() => setCategoryOpen((o) => !o)}
-                className="w-full flex items-center justify-between gap-[15px] bg-mint/15 rounded-[6px] p-[15px] font-body text-body font-medium text-[#3F4255]"
+                className="w-full flex items-center justify-between gap-[15px] bg-mint/15 rounded-[6px] p-[15px] font-body text-body font-medium text-[#3F4255] cursor-pointer"
               >
                 <span>All Products</span>
                 <ChevronDown className={`transition-transform duration-200 ${categoryOpen ? "rotate-180" : ""}`} />
@@ -250,7 +250,7 @@ export default function ProductListingSection({
                       type="button"
                       onClick={() => handleCategoryChange(s.slug)}
                       className={[
-                        "w-full text-left p-[15px] font-body text-body leading-[26px] border-b border-primary/10 transition-colors duration-150",
+                        "w-full text-left p-[15px] font-body text-body leading-[26px] border-b border-primary/10 transition-colors duration-150 cursor-pointer",
                         s.slug === currentSlug
                           ? "text-primary font-medium"
                           : "text-secondary hover:text-primary",
