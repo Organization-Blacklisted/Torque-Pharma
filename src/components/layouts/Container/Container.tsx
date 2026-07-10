@@ -20,7 +20,7 @@ export default function Container({
       className={`
         w-full
         mx-auto
-        px-3
+        px-4
         md:px-4
         lg:px-10
         xl:px-16
