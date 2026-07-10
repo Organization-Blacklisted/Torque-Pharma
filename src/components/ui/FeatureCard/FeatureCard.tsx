@@ -22,9 +22,9 @@ export default function FeatureCard({
         <Image src={icon} alt="" aria-hidden width={80} height={80} className="h-full w-full object-contain" />
       </div>
       <div className="flex flex-col gap-3">
-        <h3 className={`text-[20px] font-medium leading-6 ${isDark ? "text-white" : "text-primary"}`}>{title}</h3>
+        <h3 className={`text-body font-medium leading-6 ${isDark ? "text-white" : "text-primary"}`}>{title}</h3>
         {description && (
-          <p className={`text-[20px] leading-6 ${isDark ? "text-white/70" : "text-secondary"}`}>{description}</p>
+          <p className={`text-body leading-6 ${isDark ? "text-white/70" : "text-secondary"}`}>{description}</p>
         )}
       </div>
     </div>

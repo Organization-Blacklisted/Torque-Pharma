@@ -21,6 +21,8 @@ export default function GpTorqueModelSection({
             title={heading}
             description={description}
             theme="dark"
+            align="center"
+            eyebrowColor="text-white"
             size="h2"
           />
           <div className="grid grid-cols-2 gap-[var(--spacing-gutter)] md:grid-cols-4">
