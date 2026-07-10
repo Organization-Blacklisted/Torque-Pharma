@@ -4,6 +4,7 @@ import Container from "@/components/layouts/Container";
 import FaqSection from "@/components/sections/shared/FaqSection";
 import GpExportCredentialsSection from "@/components/sections/global-presence/GpExportCredentialsSection";
 import GpCertificationsSection from "@/components/sections/global-presence/GpCertificationsSection";
+import GpTopSection from "@/components/sections/global-presence/GpTopSection";
 import GpExportCategoriesSection from "@/components/sections/global-presence/GpExportCategoriesSection";
 import GpTorqueModelSection from "@/components/sections/global-presence/GpTorqueModelSection";
 import GpExportCapabilitySection from "@/components/sections/global-presence/GpExportCapabilitySection";
@@ -16,11 +17,13 @@ export const metadata: Metadata = {
 };
 
 export default async function GlobalPresencePage() {
-  const { certifications, exportCategories, credentials, exportCapability, torqueModel, form, faq } = await getGlobalPresencePage();
+  const { top, certifications, exportCategories, credentials, exportCapability, torqueModel, form, faq } = await getGlobalPresencePage();
 
   return (
     <>
-      <Section first>
+      <GpTopSection {...top} />
+
+      <Section>
         <Container size="reading">
           <GpCertificationsSection {...certifications} />
         </Container>
