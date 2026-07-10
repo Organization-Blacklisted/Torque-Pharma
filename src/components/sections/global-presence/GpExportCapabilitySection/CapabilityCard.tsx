@@ -83,7 +83,7 @@ export default function CapabilityCard({
         )}
       </p>
       <p className={`text-body font-medium ${dark ? "text-white" : "text-secondary"}`}>{subTitle}</p>
-      <p className={`text-body-sm ${dark ? "text-white/80" : "text-secondary"}`}>{description}</p>
+      <p className={`text-body-sm ${dark ? "text-white/60" : "text-secondary"}`}>{description}</p>
     </div>
   );
 }
