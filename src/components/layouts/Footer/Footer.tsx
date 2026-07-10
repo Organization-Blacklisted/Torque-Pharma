@@ -10,14 +10,25 @@ import { socialLinks } from "./footer.icons";
 function FooterNavColumn({ links }: { links: NavLink[] }) {
   return (
     <ul className="flex flex-col gap-3">
-      {links.map(({ label, href }) => (
+      {links.map(({ label, href, external }) => (
         <li key={label}>
-          <Link
-            href={href}
-            className="font-body text-body-lg font-light text-white transition-colors duration-200 hover:text-mint"
-          >
-            {label}
-          </Link>
+          {external ? (
+            <a
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-body text-body-lg font-light text-white transition-colors duration-200 hover:text-mint"
+            >
+              {label}
+            </a>
+          ) : (
+            <Link
+              href={href}
+              className="font-body text-body-lg font-light text-white transition-colors duration-200 hover:text-mint"
+            >
+              {label}
+            </Link>
+          )}
         </li>
       ))}
     </ul>

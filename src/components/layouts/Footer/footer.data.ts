@@ -17,9 +17,9 @@ export const quickLinksCol1: NavLink[] = [
 export const quickLinksCol2: NavLink[] = [
   { label: "Distributor Connect", href: "https://directorque.com/login", external: true },
   { label: "Depot", href: "/depot" },
-  { label: "Torque Online Stores", href: "https://www.torqueonline.co.in/" },
-  { label: "Torque HRMS", href: "https://torque.keka.com/" },
-  { label: "Torque SFA", href: "https://dashboard.fieldassist.io/home" },
+  { label: "Torque Online Stores", href: "https://www.torqueonline.co.in/", external: true },
+  { label: "Torque HRMS", href: "https://torque.keka.com/", external: true },
+  { label: "Torque SFA", href: "https://dashboard.fieldassist.io/home", external: true },
   { label: "Blogs", href: "/blogs" },
   { label: "News & Updates", href: "/news-updates" },
 ];
