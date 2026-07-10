@@ -22,7 +22,8 @@ export default function Container({
         mx-auto
         px-3
         md:px-4
-        lg:px-8
+        lg:px-10
+        xl:px-16
         ${sizes[size]}
         ${className}
       `}
