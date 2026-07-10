@@ -11,7 +11,6 @@ export interface GlobalPresenceEnquiryPayload {
   company: string;
   area_of_interest: string;
   product_category: string;
-  expected_order_volume: string;
   message: string;
 }
 

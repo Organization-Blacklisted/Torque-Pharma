@@ -17,9 +17,7 @@ const AREAS_OF_INTEREST = [
   "Export Partnership",
   "Private Label",
   "Contract Manufacturing",
-  "B2B Supplies",
-  "Technology Transfer",
-  "Other",
+  "White-Label Manufacturing",
 ] as const;
 
 const PRODUCT_CATEGORIES = [
@@ -29,26 +27,17 @@ const PRODUCT_CATEGORIES = [
   "Nutraceuticals",
 ] as const;
 
-const ORDER_VOLUMES = [
-  "Trial Order",
-  "Small Commercial Order",
-  "Regular Commercial Order",
-  "Bulk Order",
-  "Tender-Based Order",
-] as const;
-
 // ─── Schema ───────────────────────────────────────────────────────────────────
 
 const schema = z.object({
-  firstName:           z.string().min(1, "First name is required").max(50),
-  lastName:            z.string().min(1, "Last name is required").max(50),
-  email:               z.string().min(1, "Email is required").refine((v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v), "Enter a valid email address"),
-  phone:               z.string().min(1, "Phone number is required").refine((v) => isValidPhoneNumber(v), "Enter a valid phone number"),
-  company:             z.string().max(100).optional(),
-  areaOfInterest:      z.string().min(1, "Please select an area of interest"),
-  productCategory:     z.string().min(1, "Please select a product category"),
-  expectedOrderVolume: z.string().min(1, "Please select an order volume"),
-  message:             z.string().optional(),
+  firstName:       z.string().min(1, "First name is required").max(50),
+  lastName:        z.string().min(1, "Last name is required").max(50),
+  email:           z.string().min(1, "Email is required").refine((v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v), "Enter a valid email address"),
+  phone:           z.string().min(1, "Phone number is required").refine((v) => isValidPhoneNumber(v), "Enter a valid phone number"),
+  company:         z.string().max(100).optional(),
+  areaOfInterest:  z.string().min(1, "Please select an area of interest"),
+  productCategory: z.string().min(1, "Please select a product category"),
+  message:         z.string().optional(),
 });
 
 type FormValues = z.infer<typeof schema>;
@@ -118,8 +107,7 @@ export default function GpGlobalForm() {
     resolver: zodResolver(schema),
     defaultValues: {
       firstName: "", lastName: "", email: "", phone: "",
-      company: "", areaOfInterest: "", productCategory: "",
-      expectedOrderVolume: "", message: "",
+      company: "", areaOfInterest: "", productCategory: "", message: "",
     },
   });
 
@@ -137,7 +125,6 @@ export default function GpGlobalForm() {
       company: data.company ?? "",
       area_of_interest: data.areaOfInterest,
       product_category: data.productCategory,
-      expected_order_volume: data.expectedOrderVolume,
       message: data.message ?? "",
     });
     if (result.success) setIsSuccess(true);
@@ -194,24 +181,14 @@ export default function GpGlobalForm() {
         </FormField>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2">
-        <FormField error={errors.productCategory?.message}>
-          <FormSelect hasError={!!errors.productCategory} {...register("productCategory")}>
-            <option value="" disabled>Product Category</option>
-            {PRODUCT_CATEGORIES.map((opt) => (
-              <option key={opt} value={opt}>{opt}</option>
-            ))}
-          </FormSelect>
-        </FormField>
-        <FormField error={errors.expectedOrderVolume?.message}>
-          <FormSelect hasError={!!errors.expectedOrderVolume} {...register("expectedOrderVolume")}>
-            <option value="" disabled>Expected Order Volume</option>
-            {ORDER_VOLUMES.map((opt) => (
-              <option key={opt} value={opt}>{opt}</option>
-            ))}
-          </FormSelect>
-        </FormField>
-      </div>
+      <FormField error={errors.productCategory?.message}>
+        <FormSelect hasError={!!errors.productCategory} {...register("productCategory")}>
+          <option value="" disabled>Product Category</option>
+          {PRODUCT_CATEGORIES.map((opt) => (
+            <option key={opt} value={opt}>{opt}</option>
+          ))}
+        </FormSelect>
+      </FormField>
 
       <FormField error={errors.message?.message}>
         <FormTextarea placeholder="Message" rows={5} hasError={!!errors.message} {...register("message")} />
