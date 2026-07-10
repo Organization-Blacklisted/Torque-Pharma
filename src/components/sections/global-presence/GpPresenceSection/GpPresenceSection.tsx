@@ -99,8 +99,8 @@ export default function GpPresenceSection({
         </div>
 
         <div className="mt-[var(--spacing-subsection)] flex items-center gap-2">
-          <span className="h-[18px] w-[18px] shrink-0 rounded-[3.6px] bg-[#53BEE5]" />
-          <span className="font-body text-h5 font-light text-[#474A5C]">Countries We Serve</span>
+          <div className="h-[18px] w-[18px] shrink-0 rounded-[3.6px] bg-[#53BEE5]" />
+          <span className="font-body text-h5 font-light leading-none text-[#474A5C]">Countries We Serve</span>
         </div>
 
         <div
