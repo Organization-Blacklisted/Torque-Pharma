@@ -8,7 +8,7 @@ import Pagination from "@/components/ui/Pagination";
 import ProductCard from "@/components/ui/ProductCard";
 import type { ProductListingSectionProps } from "./ProductListingSection.types";
 
-const LETTERS = ["ALL", ...Array.from({ length: 26 }, (_, i) => String.fromCharCode(65 + i))];
+const ALL_LETTERS = Array.from({ length: 26 }, (_, i) => String.fromCharCode(65 + i));
 const PER_PAGE = 9;
 
 function ChevronDown({ className = "" }: { className?: string }) {
@@ -62,6 +62,11 @@ export default function ProductListingSection({
     }
     return () => { document.body.style.overflow = ""; };
   }, [drawerOpen]);
+
+  const letters = useMemo(() => {
+    const used = new Set(products.map((p) => p.name[0]?.toUpperCase()).filter(Boolean));
+    return ["ALL", ...ALL_LETTERS.filter((l) => used.has(l))];
+  }, [products]);
 
   const filtered = useMemo(() => {
     let list = [...products];
@@ -139,7 +144,7 @@ export default function ProductListingSection({
 
   const azFilter = (
     <div className="flex overflow-x-auto border-b border-black/20 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-      {LETTERS.map((letter) => (
+      {letters.map((letter) => (
         <button
           key={letter}
           type="button"
