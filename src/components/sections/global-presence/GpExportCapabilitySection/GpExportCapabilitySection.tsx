@@ -69,6 +69,7 @@ export default function GpExportCapabilitySection({
             subTitle={featured.subTitle}
             description={featured.description}
             standalone={false}
+            className="bg-white"
           />
         </div>
       )}
