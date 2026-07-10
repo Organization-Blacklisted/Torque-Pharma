@@ -16,7 +16,7 @@ export const navItems: NavItem[] = [
     label: "Company",
     children: [
       { label: "Company Profile", href: "/company" },
-      { label: "Our History", href: "/company/our-history" },
+      { label: "Our History", href: "/our-history" },
       { label: "Board of Directors", href: "/board-of-directors" },
       { label: "Manufacturing Facilities", href: "/manufacturing-facility" },
       { label: "Certifications", href: "/certifications" },

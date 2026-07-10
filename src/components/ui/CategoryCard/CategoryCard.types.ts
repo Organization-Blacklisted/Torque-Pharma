@@ -3,4 +3,6 @@ export interface CategoryCardProps {
   title: string;
   href?: string;
   className?: string;
+  imageClassName?: string;
+  fillImage?: boolean;
 }

@@ -23,20 +23,35 @@ function ArrowIcon() {
   );
 }
 
-export default function CategoryCard({ image, title, href, className = "" }: CategoryCardProps) {
+export default function CategoryCard({ image, title, href, className = "", imageClassName = "", fillImage = true }: CategoryCardProps) {
   const inner = (
     <div className={`group flex flex-col gap-3 ${className}`}>
-      <div className="relative aspect-square overflow-hidden rounded-lg bg-card-bg">
-        {image && (
-          <Image
-            src={image}
-            alt={title}
-            fill
-            className="object-contain transition-transform duration-500 group-hover:scale-105"
-            sizes="(max-width: 768px) 50vw, 25vw"
-          />
-        )}
-      </div>
+      {fillImage ? (
+        <div className={`relative aspect-square overflow-hidden rounded-lg bg-card-bg ${imageClassName}`}>
+          {image && (
+            <Image
+              src={image}
+              alt={title}
+              fill
+              className="object-contain transition-transform duration-500 group-hover:scale-105"
+              sizes="(max-width: 768px) 50vw, 25vw"
+            />
+          )}
+        </div>
+      ) : (
+        <div className={`overflow-hidden rounded-lg ${imageClassName}`}>
+          {image && (
+            <Image
+              src={image}
+              alt={title}
+              width={0}
+              height={0}
+              sizes="(max-width: 768px) 50vw, 25vw"
+              className="w-full h-auto transition-transform duration-500 group-hover:scale-105"
+            />
+          )}
+        </div>
+      )}
       <div className="flex items-center justify-between">
         <p className="text-body font-medium text-primary">{title}</p>
         <ArrowIcon />

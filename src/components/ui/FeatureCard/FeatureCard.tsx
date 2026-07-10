@@ -6,6 +6,7 @@ export default function FeatureCard({
   title,
   description,
   variant = "dark",
+  highlighted = false,
   className = "",
 }: FeatureCardProps) {
   const isDark = variant === "dark";
@@ -13,7 +14,7 @@ export default function FeatureCard({
     <div
       className={`flex flex-col gap-4 rounded-lg border p-6 transition-colors duration-200 ${
         isDark
-          ? "border-white/10 bg-white/5 hover:border-mint"
+          ? `border-white/10 hover:border-mint ${highlighted ? "bg-white/25" : "bg-white/5"}`
           : "border-black/10 bg-transparent hover:border-mint"
       } ${className}`}
     >

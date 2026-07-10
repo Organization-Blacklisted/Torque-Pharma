@@ -1,6 +1,15 @@
 import { apiFetch, type ApiResponse } from "./fetcher";
-import type { AccordionItem } from "@/components/ui/Accordion/Accordion.types";
 import { sanitize } from "@/lib/sanitize";
+import type {
+  GlobalPresencePageData,
+  GpCertificationItem,
+  GpCountry,
+  GpRegion,
+  GpExportCategoryItem,
+  GpCredentialItem,
+  GpCapabilityGroup,
+  GpTorqueModelItem,
+} from "@/types/global-presence";
 
 // ─── Raw API shape ────────────────────────────────────────────────────────────
 
@@ -73,33 +82,6 @@ interface RawGlobalPresencePage {
   };
 }
 
-// ─── Transformed types ────────────────────────────────────────────────────────
-
-export interface GpFaqData {
-  eyebrow: string;
-  title: string;
-  description: string;
-  items: AccordionItem[];
-}
-
-export interface GpCredentialItem {
-  image: string;
-  title: string;
-  description: string;
-}
-
-export interface GpExportCredentialsData {
-  eyebrow: string;
-  title: string;
-  description: string;
-  items: GpCredentialItem[];
-}
-
-export interface GlobalPresencePageData {
-  credentials: GpExportCredentialsData;
-  faq: GpFaqData;
-}
-
 // ─── Fetcher ──────────────────────────────────────────────────────────────────
 
 export async function getGlobalPresencePage(): Promise<GlobalPresencePageData> {
@@ -108,25 +90,92 @@ export async function getGlobalPresencePage(): Promise<GlobalPresencePageData> {
     revalidate: 3600,
   });
 
-  const credentialsRaw = data.content.gp_export_credentials_section;
-  const faqRaw = data.content.gp_faqs_section;
+  const c = data.content;
 
   return {
-    credentials: {
-      eyebrow: credentialsRaw.title,
-      title: credentialsRaw.sub_title,
-      description: credentialsRaw.desc,
-      items: credentialsRaw.items.map((item) => ({
+    top: {
+      eyebrow: c.gp_top_section.title,
+      heading: c.gp_top_section.sub_title,
+      subHeading: c.gp_top_section.sub_title2,
+      description: c.gp_top_section.desc,
+      cta: {
+        label: c.gp_top_section.button_text,
+        href: c.gp_top_section.button_link,
+      },
+    },
+    certifications: {
+      eyebrow: c.gp_certifications_section.title,
+      items: c.gp_certifications_section.items.map<GpCertificationItem>((item) => ({
         image: item.image,
         title: item.title,
-        description: item.desc,
       })),
     },
+    presence: {
+      eyebrow: c.gp_presence_section.title,
+      heading: c.gp_presence_section.sub_title,
+      description: c.gp_presence_section.desc,
+      cta: {
+        label: c.gp_presence_section.button_text,
+        href: c.gp_presence_section.button_link,
+      },
+      regions: c.gp_presence_section.items.map<GpRegion>((region) => ({
+        title: region.title,
+        countries: region.countries.map<GpCountry>((c) => ({
+          image: c.image,
+          title: c.title,
+        })),
+      })),
+    },
+    exportCategories: {
+      eyebrow: c.gp_export_categories_section.title,
+      items: c.gp_export_categories_section.items.map<GpExportCategoryItem>((item) => ({
+        image: item.image,
+        title: item.title,
+        href: item.link,
+      })),
+    },
+    credentials: {
+      eyebrow: c.gp_export_credentials_section.title,
+      title: c.gp_export_credentials_section.sub_title,
+      description: c.gp_export_credentials_section.desc,
+      items: c.gp_export_credentials_section.items.map<GpCredentialItem>((item) => ({
+        image: item.image,
+        title: item.title,
+        description: item.desc.replace(/\r\n/g, " ").trim(),
+      })),
+    },
+    exportCapability: {
+      eyebrow: c.gp_export_capability_section.title,
+      heading: c.gp_export_capability_section.sub_title,
+      description: c.gp_export_capability_section.desc,
+      groups: c.gp_export_capability_section.groups.map<GpCapabilityGroup>((group) => ({
+        items: group.items.map((item) => ({
+          image: item.image,
+          title: item.title,
+          subTitle: item.sub_title,
+          description: item.desc,
+        })),
+      })),
+    },
+    torqueModel: {
+      eyebrow: c.gp_torque_model_section.title,
+      heading: c.gp_torque_model_section.sub_title,
+      description: c.gp_torque_model_section.desc,
+      items: c.gp_torque_model_section.items.map<GpTorqueModelItem>((item) => ({
+        image: item.image,
+        title: item.title,
+      })),
+    },
+    form: {
+      eyebrow: c.gp_form_section.title,
+      heading: c.gp_form_section.sub_title,
+      image: c.gp_form_section.image,
+    },
     faq: {
-      eyebrow: faqRaw.title,
-      title: faqRaw.sub_title,
-      description: faqRaw.desc,
-      items: faqRaw.items.map((item) => ({
+      eyebrow: c.gp_faqs_section.title,
+      title: c.gp_faqs_section.sub_title,
+      description: c.gp_faqs_section.desc,
+      items: c.gp_faqs_section.items.map((item) => ({
         title: item.title,
         content: sanitize(item.desc),
       })),

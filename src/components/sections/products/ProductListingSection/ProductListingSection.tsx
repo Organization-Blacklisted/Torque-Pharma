@@ -264,7 +264,7 @@ export default function ProductListingSection({
             </aside>
 
             {/* ── Right: Controls + grid ─────────────────────────── */}
-            <div>
+            <div className="min-w-0">
 
               {/* ── Mobile controls (hidden on desktop) ────────────── */}
               <div className="lg:hidden space-y-4 mb-8">
