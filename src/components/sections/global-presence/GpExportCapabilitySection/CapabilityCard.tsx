@@ -65,7 +65,7 @@ export default function CapabilityCard({
   return (
     <div
       ref={cardRef}
-      className={`flex h-full flex-col gap-3 p-[var(--spacing-subsection)] ${
+      className={`flex h-full flex-col gap-[var(--spacing-gutter)] p-[var(--spacing-subsection)] ${
         standalone
           ? `rounded-lg border ${dark ? "border-dark-blue bg-dark-blue" : "border-black/10 bg-white"}`
           : ""

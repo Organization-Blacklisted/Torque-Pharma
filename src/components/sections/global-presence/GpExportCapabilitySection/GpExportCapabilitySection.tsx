@@ -52,7 +52,7 @@ export default function GpExportCapabilitySection({
 
       {/* Row 3 — image + stat split */}
       {featured && (
-        <div className="grid overflow-hidden rounded-lg border border-black/10 sm:grid-cols-[70%_1fr]">
+        <div className="grid overflow-hidden rounded-lg border border-black/10 sm:grid-cols-[65%_1fr]">
           {featured.image && (
             <div className="relative min-h-[280px]">
               <Image
