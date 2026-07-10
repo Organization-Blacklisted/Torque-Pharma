@@ -54,7 +54,7 @@ export default function GpTopSection({
       <Container size="reading" className="mt-[var(--spacing-section-inner)]">
         <div className="flex flex-col md:flex-row md:items-stretch">
           {/* Stat block */}
-          <div className="flex flex-col justify-center gap-1 p-[var(--spacing-subsection)]">
+          <div className="flex flex-col items-center justify-center gap-1 px-[var(--spacing-subsection)] pb-3 pt-[var(--spacing-subsection)] md:items-start md:p-[var(--spacing-subsection)]">
             <p className="font-heading text-xl-h font-normal italic leading-none text-primary">
               {number}
             </p>
@@ -77,8 +77,8 @@ export default function GpTopSection({
           />
 
           {/* Description + CTA */}
-          <div className="flex flex-1 flex-col items-start justify-center gap-6 p-[var(--spacing-subsection)]">
-            <p className="font-body text-body leading-relaxed text-secondary">{description}</p>
+          <div className="flex flex-1 flex-col items-center justify-center gap-6 px-[var(--spacing-subsection)] pb-[var(--spacing-subsection)] pt-3 md:items-start md:p-[var(--spacing-subsection)]">
+            <p className="text-center font-body text-body leading-relaxed text-secondary md:text-left">{description}</p>
             <SplitButton href={cta.href} variant="primary">{cta.label}</SplitButton>
           </div>
         </div>
