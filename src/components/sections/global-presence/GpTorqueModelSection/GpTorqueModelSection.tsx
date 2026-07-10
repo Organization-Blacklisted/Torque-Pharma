@@ -14,7 +14,7 @@ export default function GpTorqueModelSection({
 }: GpTorqueModelSectionProps) {
   return (
     <div className={`rounded-lg bg-dark-blue py-[var(--spacing-section-inner)] ${className}`}>
-      <Container size="standard">
+      <Container size="large">
         <div className="flex flex-col gap-[var(--spacing-subsection)]">
           <SectionHeader
             eyebrow={eyebrow}

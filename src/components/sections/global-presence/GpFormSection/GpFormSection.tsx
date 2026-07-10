@@ -15,14 +15,15 @@ export default function GpFormSection({
 }: GpFormSectionProps) {
   return (
     <div className={className}>
-      <SectionHeader
-        eyebrow={eyebrow}
-        title={heading}
-        align="center"
-        size="h2"
-        theme="light"
-        className="mb-[var(--spacing-section-inner)]"
-      />
+      <div className="mx-auto mb-[var(--spacing-section-inner)] max-w-[800px]">
+        <SectionHeader
+          eyebrow={eyebrow}
+          title={heading}
+          align="center"
+          size="h2"
+          theme="light"
+        />
+      </div>
       <div className="grid gap-[var(--spacing-gutter)] md:grid-cols-[2fr_3fr]">
         <div className="relative aspect-[4/3] overflow-hidden rounded-lg md:aspect-auto">
           <Image
