@@ -28,19 +28,19 @@ export default function GpTopSection({
   const { number, label, trailing } = parseStatBlock(subHeading);
 
   return (
-    <div className={`mt-[var(--spacing-page-top)] flex flex-col gap-[var(--spacing-section-inner)] ${className}`}>
+    <div className={`mt-[var(--spacing-page-top)] flex flex-col ${className}`}>
       <div className="mx-auto w-full max-w-[800px] px-3 md:px-4 lg:px-8">
         <SectionHeader
           eyebrow={eyebrow}
           title={heading}
           align="center"
           as="h1"
-          size="h2"
+          size="h1"
           theme="light"
         />
       </div>
 
-      <div className="relative aspect-[1920/760] w-full overflow-hidden">
+      <div className="relative mt-[clamp(1.875rem,3vw,3.125rem)] aspect-[1920/760] w-full overflow-hidden">
         <Image
           src="/images/map/map locations.png"
           alt="Torque Pharma global presence map"
@@ -51,7 +51,7 @@ export default function GpTopSection({
         />
       </div>
 
-      <Container size="content">
+      <Container size="reading" className="mt-[var(--spacing-section-inner)]">
         <div className="flex flex-col md:flex-row md:items-stretch">
           {/* Stat block */}
           <div className="flex flex-col justify-center gap-1 p-[var(--spacing-subsection)]">
