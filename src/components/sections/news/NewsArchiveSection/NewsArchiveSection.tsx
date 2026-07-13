@@ -61,21 +61,23 @@ export default function NewsArchiveSection({ items, className = "" }: NewsArchiv
         className="mb-10 w-full"
       />
 
-      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-black/20">
-        <TabList className="justify-start gap-[clamp(2rem,3vw,2.5rem)] [border-bottom:none]">
-          {categories.map((cat) => (
-            <Tab
-              key={cat}
-              id={`news-tab-${cat.toLowerCase().replace(/\s+/g, "-")}`}
-              isActive={activeCategory === cat}
-              panelId="news-archive-panel"
-              onClick={() => handleCategoryChange(cat)}
-            >
-              {cat}
-            </Tab>
-          ))}
-        </TabList>
-        <p className="shrink-0 font-body text-body-sm text-secondary">
+      <div className="flex items-center justify-between gap-4 border-b border-black/20">
+        <div className="min-w-0 overflow-x-auto">
+          <TabList className="justify-start gap-[clamp(1.5rem,3vw,2.5rem)] [border-bottom:none]">
+            {categories.map((cat) => (
+              <Tab
+                key={cat}
+                id={`news-tab-${cat.toLowerCase().replace(/\s+/g, "-")}`}
+                isActive={activeCategory === cat}
+                panelId="news-archive-panel"
+                onClick={() => handleCategoryChange(cat)}
+              >
+                {cat}
+              </Tab>
+            ))}
+          </TabList>
+        </div>
+        <p className="hidden shrink-0 font-body text-body-sm text-secondary sm:block">
           Showing {filtered.length} article{filtered.length !== 1 ? "s" : ""}
         </p>
       </div>

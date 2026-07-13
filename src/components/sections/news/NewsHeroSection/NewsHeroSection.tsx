@@ -45,8 +45,8 @@ export default function NewsHeroSection({ featured, editorsPicks, className = ""
               </div>
             </div>
 
-            <div className="flex flex-1 flex-col p-8">
-              <div className="flex items-center justify-between gap-4">
+            <div className="flex flex-1 flex-col p-5 sm:p-8">
+              <div className="flex flex-wrap items-center justify-between gap-2">
                 {(featured.tag_image || featured.tag_text) && (
                   <span className="inline-flex h-8 w-fit items-center gap-2 rounded-full bg-mint px-3.5 py-1">
                     {featured.tag_image && (
