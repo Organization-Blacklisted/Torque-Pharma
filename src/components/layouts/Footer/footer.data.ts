@@ -21,7 +21,7 @@ export const quickLinksCol2: NavLink[] = [
   { label: "Torque HRMS", href: "https://torque.keka.com/", external: true },
   { label: "Torque SFA", href: "https://dashboard.fieldassist.io/home", external: true },
   { label: "Blogs", href: "/blogs" },
-  { label: "News & Updates", href: "/news-updates" },
+  { label: "News", href: "/news" },
 ];
 
 export const subBrandsCol1: NavLink[] = [
