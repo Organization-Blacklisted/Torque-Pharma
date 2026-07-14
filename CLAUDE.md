@@ -175,6 +175,8 @@ Body: { "tag": "blogs" }          // or { "tags": ["blogs", "homepage"] }
 | `global-presence` | `global-presence.ts` |
 | `category-{slug}` (e.g. `category-derma`) | `product-category.ts` — `getCategoryPage(slug)` |
 | `category-children-{parentSlug}` (e.g. `category-children-domestic`) | `product-category.ts` — `getSiblingCategories(parentSlug)` |
+| `event-{slug}` (e.g. `event-nainital-marathon`) | `events.ts` — `getEventDetail(slug)` |
+| `news` | `news.ts` — `getNews()` |
 | `{slug}` (e.g. `privacy-policy`) | `pages.ts` — tag is the page slug itself |
 
 When adding a new fetcher with a `tags: [...]` option, add its tag to this table so Laravel knows what to send.

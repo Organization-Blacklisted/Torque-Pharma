@@ -52,7 +52,7 @@ export default function RootLayout({
           </>
         )}
       </head>
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full flex flex-col" suppressHydrationWarning>
           {/* Skip-to-content — invisible until focused, first tab stop for keyboard/screen-reader users */}
           <a
             href="#main-content"
