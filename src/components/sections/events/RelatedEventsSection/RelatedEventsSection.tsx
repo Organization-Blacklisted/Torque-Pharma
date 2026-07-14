@@ -24,7 +24,7 @@ export default function RelatedEventsSection({ events, className = "" }: Related
             slug={event.slug}
             title={event.title}
             featured_image={event.featured_image}
-            tag={event.tag ?? undefined}
+            tag={event.tag ?? null}
           />
         ))}
       </div>
