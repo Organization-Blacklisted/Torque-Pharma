@@ -1,0 +1,22 @@
+warning: in the working copy of 'src/components/sections/history/HistJourneySection/HistJourneySection.tsx', LF will be replaced by CRLF the next time Git touches it
+[1mdiff --git a/src/components/sections/history/HistJourneySection/HistJourneySection.tsx b/src/components/sections/history/HistJourneySection/HistJourneySection.tsx[m
+[1mindex 9814fec..430d36e 100644[m
+[1m--- a/src/components/sections/history/HistJourneySection/HistJourneySection.tsx[m
+[1m+++ b/src/components/sections/history/HistJourneySection/HistJourneySection.tsx[m
+[36m@@ -555,14 +555,14 @@[m [mexport default function HistJourneySection({ section, className = "" }: HistJour[m
+                                 {/* Progress bars */}[m
+                                 <div className="mb-5 flex gap-2">[m
+                                   {Array.from({ length: group.entries.length }).map((_, j) => ([m
+[31m-                                    <div key={j} className="h-px flex-1 bg-white">[m
+[32m+[m[32m                                    <div key={j} className="h-px flex-1 bg-white/30">[m
+                                       <div[m
+                                         data-fill={`${gi}-${j}`}[m
+                                         className="h-full w-0 bg-mint"[m
+                                       />[m
+                                     </div>[m
+                                   ))}[m
+[31m-                                </div>[m
+[32m+[m[32m                                </div>[m[41m [m
+ [m
+                                 <div className="flex items-center justify-end gap-4">[m
+                                   <button[m

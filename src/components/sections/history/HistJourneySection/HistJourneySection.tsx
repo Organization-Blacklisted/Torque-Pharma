@@ -370,7 +370,7 @@ export default function HistJourneySection({ section, className = "" }: HistJour
     obs = Observer.create({
       target: panelRef.current,
       type: "wheel,touch",
-      preventDefault: true,
+      preventDefault: false,
       tolerance: 10,
       onDown: () => !isAnimating && handleAdvance(currentStep + 1),
       onUp: () => !isAnimating && handleAdvance(currentStep - 1),
@@ -555,14 +555,14 @@ export default function HistJourneySection({ section, className = "" }: HistJour
                                 {/* Progress bars */}
                                 <div className="mb-5 flex gap-2">
                                   {Array.from({ length: group.entries.length }).map((_, j) => (
-                                    <div key={j} className="h-px flex-1 bg-white">
+                                    <div key={j} className="h-px flex-1 bg-white/30">
                                       <div
                                         data-fill={`${gi}-${j}`}
                                         className="h-full w-0 bg-mint"
                                       />
                                     </div>
                                   ))}
-                                </div>
+                                </div> 
 
                                 <div className="flex items-center justify-end gap-4">
                                   <button
