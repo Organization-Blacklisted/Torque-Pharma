@@ -425,7 +425,7 @@ export default function HistJourneySection({ section, className = "" }: HistJour
         >
           {/* Sidebar — desktop only, floats above slides */}
           <div className="pointer-events-none absolute inset-0 z-30 hidden lg:block">
-            <div className="mx-auto flex h-full w-full max-w-[1764px] py-[var(--spacing-section-inner)]">
+            <Container size="wide" className="flex h-full py-[var(--spacing-section-inner)]">
               <aside className="pointer-events-auto flex w-84 shrink-0 flex-col gap-8 overflow-y-auto pr-8">
                 <nav ref={sidebarNavRef} className="relative flex flex-col gap-8">
                   <div
@@ -471,7 +471,7 @@ export default function HistJourneySection({ section, className = "" }: HistJour
                   ))}
                 </nav>
               </aside>
-            </div>
+            </Container>
           </div>
 
           {/* Vertical slides track — GSAP y tween between dates */}
@@ -512,7 +512,7 @@ export default function HistJourneySection({ section, className = "" }: HistJour
                       </div>
 
                       {/* Slide content */}
-                      <div className="relative z-10 mx-auto flex h-full w-full max-w-[1764px] flex-col py-[var(--spacing-section-inner)]">
+                      <Container size="wide" className="relative z-10 flex h-full flex-col py-[var(--spacing-section-inner)]">
                         <div className="flex min-h-0 flex-1">
                           <div className="hidden w-84 shrink-0 lg:block" aria-hidden />
 
@@ -520,7 +520,7 @@ export default function HistJourneySection({ section, className = "" }: HistJour
                             <div className="grid flex-1 grid-cols-1 items-center lg:grid-cols-[2fr_3fr]">
                               <div
                                 data-slide-text
-                                className="flex flex-col gap-6 px-6 lg:pl-14 lg:pr-10"
+                                className="flex flex-col gap-6 lg:pl-14 lg:pr-10"
                               >
                                 <p
                                   className="font-heading font-light leading-none text-mint"
@@ -535,7 +535,7 @@ export default function HistJourneySection({ section, className = "" }: HistJour
 
                               <div
                                 data-slide-image
-                                className="flex items-center justify-center px-6 lg:px-10"
+                                className="flex items-center justify-center lg:px-10"
                               >
                                 <Image
                                   src={entry.image}
@@ -551,7 +551,7 @@ export default function HistJourneySection({ section, className = "" }: HistJour
 
                             {/* Controls — positioned under the text column */}
                             <div className="grid grid-cols-1 lg:grid-cols-[2fr_3fr]">
-                              <div className="px-6 py-6 lg:pl-14 lg:pr-10">
+                              <div className="py-6 lg:pl-14 lg:pr-10">
                                 {/* Progress bars */}
                                 <div className="mb-5 flex gap-2">
                                   {Array.from({ length: group.entries.length }).map((_, j) => (
@@ -607,7 +607,7 @@ export default function HistJourneySection({ section, className = "" }: HistJour
                             </div>
                           </div>
                         </div>
-                      </div>
+                      </Container>
                     </div>
                   ))}
                 </div>
