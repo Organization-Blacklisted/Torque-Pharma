@@ -5,22 +5,23 @@ import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
+import { Observer } from "gsap/Observer";
 import SectionHeader from "@/components/ui/SectionHeading";
 import Container from "@/components/layouts/Container";
 import type { HistJourneySectionProps } from "./HistJourneySection.types";
 
-gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+gsap.registerPlugin(ScrollTrigger, ScrollToPlugin, Observer);
 
-// Browser-only — ScrollTrigger needs window/document, crashes during SSR static gen
 if (typeof window !== "undefined") {
   ScrollTrigger.config({ limitCallbacks: true, ignoreMobileResize: true });
-  ScrollTrigger.normalizeScroll(true);
 }
 
 const PANEL_H = "calc(100vh - 96px)";
 const HEADER_H = 96;
-const PARALLAX_DESKTOP = 60;
-const PARALLAX_MOBILE = 20;
+const BAR_DURATION = 4;       // seconds each progress bar takes to fill
+const TRANSITION = 0.72;      // slide transition duration
+const PARALLAX = 40;          // px background depth offset
+const SCROLL_PER_STEP = 600;  // virtual scroll px reserved per step
 
 interface DateGroup {
   decadeIndex: number;
@@ -56,7 +57,7 @@ export default function HistJourneySection({ section, className = "" }: HistJour
     [dateGroups]
   );
 
-  // positions[i] = component state after i transitions (positions[0] = initial)
+  // positions[stepIndex] = { dateIdx, entryIdx }
   const positions = useMemo(() => {
     const pos: Array<{ dateIdx: number; entryIdx: number }> = [{ dateIdx: 0, entryIdx: 0 }];
     dateGroups.forEach((group, gi) => {
@@ -70,7 +71,6 @@ export default function HistJourneySection({ section, className = "" }: HistJour
     return pos;
   }, [dateGroups]);
 
-  // Only React state needed: active date for sidebar button colour
   const [activeDateIdx, setActiveDateIdx] = useState(0);
   const activeDateRef = useRef(0);
   const activeEntryRef = useRef(0);
@@ -82,21 +82,20 @@ export default function HistJourneySection({ section, className = "" }: HistJour
   const sidebarNavRef = useRef<HTMLElement>(null);
   const sidebarIndicatorRef = useRef<HTMLDivElement>(null);
   const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
-  // Cached fill elements: key = `${gi}-${j}`
   const barFillCache = useRef<Record<string, Element[]>>({});
-  // quickTo setter for indicator — bypasses React for frame-accurate updates
   const quickIndicator = useRef<((value: number) => void) | null>(null);
-  // Cached button Y positions relative to nav (computed once, stable)
   const btnYPositions = useRef<number[]>([]);
+  // Exposes goToStep to jumpToDate (which lives outside the effect)
+  const goToStepRef = useRef<((step: number) => void) | null>(null);
 
-  // Initialize all slide content as invisible — prevents flash before onEnter fires
+  // Initialize all slide content as invisible before section enters viewport
   useEffect(() => {
     if (!panelRef.current) return;
     const els = panelRef.current.querySelectorAll("[data-slide-text], [data-slide-image]");
     gsap.set(els, { autoAlpha: 0 });
   }, [dateGroups]);
 
-  // Cache progress bar fill elements after mount
+  // Cache [data-fill] elements for zero-overhead bar updates
   useEffect(() => {
     if (!panelRef.current) return;
     dateGroups.forEach((group, gi) => {
@@ -108,19 +107,17 @@ export default function HistJourneySection({ section, className = "" }: HistJour
     });
   }, [dateGroups]);
 
-  // Cache sidebar button positions + create quickTo indicator setter
+  // quickTo indicator + button position cache
   useEffect(() => {
     if (!sidebarNavRef.current || !sidebarIndicatorRef.current) return;
     const nav = sidebarNavRef.current;
     const indicator = sidebarIndicatorRef.current;
 
-    // quickTo: pre-compiled GSAP setter, no overhead on each call
     quickIndicator.current = gsap.quickTo(indicator, "y", {
       duration: 0.65,
       ease: "power3.out",
     });
 
-    // Measure button positions once — they don't move after layout
     const navTop = nav.getBoundingClientRect().top;
     const buttons = nav.querySelectorAll<HTMLElement>("[data-date-key]");
     btnYPositions.current = Array.from(buttons).map((btn) => {
@@ -128,23 +125,26 @@ export default function HistJourneySection({ section, className = "" }: HistJour
       return r.top - navTop + r.height / 2 - 3;
     });
 
-    // Snap indicator to first button immediately — avoids y:0 start position
     if (btnYPositions.current[0] !== undefined) {
       gsap.set(indicator, { y: btnYPositions.current[0] });
     }
   }, [dateGroups]);
 
-  // Drive progress bars via GSAP — zero React re-renders
+  // Set all bars to their filled/empty state; active bar is reset to 0 (startBar fills it)
   const updateProgressBars = useCallback(
     (dateIdx: number, entryIdx: number) => {
       dateGroups.forEach((group, g) => {
         for (let j = 0; j < group.entries.length; j++) {
-          const filled = g < dateIdx || (g === dateIdx && j <= entryIdx);
+          const isActive = g === dateIdx && j === entryIdx;
+          const isFilled = g < dateIdx || (g === dateIdx && j < entryIdx);
           const els = barFillCache.current[`${g}-${j}`];
-          if (els?.length) {
+          if (!els?.length) return;
+          if (isActive) {
+            gsap.set(els, { width: "0%" });
+          } else {
             gsap.to(els, {
-              width: filled ? "100%" : "0%",
-              duration: 0.45,
+              width: isFilled ? "100%" : "0%",
+              duration: 0.3,
               ease: "power2.out",
               overwrite: "auto",
             });
@@ -155,7 +155,7 @@ export default function HistJourneySection({ section, className = "" }: HistJour
     [dateGroups]
   );
 
-  // Stagger entrance for active slide content (year → desc → image)
+  // Stagger entrance: year text → desc → image
   const animateContentIn = useCallback((dateIdx: number, entryIdx: number) => {
     const trackEl = entryTrackRefs.current[dateIdx];
     if (!trackEl) return;
@@ -182,191 +182,213 @@ export default function HistJourneySection({ section, className = "" }: HistJour
     );
   }, []);
 
-  // Main ScrollTrigger setup — uses gsap.matchMedia() for responsive + a11y
   useEffect(() => {
     if (typeof window === "undefined") return;
     if (!wrapperRef.current || !panelRef.current || !slidesTrackRef.current) return;
     if (dateGroups.length === 0 || totalEntries === 0) return;
 
-    const getPanelHeight = () => panelRef.current?.offsetHeight ?? 0;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const getPanelHeight = () => panelRef.current?.offsetHeight ?? window.innerHeight - HEADER_H;
     const getPanelWidth = () => panelRef.current?.offsetWidth ?? window.innerWidth;
-    const totalTransitions = totalEntries - 1;
+    const totalSteps = totalEntries;
 
-    const mm = gsap.matchMedia();
+    let currentStep = 0;
+    let isAnimating = false;
+    let barTween: gsap.core.Tween | null = null;
+    let st: ScrollTrigger | null = null;
+    let obs: ReturnType<typeof Observer.create> | null = null;
 
-    mm.add(
-      {
-        isDesktop: "(min-width: 1024px)",
-        reduceMotion: "(prefers-reduced-motion: reduce)",
-      },
-      (context) => {
-        const { isDesktop, reduceMotion } =
-          context.conditions as { isDesktop: boolean; reduceMotion: boolean };
-
-        // Accessibility: respect user's motion preference
-        if (reduceMotion) {
-          updateProgressBars(0, 0);
-          return () => {};
-        }
-
-        const parallax = isDesktop ? PARALLAX_DESKTOP : PARALLAX_MOBILE;
-        const scrubValue = isDesktop ? 0.3 : 0.55;
-        // hasEntered: true after first onEnter fires
-        // skipNextSnap: onEnter sets this so the immediately-following entry snap is ignored
-        let hasEntered = false;
-        let skipNextSnap = false;
-
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            id: "hist-journey",
-            trigger: wrapperRef.current,
-            start: `top top+=${HEADER_H}`,
-            end: () => `+=${getPanelHeight() * Math.max(totalTransitions, 0)}`,
-            pin: panelRef.current,
-            scrub: scrubValue,
-            anticipatePin: 1,
-            invalidateOnRefresh: true,
-            // markers: process.env.NODE_ENV === "development",
-            onEnter: () => {
-              if (!hasEntered) {
-                hasEntered = true;
-                skipNextSnap = true; // the entry snap fires right after — skip it
-                animateContentIn(0, 0);
-                updateProgressBars(0, 0);
-              }
-            },
-            snap:
-              totalEntries > 1
-                ? {
-                    snapTo: 1 / totalTransitions,
-                    duration: { min: 0.25, max: 0.55 },
-                    delay: 0.04,
-                    ease: "power3.inOut",
-                    directional: true,
-                    onComplete: () => {
-                      // Skip the first snap — onEnter already handled the first slide
-                      if (skipNextSnap) {
-                        skipNextSnap = false;
-                        return;
-                      }
-                      animateContentIn(activeDateRef.current, activeEntryRef.current);
-                    },
-                  }
-                : undefined,
-            onUpdate: (self) => {
-              if (totalTransitions === 0) return;
-              const posIdx = Math.min(
-                Math.round(self.progress * totalTransitions),
-                positions.length - 1
-              );
-              const { dateIdx, entryIdx } = positions[posIdx];
-
-              if (dateIdx !== activeDateRef.current || entryIdx !== activeEntryRef.current) {
-                activeDateRef.current = dateIdx;
-                activeEntryRef.current = entryIdx;
-
-                // React state for sidebar button colour — only re-renders sidebar
-                setActiveDateIdx(dateIdx);
-
-                // quickTo: frame-accurate indicator update, no React roundtrip
-                if (
-                  quickIndicator.current &&
-                  btnYPositions.current[dateIdx] !== undefined
-                ) {
-                  quickIndicator.current(btnYPositions.current[dateIdx]);
-                }
-
-                // GSAP-direct progress bars
-                updateProgressBars(dateIdx, entryIdx);
-              }
-            },
-          },
-        });
-
-        // ── Timeline: horizontal transitions → vertical date advances ──
-        dateGroups.forEach((group, gi) => {
-          const entryTrack = entryTrackRefs.current[gi];
-          const slides = entryTrack?.querySelectorAll<HTMLElement>("[data-slide]");
-
-          for (let ei = 1; ei < group.entries.length; ei++) {
-            // Main horizontal x tween
-            tl.to(
-              entryTrack,
-              { x: () => -ei * getPanelWidth(), ease: "none", duration: 1 },
-              ">"
-            );
-
-            // BG parallax: leaving slide bg drifts in direction of travel
-            const leavingBg = slides?.[ei - 1]?.querySelector<HTMLElement>("[data-slide-bg]");
-            if (leavingBg) {
-              tl.to(leavingBg, { x: parallax, ease: "none", duration: 1 }, "<");
-            }
-
-            // BG parallax: entering slide bg arrives from opposite offset
-            const enteringBg = slides?.[ei]?.querySelector<HTMLElement>("[data-slide-bg]");
-            if (enteringBg) {
-              gsap.set(enteringBg, { x: -parallax });
-              tl.to(enteringBg, { x: 0, ease: "none", duration: 1 }, "<");
-            }
-          }
-
-          // Main vertical y tween
-          if (gi < dateGroups.length - 1) {
-            tl.to(
-              slidesTrackRef.current,
-              { y: () => -(gi + 1) * getPanelHeight(), ease: "none", duration: 1 },
-              ">"
-            );
-
-            // BG parallax: last entry of current date drifts upward
-            const leavingBg =
-              slides?.[group.entries.length - 1]?.querySelector<HTMLElement>("[data-slide-bg]");
-            if (leavingBg) {
-              tl.to(leavingBg, { y: -parallax, ease: "none", duration: 1 }, "<");
-            }
-
-            // BG parallax: first entry of next date arrives from below
-            const nextSlides = entryTrackRefs.current[gi + 1]?.querySelectorAll<HTMLElement>(
-              "[data-slide]"
-            );
-            const enteringBg = nextSlides?.[0]?.querySelector<HTMLElement>("[data-slide-bg]");
-            if (enteringBg) {
-              gsap.set(enteringBg, { y: parallax });
-              tl.to(enteringBg, { y: 0, ease: "none", duration: 1 }, "<");
-            }
-          }
-        });
-
-        scrollTriggerRef.current = tl.scrollTrigger ?? null;
-
-        return () => {
-          scrollTriggerRef.current = null;
-        };
+    // ── Sidebar sync (bypasses React state for the indicator, React state for button colours) ──
+    const syncSidebar = (dateIdx: number) => {
+      activeDateRef.current = dateIdx;
+      setActiveDateIdx(dateIdx);
+      if (quickIndicator.current && btnYPositions.current[dateIdx] !== undefined) {
+        quickIndicator.current(btnYPositions.current[dateIdx]);
       }
-    );
+    };
 
-    return () => mm.revert();
+    // ── Start auto-fill timer for progress bar at gi/ei ──
+    const startBar = (gi: number, ei: number) => {
+      if (reduceMotion) return;
+      const fills = barFillCache.current[`${gi}-${ei}`];
+      if (!fills?.length) return;
+      barTween?.kill();
+      gsap.set(fills, { width: "0%" });
+      barTween = gsap.to(fills, {
+        width: "100%",
+        duration: BAR_DURATION,
+        ease: "none",
+        overwrite: true,
+        onComplete: () => {
+          if (!isAnimating) handleAdvance(currentStep + 1);
+        },
+      });
+    };
+
+    // ── Transition to a specific step ──
+    const goToStep = (newStep: number) => {
+      if (newStep < 0 || newStep >= totalSteps || isAnimating) return;
+
+      barTween?.kill();
+
+      const prevPos = positions[currentStep];
+      const nextPos = positions[newStep];
+      const forward = newStep > currentStep;
+      currentStep = newStep;
+
+      activeEntryRef.current = nextPos.entryIdx;
+      syncSidebar(nextPos.dateIdx);
+      updateProgressBars(nextPos.dateIdx, nextPos.entryIdx);
+
+      // Keep ST scroll position in sync with the current step
+      if (st) {
+        gsap.to(window, {
+          scrollTo: { y: st.start + newStep * SCROLL_PER_STEP, autoKill: false },
+          duration: 0.15,
+          ease: "none",
+        });
+      }
+
+      const onDone = () => {
+        isAnimating = false;
+        animateContentIn(nextPos.dateIdx, nextPos.entryIdx);
+        startBar(nextPos.dateIdx, nextPos.entryIdx);
+      };
+
+      if (prevPos.dateIdx === nextPos.dateIdx) {
+        // ── Horizontal: next/prev entry within same date ──
+        const track = entryTrackRefs.current[nextPos.dateIdx];
+        const slides = track?.querySelectorAll<HTMLElement>("[data-slide]");
+        const leavingBg = slides?.[prevPos.entryIdx]?.querySelector<HTMLElement>("[data-slide-bg]");
+        const enteringBg = slides?.[nextPos.entryIdx]?.querySelector<HTMLElement>("[data-slide-bg]");
+
+        if (enteringBg) gsap.set(enteringBg, { x: forward ? -PARALLAX : PARALLAX, y: 0 });
+
+        isAnimating = true;
+        gsap.to(track, {
+          x: () => -nextPos.entryIdx * getPanelWidth(),
+          duration: TRANSITION,
+          ease: "power3.inOut",
+          onComplete: onDone,
+        });
+        if (leavingBg) gsap.to(leavingBg, { x: forward ? PARALLAX : -PARALLAX, duration: TRANSITION, ease: "power3.inOut" });
+        if (enteringBg) gsap.to(enteringBg, { x: 0, duration: TRANSITION, ease: "power3.inOut" });
+
+      } else {
+        // ── Vertical: different date ──
+        // Instantly snap the target date's entry track to the right entry
+        const nextTrack = entryTrackRefs.current[nextPos.dateIdx];
+        if (nextTrack) gsap.set(nextTrack, { x: -nextPos.entryIdx * getPanelWidth() });
+
+        const prevSlides = entryTrackRefs.current[prevPos.dateIdx]?.querySelectorAll<HTMLElement>("[data-slide]");
+        const nextSlides = entryTrackRefs.current[nextPos.dateIdx]?.querySelectorAll<HTMLElement>("[data-slide]");
+        const leavingBg = prevSlides?.[prevPos.entryIdx]?.querySelector<HTMLElement>("[data-slide-bg]");
+        const enteringBg = nextSlides?.[nextPos.entryIdx]?.querySelector<HTMLElement>("[data-slide-bg]");
+
+        if (enteringBg) gsap.set(enteringBg, { y: forward ? PARALLAX : -PARALLAX, x: 0 });
+
+        isAnimating = true;
+        gsap.to(slidesTrackRef.current, {
+          y: () => -nextPos.dateIdx * getPanelHeight(),
+          duration: TRANSITION,
+          ease: "power3.inOut",
+          onComplete: onDone,
+        });
+        if (leavingBg) gsap.to(leavingBg, { y: forward ? -PARALLAX : PARALLAX, duration: TRANSITION, ease: "power3.inOut" });
+        if (enteringBg) gsap.to(enteringBg, { y: 0, duration: TRANSITION, ease: "power3.inOut" });
+      }
+    };
+
+    // ── handleAdvance: called by bar timer + observer; handles edge cases ──
+    const handleAdvance = (newStep: number) => {
+      if (newStep >= totalSteps) {
+        // All done — release pin by scrolling past end
+        barTween?.kill();
+        if (st) {
+          gsap.to(window, {
+            scrollTo: { y: st.end + 10, autoKill: false },
+            duration: 0.5,
+            ease: "power2.inOut",
+          });
+        }
+        return;
+      }
+      if (newStep < 0) {
+        barTween?.kill();
+        if (st) {
+          gsap.to(window, {
+            scrollTo: { y: Math.max(0, st.start - 10), autoKill: false },
+            duration: 0.4,
+            ease: "power2.inOut",
+          });
+        }
+        return;
+      }
+      goToStep(newStep);
+    };
+
+    goToStepRef.current = goToStep;
+
+    // ── Pin the panel for the duration of all steps ──
+    st = ScrollTrigger.create({
+      id: "hist-journey",
+      trigger: wrapperRef.current,
+      pin: panelRef.current,
+      start: `top top+=${HEADER_H}`,
+      end: () => `+=${(totalSteps - 1) * SCROLL_PER_STEP}`,
+      anticipatePin: 1,
+      invalidateOnRefresh: true,
+      onEnter: () => {
+        obs?.enable();
+        currentStep = 0;
+        isAnimating = false;
+        animateContentIn(0, 0);
+        updateProgressBars(0, 0);
+        startBar(0, 0);
+      },
+      onLeave: () => {
+        obs?.disable();
+      },
+      onEnterBack: () => {
+        obs?.enable();
+      },
+      onLeaveBack: () => {
+        barTween?.kill();
+        obs?.disable();
+      },
+    });
+
+    scrollTriggerRef.current = st;
+
+    // ── Observer: intercept wheel + touch for discrete step advancement ──
+    obs = Observer.create({
+      target: panelRef.current,
+      type: "wheel,touch",
+      preventDefault: true,
+      tolerance: 10,
+      onDown: () => !isAnimating && handleAdvance(currentStep + 1),
+      onUp: () => !isAnimating && handleAdvance(currentStep - 1),
+    });
+    // Start disabled — enabled only when panel is pinned (onEnter fires)
+    obs.disable();
+
+    return () => {
+      barTween?.kill();
+      obs?.kill();
+      st?.kill();
+      scrollTriggerRef.current = null;
+      goToStepRef.current = null;
+    };
   }, [dateGroups, totalEntries, positions, animateContentIn, updateProgressBars]);
 
   const jumpToDate = useCallback(
     (gi: number, ei = 0) => {
-      const st = scrollTriggerRef.current ?? ScrollTrigger.getById("hist-journey");
-      if (!st || totalEntries <= 1) return;
-      let count = 0;
-      for (let g = 0; g < gi; g++) {
-        count += dateGroups[g].entries.length - 1;
-        if (g < dateGroups.length - 1) count += 1;
+      const targetStep = positions.findIndex((p) => p.dateIdx === gi && p.entryIdx === ei);
+      if (targetStep !== -1 && goToStepRef.current) {
+        goToStepRef.current(targetStep);
       }
-      count += ei;
-      const progress = count / (totalEntries - 1);
-      const targetScroll = st.start + (st.end - st.start) * progress;
-      gsap.to(window, {
-        scrollTo: { y: targetScroll, autoKill: true },
-        duration: 1.1,
-        ease: "power3.inOut",
-      });
     },
-    [dateGroups, totalEntries]
+    [positions]
   );
 
   const activeGroup = dateGroups[activeDateIdx];
@@ -375,7 +397,6 @@ export default function HistJourneySection({ section, className = "" }: HistJour
 
   return (
     <div id="history-journey" className={className}>
-      {/* Section header — light area above the dark panel */}
       <div className="pb-12">
         <Container size="wide">
           <div className="mx-auto max-w-[900px]">
@@ -390,7 +411,7 @@ export default function HistJourneySection({ section, className = "" }: HistJour
           className="relative overflow-hidden bg-dark-blue"
           style={{ height: PANEL_H }}
         >
-          {/* Fixed sidebar — desktop only, floats above slides via z-30 */}
+          {/* Sidebar — desktop only, floats above slides */}
           <div className="pointer-events-none absolute inset-0 z-30 hidden lg:block">
             <div className="mx-auto flex h-full w-full max-w-[1764px] py-[var(--spacing-section-inner)]">
               <aside className="pointer-events-auto flex w-84 shrink-0 flex-col gap-8 overflow-y-auto pr-8">
@@ -460,7 +481,7 @@ export default function HistJourneySection({ section, className = "" }: HistJour
                       data-slide
                       className="relative h-full w-screen shrink-0 overflow-hidden"
                     >
-                      {/* Background — parallax via [data-slide-bg] */}
+                      {/* Background with parallax depth */}
                       <div className="absolute inset-0 overflow-hidden">
                         <div
                           data-slide-bg
@@ -478,7 +499,7 @@ export default function HistJourneySection({ section, className = "" }: HistJour
                         </div>
                       </div>
 
-                      {/* Content — entrance via [data-slide-text] / [data-slide-image] */}
+                      {/* Slide content */}
                       <div className="relative z-10 mx-auto flex h-full w-full max-w-[1764px] flex-col py-[var(--spacing-section-inner)]">
                         <div className="flex min-h-0 flex-1">
                           <div className="hidden w-84 shrink-0 lg:block" aria-hidden />
@@ -516,10 +537,10 @@ export default function HistJourneySection({ section, className = "" }: HistJour
                               </div>
                             </div>
 
-                            {/* Controls — aligned under text column */}
+                            {/* Controls — positioned under the text column */}
                             <div className="grid grid-cols-1 lg:grid-cols-[2fr_3fr]">
                               <div className="px-6 py-6 lg:pl-14 lg:pr-10">
-                                {/* Progress bars — GSAP fills via [data-fill] */}
+                                {/* Progress bars */}
                                 <div className="mb-5 flex gap-2">
                                   {Array.from({ length: group.entries.length }).map((_, j) => (
                                     <div key={j} className="h-px flex-1 bg-mint/30">
