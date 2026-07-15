@@ -42,7 +42,7 @@ export default function HistTopSection({
         />
         <SafeHtml
           html={description}
-          className="text-body leading-relaxed text-secondary [&_strong]:font-semibold [&_strong]:text-primary"
+          className="text-body leading-relaxed text-secondary [&_strong]:font-medium [&_strong]:text-secondary"
         />
       </div>
 
