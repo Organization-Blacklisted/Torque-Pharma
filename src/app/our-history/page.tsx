@@ -16,7 +16,7 @@ export default async function HistoryPage() {
   return (
     <>
       <Section first>
-        <Container size="reading">
+        <Container size="large">
           <HistTopSection {...top} journeyLabel={journeyLabel} />
         </Container>
       </Section>

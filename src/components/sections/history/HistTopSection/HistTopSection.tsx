@@ -32,7 +32,7 @@ export default function HistTopSection({
 
   return (
     <div className={`flex flex-col items-center gap-8 ${className}`}>
-      <div className="flex flex-col items-center gap-5 text-center">
+      <div className="flex flex-col items-center gap-5 text-center max-w-[1100]">
         <SectionHeader
           eyebrow={eyebrow}
           title={heading}
