@@ -11,9 +11,11 @@ import type { HistJourneySectionProps } from "./HistJourneySection.types";
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
-// Module-level config — must run once, before any component mounts
-ScrollTrigger.config({ limitCallbacks: true, ignoreMobileResize: true });
-ScrollTrigger.normalizeScroll(true);
+// Browser-only — ScrollTrigger needs window/document, crashes during SSR static gen
+if (typeof window !== "undefined") {
+  ScrollTrigger.config({ limitCallbacks: true, ignoreMobileResize: true });
+  ScrollTrigger.normalizeScroll(true);
+}
 
 const PANEL_H = "calc(100vh - 96px)";
 const HEADER_H = 96;
