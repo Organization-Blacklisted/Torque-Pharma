@@ -240,6 +240,15 @@ export default function HistJourneySection({ section, className = "" }: HistJour
       syncSidebar(nextPos.dateIdx);
       updateProgressBars(nextPos.dateIdx, nextPos.entryIdx);
 
+      // Pre-hide the entering slide's content now so animateContentIn fades
+      // from 0→1 without a visible snap (backwards slides retain opacity:1
+      // from clearProps after their last entrance animation)
+      const nextTrackEl = entryTrackRefs.current[nextPos.dateIdx];
+      const nextSlideEl = nextTrackEl?.querySelectorAll<HTMLElement>("[data-slide]")?.[nextPos.entryIdx];
+      if (nextSlideEl) {
+        gsap.set(nextSlideEl.querySelectorAll("[data-slide-text], [data-slide-image]"), { opacity: 0, y: 0 });
+      }
+
       // Keep ST scroll position in sync with the current step
       if (st) {
         gsap.to(window, {
