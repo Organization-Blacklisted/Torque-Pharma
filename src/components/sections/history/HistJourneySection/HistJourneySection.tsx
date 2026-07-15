@@ -88,11 +88,11 @@ export default function HistJourneySection({ section, className = "" }: HistJour
   // Exposes goToStep to jumpToDate (which lives outside the effect)
   const goToStepRef = useRef<((step: number) => void) | null>(null);
 
-  // Initialize all slide content as invisible before section enters viewport
+  // Initialize all slide content as transparent before section enters viewport
   useEffect(() => {
     if (!panelRef.current) return;
     const els = panelRef.current.querySelectorAll("[data-slide-text], [data-slide-image]");
-    gsap.set(els, { autoAlpha: 0 });
+    gsap.set(els, { opacity: 0 });
   }, [dateGroups]);
 
   // Cache [data-fill] elements for zero-overhead bar updates
@@ -169,15 +169,15 @@ export default function HistJourneySection({ section, className = "" }: HistJour
     if (!targets.length) return;
     gsap.fromTo(
       targets,
-      { autoAlpha: 0, y: 18 },
+      { opacity: 0, y: 10 },
       {
-        autoAlpha: 1,
+        opacity: 1,
         y: 0,
-        duration: 0.55,
+        duration: 0.5,
         ease: "power2.out",
-        stagger: 0.09,
+        stagger: 0.06,
         overwrite: "auto",
-        clearProps: "transform,opacity,visibility",
+        clearProps: "transform,opacity",
       }
     );
   }, []);
