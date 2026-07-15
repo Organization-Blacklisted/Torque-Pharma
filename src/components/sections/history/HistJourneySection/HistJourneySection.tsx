@@ -574,14 +574,14 @@ export default function HistJourneySection({ section, className = "" }: HistJour
                                     }}
                                     disabled={gi === 0 && ei === 0}
                                     aria-label="Previous entry"
-                                    className="text-white/40 transition-colors hover:text-white disabled:cursor-not-allowed disabled:opacity-20"
+                                    className="opacity-100 transition-opacity hover:opacity-60 disabled:cursor-not-allowed disabled:opacity-20"
                                   >
-                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
-                                      <path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden>
+                                      <path d="M5.07495 11.7237C4.98827 11.8104 4.93904 11.9277 4.93892 12.0504C4.93892 12.1731 4.98815 12.2915 5.07495 12.3784L10.111 17.4144C10.1978 17.5012 10.3156 17.5498 10.4383 17.5498C10.5611 17.5498 10.6788 17.5012 10.7656 17.4144C10.8525 17.3276 10.901 17.2099 10.901 17.0871C10.901 16.9643 10.8525 16.8466 10.7656 16.7598L6.51955 12.5137H18.4962C18.7518 12.5137 18.9595 12.306 18.9595 12.0504C18.9593 11.795 18.7522 11.5879 18.4969 11.5877H6.52024L10.7656 7.34229C10.8525 7.25547 10.9017 7.13707 10.9017 7.01429C10.9016 6.89168 10.8523 6.77442 10.7656 6.68766C10.6788 6.60084 10.5611 6.55094 10.4383 6.55094C10.3156 6.55095 10.1978 6.60086 10.111 6.68766L5.07495 11.7237Z" fill="white" stroke="white" strokeWidth="0.213672" />
                                     </svg>
                                   </button>
 
-                                  <span className="font-body text-body-sm tabular-nums text-white/40">
+                                  <span className="font-body text-h5 font-normal tabular-nums tracking-[3.6px] text-white" style={{ lineHeight: "24px" }}>
                                     {ei + 1} / {group.entries.length}
                                   </span>
 
@@ -596,10 +596,10 @@ export default function HistJourneySection({ section, className = "" }: HistJour
                                       ei === group.entries.length - 1
                                     }
                                     aria-label="Next entry"
-                                    className="text-white/40 transition-colors hover:text-white disabled:cursor-not-allowed disabled:opacity-20"
+                                    className="opacity-100 transition-opacity hover:opacity-60 disabled:cursor-not-allowed disabled:opacity-20"
                                   >
-                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
-                                      <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden>
+                                      <path d="M18.925 11.7237C19.0117 11.8104 19.061 11.9277 19.0611 12.0504C19.0611 12.1731 19.0119 12.2915 18.925 12.3784L13.889 17.4144C13.8022 17.5012 13.6844 17.5498 13.5617 17.5498C13.4389 17.5498 13.3212 17.5012 13.2344 17.4144C13.1475 17.3276 13.099 17.2099 13.099 17.0871C13.099 16.9643 13.1475 16.8466 13.2344 16.7598L17.4804 12.5137H5.50383C5.24819 12.5137 5.04051 12.306 5.04048 12.0504C5.04073 11.795 5.24782 11.5879 5.50314 11.5877H17.4798L13.2344 7.34229C13.1475 7.25547 13.0983 7.13707 13.0983 7.01429C13.0984 6.89168 13.1477 6.77442 13.2344 6.68766C13.3212 6.60084 13.4389 6.55094 13.5617 6.55094C13.6844 6.55095 13.8022 6.60086 13.889 6.68766L18.925 11.7237Z" fill="white" stroke="white" strokeWidth="0.213672" />
                                     </svg>
                                   </button>
                                 </div>
