@@ -555,7 +555,7 @@ export default function HistJourneySection({ section, className = "" }: HistJour
                                 {/* Progress bars */}
                                 <div className="mb-5 flex gap-2">
                                   {Array.from({ length: group.entries.length }).map((_, j) => (
-                                    <div key={j} className="h-px flex-1 bg-mint/30">
+                                    <div key={j} className="h-px flex-1 bg-white">
                                       <div
                                         data-fill={`${gi}-${j}`}
                                         className="h-full w-0 bg-mint"
