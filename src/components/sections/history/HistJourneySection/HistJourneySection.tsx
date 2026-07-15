@@ -369,7 +369,7 @@ export default function HistJourneySection({ section, className = "" }: HistJour
     // ── Observer: intercept wheel + touch for discrete step advancement ──
 obs = Observer.create({
   target: panelRef.current,
-  type: "touch",
+  type: "wheel,touch",
   preventDefault: true,
   tolerance: 10,
 
