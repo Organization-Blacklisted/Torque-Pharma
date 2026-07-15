@@ -1,6 +1,23 @@
 import { apiFetch, type ApiResponse } from "./fetcher";
 import type { HistoryPageData } from "@/types/history";
 
+interface RawEntry {
+  bg_image: string;
+  image: string;
+  desc: string;
+}
+
+interface RawDate {
+  date: string;
+  entries: RawEntry[];
+}
+
+interface RawItem {
+  title: string;
+  sub_title: string;
+  dates: RawDate[];
+}
+
 interface RawHistoryPage {
   content: {
     hist_top_section: {
@@ -11,6 +28,8 @@ interface RawHistoryPage {
     };
     hist_journey_section: {
       title: string;
+      sub_title: string;
+      items: RawItem[];
     };
   };
 }
@@ -31,5 +50,10 @@ export async function getHistoryPage(): Promise<HistoryPageData> {
       image: c.hist_top_section.image,
     },
     journeyLabel: c.hist_journey_section.title,
+    journey: {
+      title: c.hist_journey_section.title,
+      sub_title: c.hist_journey_section.sub_title,
+      items: c.hist_journey_section.items,
+    },
   };
 }

@@ -60,7 +60,7 @@ export default function HistTopSection({
       <button
         type="button"
         onClick={handleScroll}
-        className="flex items-center gap-2 rounded-lg border border-primary/30 px-6 py-3 text-button font-medium uppercase tracking-wide text-primary transition-colors hover:border-mint hover:text-mint"
+        className="flex items-center gap-1 rounded-lg px-3 py-3 text-button font-medium uppercase tracking-wide text-primary transition-colors  hover:text-mint cursor-pointer"
       >
         {journeyLabel}
         <ChevronDown />

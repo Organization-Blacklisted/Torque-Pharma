@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Section from "@/components/layouts/Section";
 import Container from "@/components/layouts/Container";
 import HistTopSection from "@/components/sections/history/HistTopSection";
+import HistJourneySection from "@/components/sections/history/HistJourneySection";
 import { getHistoryPage } from "@/lib/api/history";
 
 export const metadata: Metadata = {
@@ -10,7 +11,7 @@ export const metadata: Metadata = {
 };
 
 export default async function HistoryPage() {
-  const { top, journeyLabel } = await getHistoryPage();
+  const { top, journeyLabel, journey } = await getHistoryPage();
 
   return (
     <>
@@ -19,6 +20,8 @@ export default async function HistoryPage() {
           <HistTopSection {...top} journeyLabel={journeyLabel} />
         </Container>
       </Section>
+
+      <HistJourneySection section={journey} />
     </>
   );
 }
