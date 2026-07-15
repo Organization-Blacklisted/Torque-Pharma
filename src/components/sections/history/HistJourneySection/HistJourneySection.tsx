@@ -564,7 +564,7 @@ export default function HistJourneySection({ section, className = "" }: HistJour
                                   ))}
                                 </div>
 
-                                <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-4">
                                   <button
                                     type="button"
                                     onClick={() => {
@@ -574,12 +574,11 @@ export default function HistJourneySection({ section, className = "" }: HistJour
                                     }}
                                     disabled={gi === 0 && ei === 0}
                                     aria-label="Previous entry"
-                                    className="flex items-center gap-2 font-body text-body-sm text-white/40 transition-colors hover:text-white disabled:cursor-not-allowed disabled:opacity-20"
+                                    className="text-white/40 transition-colors hover:text-white disabled:cursor-not-allowed disabled:opacity-20"
                                   >
                                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
                                       <path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                                     </svg>
-                                    Prev
                                   </button>
 
                                   <span className="font-body text-body-sm tabular-nums text-white/40">
@@ -597,9 +596,8 @@ export default function HistJourneySection({ section, className = "" }: HistJour
                                       ei === group.entries.length - 1
                                     }
                                     aria-label="Next entry"
-                                    className="flex items-center gap-2 font-body text-body-sm text-white/40 transition-colors hover:text-white disabled:cursor-not-allowed disabled:opacity-20"
+                                    className="text-white/40 transition-colors hover:text-white disabled:cursor-not-allowed disabled:opacity-20"
                                   >
-                                    Next
                                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
                                       <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                                     </svg>
