@@ -338,15 +338,12 @@ export default function HistJourneySection({ section, className = "" }: HistJour
 
     goToStepRef.current = goToStep;
 
-    // ── Pin the panel for the duration of all steps ──
+    // ── Track active zone via ScrollTrigger (panel is CSS sticky — no pin needed) ──
     st = ScrollTrigger.create({
       id: "hist-journey",
       trigger: wrapperRef.current,
-      pin: panelRef.current,
       start: `top top+=${HEADER_H}`,
       end: () => `+=${(totalSteps - 1) * SCROLL_PER_STEP}`,
-      anticipatePin: 1,
-      invalidateOnRefresh: true,
       onEnter: () => {
         obs?.enable();
         currentStep = 0;
@@ -414,11 +411,17 @@ export default function HistJourneySection({ section, className = "" }: HistJour
         </Container>
       </div>
 
-      <div ref={wrapperRef}>
+      {/* Wrapper is pre-sized to the full virtual scroll height so no layout
+          shift occurs when the section becomes active. Panel uses CSS sticky
+          instead of ScrollTrigger pin — eliminates the entry jerk entirely. */}
+      <div
+        ref={wrapperRef}
+        style={{ height: `calc(${PANEL_H} + ${(totalEntries - 1) * SCROLL_PER_STEP}px)` }}
+      >
         <div
           ref={panelRef}
-          className="relative overflow-hidden bg-dark-blue"
-          style={{ height: PANEL_H }}
+          className="sticky overflow-hidden bg-dark-blue"
+          style={{ top: HEADER_H, height: PANEL_H }}
         >
           {/* Sidebar — desktop only, floats above slides */}
           <div className="pointer-events-none absolute inset-0 z-30 hidden lg:block">
