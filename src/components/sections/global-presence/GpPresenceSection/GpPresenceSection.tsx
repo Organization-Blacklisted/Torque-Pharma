@@ -18,8 +18,8 @@ function ArrowUpRight() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="14"
-      height="14"
+      width="20"
+      height="20"
       viewBox="0 0 16 16"
       fill="none"
       aria-hidden
@@ -153,7 +153,7 @@ export default function GpPresenceSection({
               <Link
                 key={country.slug}
                 href={`/country/${country.slug}`}
-                className="group flex shrink-0 snap-start items-center gap-4 md:shrink md:min-w-0"
+                className="group flex shrink-0 snap-start items-center gap-4 outline-none focus-visible:rounded-lg focus-visible:ring-2 focus-visible:ring-mint md:shrink md:min-w-0"
               >
                 {country.flagImage ? (
                   <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full">
@@ -173,7 +173,7 @@ export default function GpPresenceSection({
                   </div>
                 )}
                 <div className="flex items-center gap-2">
-                  <span className="border-b border-transparent font-body text-body text-secondary transition-colors duration-200 group-hover:border-mint">
+                  <span className="font-body text-body text-secondary underline decoration-transparent underline-offset-[6px] transition-[text-decoration-color] duration-200 group-hover:decoration-mint">
                     {country.title}
                   </span>
                   <ArrowUpRight />
