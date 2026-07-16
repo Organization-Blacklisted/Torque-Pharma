@@ -5,6 +5,7 @@ import { getBlogs, getRelatedBlogs } from "@/lib/api/blogs";
 import BlogPostHero from "@/components/sections/blog/BlogPostHero";
 import BlogPostBody from "@/components/sections/blog/BlogPostBody";
 import RelatedBlogsSection from "@/components/sections/blog/RelatedBlogsSection";
+import JsonLd from "@/components/ui/JsonLd";
 import Container from "@/components/layouts/Container";
 import Section from "@/components/layouts/Section";
 
@@ -45,6 +46,7 @@ export default async function BlogPostPage({
 
   return (
     <>
+      <JsonLd data={post.seo.schema} />
       <Section spacing="none" className="bg-dark-blue -mt-[92px] lg:-mt-[96px] pt-[calc(92px+var(--spacing-page-top))] lg:pt-[calc(96px+var(--spacing-page-top))] pb-[var(--spacing-section-inner)]">
         <Container size="wide">
           <BlogPostHero post={post} />

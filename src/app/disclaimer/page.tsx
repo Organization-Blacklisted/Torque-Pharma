@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { getPage } from "@/lib/api/pages";
 import SafeHtml from "@/components/ui/SafeHtml/SafeHtml";
 import Container from "@/components/layouts/Container";
+import JsonLd from "@/components/ui/JsonLd";
 
 export async function generateMetadata(): Promise<Metadata> {
   const page = await getPage("disclaimer");
@@ -26,6 +27,7 @@ export default async function DisclaimerPage() {
 
   return (
     <main className="py-section-inner">
+      <JsonLd data={page.seo.schema} />
       <Container size="wide">
         <h1 className="font-heading text-h1 font-light text-primary leading-[1.1] mb-10">
           {page.title}

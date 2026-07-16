@@ -4,6 +4,9 @@ import type { CountryPageData } from "@/types/country";
 interface RawCountryPage {
   name: string;
   slug: string;
+  seo?: {
+    schema: string | null;
+  };
   top_section: {
     title: string;
     sub_title: string;
@@ -40,6 +43,7 @@ export async function getCountryPage(slug: string): Promise<CountryPageData> {
   return {
     name: data.name,
     slug: data.slug,
+    schema: data.seo?.schema ?? null,
     top: {
       eyebrow: data.top_section.sub_title,
       title: data.top_section.title,

@@ -5,6 +5,7 @@ import { getCountryCategories } from "@/lib/api/country-categories";
 import CountryTopSection from "@/components/sections/country/CountryTopSection";
 import CountryEdgeSection from "@/components/sections/country/CountryEdgeSection";
 import CountryFormSection from "@/components/sections/country/CountryFormSection";
+import JsonLd from "@/components/ui/JsonLd";
 import Section from "@/components/layouts/Section";
 import Container from "@/components/layouts/Container";
 
@@ -44,6 +45,7 @@ export default async function CountryPage({
 
   return (
     <>
+      <JsonLd data={page.schema} />
       <Section first>
         <CountryTopSection top={page.top} counter={page.counter} />
       </Section>

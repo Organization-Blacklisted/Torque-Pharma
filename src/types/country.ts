@@ -38,6 +38,7 @@ export interface CountryFormData {
 export interface CountryPageData {
   name: string;
   slug: string;
+  schema: string | null;
   top: CountryTopData;
   counter: CountryCounterData;
   edge: CountryEdgeData;

@@ -42,6 +42,7 @@ export interface ProductDetailData {
     description: string | null;
     keywords: string | null;
     index: boolean;
+    schema: string | null;
   };
 }
 
@@ -68,6 +69,7 @@ export const getProduct = cache(async function getProduct(slug: string): Promise
       description: data.seo.description,
       keywords: data.seo.keywords,
       index: data.seo.index,
+      schema: data.seo.schema,
     },
   };
 });
