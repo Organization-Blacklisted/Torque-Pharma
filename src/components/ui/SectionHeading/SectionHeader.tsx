@@ -1,4 +1,3 @@
-import SafeHtml from "@/components/ui/SafeHtml/SafeHtml";
 import { SectionHeaderProps } from "./SectionHeader.types";
 
 const headingSizes: Record<"h1" | "h2" | "h3" | "h4" | "h5" | "h6", string> = {
@@ -158,16 +157,17 @@ export default function SectionHeader({
       )}
 
       {content && (
-        <SafeHtml
-          html={content}
+        // content is pre-sanitized at the data/transform layer (sanitizeRichText)
+        <div
           className={`
             mt-5
-          
+
             text-body
             leading-6
             ${descriptionColor}
             [&>p+p]:mt-6
           `}
+          dangerouslySetInnerHTML={{ __html: content }}
         />
       )}
 

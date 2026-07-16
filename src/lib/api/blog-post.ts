@@ -1,6 +1,6 @@
 import { cache } from "react";
 import { apiFetch, type ApiResponse } from "./fetcher";
-import { sanitize } from "@/lib/sanitize";
+import { sanitize, sanitizeRichText } from "@/lib/sanitize";
 import type { BlogPostDetail, BlogPostContentSection } from "@/types/blog";
 
 // Sections from the API are sometimes plain text, sometimes HTML, sometimes mixed
@@ -56,7 +56,7 @@ export const getBlogPost = cache(async function getBlogPost(
   const content: BlogPostContentSection[] = data.content.map((section) => ({
     id: slugify(section.title),
     title: section.title,
-    description: normalizeDescription(section.description),
+    description: sanitizeRichText(normalizeDescription(section.description)),
   }));
 
   const faq_section = data.faq_section

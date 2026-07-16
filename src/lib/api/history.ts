@@ -1,4 +1,5 @@
 import { apiFetch, type ApiResponse } from "./fetcher";
+import { sanitizeRichText } from "@/lib/sanitize";
 import type { HistoryPageData } from "@/types/history";
 
 interface RawEntry {
@@ -46,7 +47,7 @@ export async function getHistoryPage(): Promise<HistoryPageData> {
     top: {
       eyebrow: c.hist_top_section.title,
       heading: c.hist_top_section.sub_title,
-      description: c.hist_top_section.desc,
+      description: sanitizeRichText(c.hist_top_section.desc),
       image: c.hist_top_section.image,
     },
     journeyLabel: c.hist_journey_section.title,

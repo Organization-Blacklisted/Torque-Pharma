@@ -1,4 +1,4 @@
-import { sanitize } from "@/lib/sanitize";
+import { sanitizeRichText } from "@/lib/sanitize";
 
 type SafeHtmlProps = {
   html: string;
@@ -6,6 +6,5 @@ type SafeHtmlProps = {
 };
 
 export default function SafeHtml({ html, className = "" }: SafeHtmlProps) {
-  const clean = sanitize(html).replace(/<img(?![^>]*\bloading=)/gi, '<img loading="lazy"');
-  return <div className={className} dangerouslySetInnerHTML={{ __html: clean }} />;
+  return <div className={className} dangerouslySetInnerHTML={{ __html: sanitizeRichText(html) }} />;
 }

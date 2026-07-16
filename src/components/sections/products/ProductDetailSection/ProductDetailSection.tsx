@@ -5,7 +5,6 @@ import useEmblaCarousel from "embla-carousel-react";
 import Image from "next/image";
 import Section from "@/components/layouts/Section";
 import Container from "@/components/layouts/Container";
-import SafeHtml from "@/components/ui/SafeHtml";
 import type { ProductDetailSectionProps } from "./ProductDetailSection.types";
 
 const SLIDER_THRESHOLD = 2;
@@ -177,7 +176,8 @@ export default function ProductDetailSection({
               {content.map((item) => (
                 <div key={item.title} className="py-5 first:pt-0 last:pb-0">
                   <p className="text-h4 font-medium leading-loose text-primary mb-1">{item.title}</p>
-                  <SafeHtml html={item.description} className="rich-text" />
+                  {/* description is pre-sanitized in the API transform (sanitizeRichText) */}
+                  <div className="rich-text" dangerouslySetInnerHTML={{ __html: item.description }} />
                 </div>
               ))}
             </div>

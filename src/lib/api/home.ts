@@ -1,5 +1,6 @@
 import { apiFetch, type ApiResponse } from "./fetcher";
 import { parseStatValue } from "./utils";
+import { sanitizeRichText } from "@/lib/sanitize";
 import type { HeroVideoData } from "@/types/hero";
 import type { HomeBlogsPreviewData } from "@/types/blog";
 import type { HomeImpactData } from "@/types/home-impact";
@@ -197,7 +198,7 @@ export async function getHomePage(): Promise<HomePageData> {
     globalPresence: {
       eyebrow: c.global_presence_section.title,
       heading: c.global_presence_section.sub_title,
-      description: c.global_presence_section.description,
+      description: sanitizeRichText(c.global_presence_section.description),
       items: c.global_presence_section.items,
     },
     lifeAtTorque: {

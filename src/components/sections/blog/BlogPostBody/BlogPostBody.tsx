@@ -2,7 +2,6 @@
 
 import { useMemo } from "react";
 import Accordion from "@/components/ui/Accordion";
-import SafeHtml from "@/components/ui/SafeHtml";
 import TableOfContents from "@/components/ui/TableOfContents";
 import type { BlogPostBodyProps } from "./BlogPostBody.types";
 
@@ -34,7 +33,11 @@ export default function BlogPostBody({ post, className = "" }: BlogPostBodyProps
               <h2 className="mb-4 font-body text-[24px] font-medium leading-normal text-primary">
                 {section.title}
               </h2>
-              <SafeHtml html={section.description} className="rich-text rich-text--blog" />
+              {/* description is pre-sanitized in the API transform (sanitizeRichText) */}
+              <div
+                className="rich-text rich-text--blog"
+                dangerouslySetInnerHTML={{ __html: section.description }}
+              />
             </section>
           ))}
         </div>

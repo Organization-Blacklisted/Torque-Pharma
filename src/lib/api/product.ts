@@ -1,5 +1,6 @@
 import { cache } from "react";
 import { apiFetch, type ApiResponse } from "./fetcher";
+import { sanitizeRichText } from "@/lib/sanitize";
 
 // ─── Raw API shape ────────────────────────────────────────────────────────────
 
@@ -58,7 +59,10 @@ export const getProduct = cache(async function getProduct(slug: string): Promise
     description: data.description,
     featuredImage: data.featured_image || null,
     gallery: data.gallery.filter(Boolean),
-    content: data.content,
+    content: data.content.map((item) => ({
+      title: item.title,
+      description: sanitizeRichText(item.description),
+    })),
     seo: {
       title: data.seo.title,
       description: data.seo.description,

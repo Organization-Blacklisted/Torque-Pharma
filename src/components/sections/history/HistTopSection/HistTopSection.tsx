@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import SectionHeader from "@/components/ui/SectionHeading";
-import SafeHtml from "@/components/ui/SafeHtml";
 import type { HistTopSectionProps } from "./HistTopSection.types";
 
 function ChevronDown() {
@@ -40,9 +39,10 @@ export default function HistTopSection({
           as="h1"
           size="h1"
         />
-        <SafeHtml
-          html={description}
+        {/* description is pre-sanitized in the API transform (sanitizeRichText) */}
+        <div
           className="text-body leading-relaxed text-secondary [&_strong]:font-medium [&_strong]:text-secondary"
+          dangerouslySetInnerHTML={{ __html: description }}
         />
       </div>
 

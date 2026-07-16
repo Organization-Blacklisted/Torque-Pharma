@@ -146,8 +146,9 @@ export default function WorldMap({ items, className = "" }: WorldMapProps) {
               src="/images/map/dots.svg"
               alt="World map showing Torque Pharma global presence"
               fill
+              sizes="100vw"
               className="object-contain"
-              priority
+              loading="lazy"
             />
           </div>
         </div>

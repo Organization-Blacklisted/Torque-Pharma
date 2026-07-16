@@ -1,3 +1,6 @@
+// Fails the build if this module is ever imported into a Client Component,
+// keeping the heavy sanitize-html library out of client bundles.
+import "server-only";
 import sanitizeHtml from "sanitize-html";
 
 const OPTIONS: sanitizeHtml.IOptions = {
@@ -28,4 +31,11 @@ const OPTIONS: sanitizeHtml.IOptions = {
 
 export function sanitize(html: string): string {
   return sanitizeHtml(html, OPTIONS);
+}
+
+// Sanitize + lazy-load any <img> — the rich-text pipeline for CMS HTML.
+// Run this in the API/transform layer (server) so client components can render
+// the result with a plain dangerouslySetInnerHTML and never bundle sanitize-html.
+export function sanitizeRichText(html: string): string {
+  return sanitize(html).replace(/<img(?![^>]*\bloading=)/gi, '<img loading="lazy"');
 }

@@ -1,4 +1,5 @@
 import { apiFetch, type ApiResponse } from "./fetcher";
+import { sanitizeRichText } from "@/lib/sanitize";
 
 // ─── Raw API types ────────────────────────────────────────────────────────────
 
@@ -148,7 +149,7 @@ export async function getLifeAtTorquePage(): Promise<LifeAtTorquePageData> {
       items: workplaceRaw.items.map((item) => ({
         image: item.image,
         title: item.title,
-        description: item.desc,
+        description: sanitizeRichText(item.desc),
       })),
     },
     builtOn: {

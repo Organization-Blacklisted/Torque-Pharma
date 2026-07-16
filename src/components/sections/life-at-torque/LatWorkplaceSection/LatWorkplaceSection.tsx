@@ -6,7 +6,6 @@ import Section from "@/components/layouts/Section";
 import Container from "@/components/layouts/Container";
 import SectionHeader from "@/components/ui/SectionHeading";
 import { TabList, Tab } from "@/components/ui/Tabs";
-import SafeHtml from "@/components/ui/SafeHtml";
 import type { LatWorkplaceSectionProps } from "./LatWorkplaceSection.types";
 
 export default function LatWorkplaceSection({
@@ -75,9 +74,10 @@ export default function LatWorkplaceSection({
           {/* Left: rich text — centered vertically, scrolls if content overflows */}
           <div className="flex-1 overflow-y-auto bg-white/30">
             <div className="flex min-h-full flex-col justify-center px-8 py-8 lg:px-10">
-              <SafeHtml
-                html={active.description}
+              {/* description is pre-sanitized in the API transform (sanitizeRichText) */}
+              <div
                 className="rich-text [&_span]:block [&_span]:mt-12 [&_span]:text-primary"
+                dangerouslySetInnerHTML={{ __html: active.description }}
               />
             </div>
           </div>

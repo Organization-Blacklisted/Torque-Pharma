@@ -1,6 +1,6 @@
 import { cache } from "react";
 import { apiFetch, type ApiResponse } from "./fetcher";
-import { sanitize } from "@/lib/sanitize";
+import { sanitize, sanitizeRichText } from "@/lib/sanitize";
 import type { AccordionItem } from "@/components/ui/Accordion/Accordion.types";
 
 function toTitleCase(str: string): string {
@@ -117,7 +117,7 @@ export const getCategoryPage = cache(async function getCategoryPage(
     parentSlug: data.parent_slug,
     image: data.image || null,
     bannerImage: data.banner_image || null,
-    medicalDisclaimer: data.medical_disclaimer ? toHtmlParagraphs(data.medical_disclaimer) : "",
+    medicalDisclaimer: data.medical_disclaimer ? sanitizeRichText(toHtmlParagraphs(data.medical_disclaimer)) : "",
     products: data.products.map((p) => ({
       id: p.id,
       name: toTitleCase(p.name),
