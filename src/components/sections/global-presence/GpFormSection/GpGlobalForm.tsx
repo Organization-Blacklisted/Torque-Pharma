@@ -158,6 +158,7 @@ export default function GpGlobalForm() {
                 onChange={(val) => { if (!val || val.length <= 16) field.onChange(val); }}
                 defaultCountry="IN"
                 international
+                numberInputProps={{ "aria-label": "Phone number" }}
                 placeholder="Phone Number"
                 maxLength={20}
                 className={`connect-phone-input${!field.value ? " connect-phone-input--empty" : ""}${errors.phone ? " connect-phone-input--error" : ""}`}
@@ -172,7 +173,7 @@ export default function GpGlobalForm() {
           <FormInput placeholder="Company (If Applicable)" hasError={!!errors.company} {...register("company")} />
         </FormField>
         <FormField error={errors.areaOfInterest?.message}>
-          <FormSelect hasError={!!errors.areaOfInterest} {...register("areaOfInterest")}>
+          <FormSelect aria-label="Area of Interest" hasError={!!errors.areaOfInterest} {...register("areaOfInterest")}>
             <option value="" disabled>Area of Interest</option>
             {AREAS_OF_INTEREST.map((opt) => (
               <option key={opt} value={opt}>{opt}</option>
@@ -182,7 +183,7 @@ export default function GpGlobalForm() {
       </div>
 
       <FormField error={errors.productCategory?.message}>
-        <FormSelect hasError={!!errors.productCategory} {...register("productCategory")}>
+        <FormSelect aria-label="Product Category" hasError={!!errors.productCategory} {...register("productCategory")}>
           <option value="" disabled>Product Category</option>
           {PRODUCT_CATEGORIES.map((opt) => (
             <option key={opt} value={opt}>{opt}</option>

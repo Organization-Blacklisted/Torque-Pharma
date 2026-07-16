@@ -190,6 +190,7 @@ export default function CareerFormSection({ title, disclaimer, className = "" }:
                     onChange={(val) => { if (!val || val.length <= 16) field.onChange(val); }}
                     defaultCountry="IN"
                     international
+                    numberInputProps={{ "aria-label": "Phone number" }}
                     placeholder="Phone Number"
                     maxLength={20}
                     className={`connect-phone-input${!field.value ? " connect-phone-input--empty" : ""}${errors.phone ? " connect-phone-input--error" : ""}`}
@@ -205,7 +206,7 @@ export default function CareerFormSection({ title, disclaimer, className = "" }:
           {/* Row 3: Applying For | Experience */}
           <div className="grid gap-4 sm:grid-cols-2">
             <FormField error={errors.applyingFor?.message}>
-              <FormSelect hasError={!!errors.applyingFor} {...register("applyingFor")}>
+              <FormSelect aria-label="Applying For" hasError={!!errors.applyingFor} {...register("applyingFor")}>
                 <option value="" disabled>Applying For</option>
                 {APPLYING_FOR_OPTIONS.map((opt) => (
                   <option key={opt} value={opt}>{opt}</option>

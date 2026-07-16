@@ -174,6 +174,7 @@ export default function ExportForm() {
                 onChange={(val) => { if (!val || val.length <= 16) field.onChange(val); }}
                 defaultCountry="IN"
                 international
+                numberInputProps={{ "aria-label": "Phone number" }}
                 placeholder="Phone Number"
                 maxLength={20}
                 className={`connect-phone-input${!field.value ? " connect-phone-input--empty" : ""}${errors.phone ? " connect-phone-input--error" : ""}`}
@@ -189,7 +190,7 @@ export default function ExportForm() {
           <FormInput placeholder="Select State" hasError={!!errors.state} {...register("state")} />
         </FormField>
         <FormField error={errors.areaOfInterest?.message}>
-          <FormSelect hasError={!!errors.areaOfInterest} {...register("areaOfInterest")}>
+          <FormSelect aria-label="Buyer Type" hasError={!!errors.areaOfInterest} {...register("areaOfInterest")}>
             <option value="" disabled>Buyer Type</option>
             {BUYER_TYPES.map((opt) => (
               <option key={opt} value={opt}>{opt}</option>
@@ -201,7 +202,7 @@ export default function ExportForm() {
       {/* Row 4: Product Category + Estimated Order Volume */}
       <div className="grid gap-4 sm:grid-cols-2">
         <FormField error={errors.productCategory?.message}>
-          <FormSelect hasError={!!errors.productCategory} {...register("productCategory")}>
+          <FormSelect aria-label="Product Category" hasError={!!errors.productCategory} {...register("productCategory")}>
             <option value="" disabled>Product Category</option>
             {PRODUCT_CATEGORIES.map((opt) => (
               <option key={opt} value={opt}>{opt}</option>
@@ -209,7 +210,7 @@ export default function ExportForm() {
           </FormSelect>
         </FormField>
         <FormField error={errors.expectedOrderVolume?.message}>
-          <FormSelect hasError={!!errors.expectedOrderVolume} {...register("expectedOrderVolume")}>
+          <FormSelect aria-label="Estimated Order Volume" hasError={!!errors.expectedOrderVolume} {...register("expectedOrderVolume")}>
             <option value="" disabled>Estimated Order Volume</option>
             {ORDER_VOLUMES.map((opt) => (
               <option key={opt} value={opt}>{opt}</option>

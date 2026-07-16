@@ -137,6 +137,7 @@ export default function DealerForm() {
                 }}
                 defaultCountry="IN"
                 international
+                numberInputProps={{ "aria-label": "Phone number" }}
                 maxLength={20}
                 className={`connect-phone-input connect-phone-input--white${errors.phone ? " connect-phone-input--error" : ""}`}
               />

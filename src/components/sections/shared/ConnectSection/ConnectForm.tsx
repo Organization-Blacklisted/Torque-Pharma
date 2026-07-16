@@ -215,6 +215,7 @@ function SharedEmailPhoneRow({ errors, register, control, white }: SharedRowProp
               }}
               defaultCountry="IN"
               international
+              numberInputProps={{ "aria-label": "Phone number" }}
               maxLength={20}
               className={`${phoneCls}${errors.phone ? " connect-phone-input--error" : ""}`}
             />

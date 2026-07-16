@@ -174,6 +174,7 @@ export default function WhiteLabelForm() {
                 onChange={(val) => { if (!val || val.length <= 16) field.onChange(val); }}
                 defaultCountry="IN"
                 international
+                numberInputProps={{ "aria-label": "Phone number" }}
                 placeholder="Phone Number"
                 maxLength={20}
                 className={`connect-phone-input${!field.value ? " connect-phone-input--empty" : ""}${errors.phone ? " connect-phone-input--error" : ""}`}
@@ -189,7 +190,7 @@ export default function WhiteLabelForm() {
           <FormInput placeholder="Select State" hasError={!!errors.state} {...register("state")} />
         </FormField>
         <FormField error={errors.productType?.message}>
-          <FormSelect hasError={!!errors.productType} {...register("productType")}>
+          <FormSelect aria-label="Product Type" hasError={!!errors.productType} {...register("productType")}>
             <option value="" disabled>Product Type</option>
             {PRODUCT_TYPES.map((opt) => (
               <option key={opt} value={opt}>{opt}</option>
@@ -201,7 +202,7 @@ export default function WhiteLabelForm() {
       {/* Row 4: Product Format + Quantity */}
       <div className="grid gap-4 sm:grid-cols-2">
         <FormField error={errors.productFormat?.message}>
-          <FormSelect hasError={!!errors.productFormat} {...register("productFormat")}>
+          <FormSelect aria-label="Product Format" hasError={!!errors.productFormat} {...register("productFormat")}>
             <option value="" disabled>Product Format</option>
             {PRODUCT_FORMATS.map((opt) => (
               <option key={opt} value={opt}>{opt}</option>
@@ -209,7 +210,7 @@ export default function WhiteLabelForm() {
           </FormSelect>
         </FormField>
         <FormField error={errors.quantity?.message}>
-          <FormSelect hasError={!!errors.quantity} {...register("quantity")}>
+          <FormSelect aria-label="Choose Quantity" hasError={!!errors.quantity} {...register("quantity")}>
             <option value="" disabled>Choose Quantity</option>
             {QUANTITY_OPTIONS.map((opt) => (
               <option key={opt} value={opt}>{opt}</option>
