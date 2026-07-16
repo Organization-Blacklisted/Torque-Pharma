@@ -26,7 +26,8 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const event = await getEventDetail(slug);
+  const event = await getEventDetail(slug).catch(() => null);
+  if (!event) return { title: "Event | Torque Pharma" };
   return {
     title: `${event.title} | Torque Pharma`,
     description: event.desc_text,
@@ -41,9 +42,9 @@ export default async function EventDetailPage({
   const { slug } = await params;
 
   const [event, allEvents, allNews] = await Promise.all([
-    getEventDetail(slug),
-    getEvents(),
-    getNews(),
+    getEventDetail(slug).catch(() => null),
+    getEvents().catch(() => []),
+    getNews().catch(() => []),
   ]);
 
   if (!event || event.status !== "published") notFound();

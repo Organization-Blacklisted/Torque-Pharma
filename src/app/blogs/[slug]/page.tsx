@@ -21,7 +21,8 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const post = await getBlogPost(slug);
+  const post = await getBlogPost(slug).catch(() => null);
+  if (!post) return { title: "Blog | Torque Pharma" };
   return {
     title: post.seo.title,
     description: post.seo.description,
@@ -35,7 +36,10 @@ export default async function BlogPostPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const [post, relatedPosts] = await Promise.all([getBlogPost(slug), getRelatedBlogs(slug, 3)]);
+  const [post, relatedPosts] = await Promise.all([
+    getBlogPost(slug).catch(() => null),
+    getRelatedBlogs(slug, 3).catch(() => []),
+  ]);
 
   if (!post || post.status !== "published") notFound();
 
