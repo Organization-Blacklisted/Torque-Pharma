@@ -11,6 +11,8 @@ export default function CountryFormSection({
   eyebrow,
   heading,
   image,
+  pageName,
+  pageUrl,
   className = "",
 }: CountryFormSectionProps) {
   return (
@@ -33,7 +35,7 @@ export default function CountryFormSection({
             sizes="(max-width: 768px) 100vw, 40vw"
           />
         </div>
-        <CountryForm />
+        <CountryForm pageName={pageName} pageUrl={pageUrl} />
       </div>
     </div>
   );

@@ -56,7 +56,7 @@ export default async function CountryPage({
 
       <Section>
         <Container size="large">
-          <CountryFormSection {...page.form} />
+          <CountryFormSection {...page.form} pageName={page.name} pageUrl={`/country/${slug}`} />
         </Container>
       </Section>
     </>
