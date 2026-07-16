@@ -20,18 +20,12 @@ function ArrowUpRight() {
       xmlns="http://www.w3.org/2000/svg"
       width="20"
       height="20"
-      viewBox="0 0 16 16"
+      viewBox="0 0 20 20"
       fill="none"
       aria-hidden
-      className="shrink-0 text-[#474A5C] opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+      className="shrink-0 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
     >
-      <path
-        d="M3 13L13 3M13 3H5M13 3V11"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <path d="M5.62488 1.25C5.45912 1.25 5.30015 1.31585 5.18294 1.43306C5.06573 1.55027 4.99988 1.70924 4.99988 1.875C4.99988 2.04076 5.06573 2.19973 5.18294 2.31694C5.30015 2.43415 5.45912 2.5 5.62488 2.5H16.6161L1.43301 17.6831C1.189 17.9272 1.189 18.3229 1.43301 18.5669C1.67708 18.8109 2.07276 18.8109 2.31682 18.5669L17.4999 3.38381V14.3751C17.4999 14.5408 17.5658 14.6998 17.683 14.817C17.8002 14.9342 17.9592 15.0001 18.1249 15.0001C18.2907 15.0001 18.4497 14.9342 18.5669 14.817C18.6841 14.6998 18.7499 14.5408 18.7499 14.3751V1.87506C18.7499 1.70931 18.6841 1.55035 18.5669 1.43314C18.4497 1.31593 18.2907 1.25008 18.1249 1.25006L5.62488 1.25Z" fill="#474A5C" />
     </svg>
   );
 }
@@ -153,7 +147,7 @@ export default function GpPresenceSection({
               <Link
                 key={country.slug}
                 href={`/country/${country.slug}`}
-                className="group flex w-[248px] shrink-0 snap-start items-center justify-between border-b border-transparent pb-[6px] outline-none transition-colors duration-200 hover:border-mint focus-visible:rounded-lg focus-visible:ring-2 focus-visible:ring-mint md:w-auto md:shrink"
+                className="group flex shrink-0 snap-start items-center gap-4 border-b border-transparent pb-[6px] outline-none transition-colors duration-200 hover:border-mint focus-visible:rounded-lg focus-visible:ring-2 focus-visible:ring-mint md:w-fit nav:w-[248px] nav:justify-between nav:gap-0"
               >
                 <div className="flex items-center gap-4">
                   {country.flagImage ? (
