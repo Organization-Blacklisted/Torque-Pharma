@@ -26,7 +26,7 @@ The app throws at startup if `API_URL` is missing. See `.env.example`.
 | Language | TypeScript 5 (strict) |
 | Styling | Tailwind CSS v4 — no config file, tokens live in `src/styles/*.css` |
 | Fonts | BW Darius (heading), Graphik (body) — local via `next/font` |
-| HTML sanitisation | DOMPurify (used in `SafeHtml` and `Accordion`) |
+| HTML sanitisation | `sanitize-html` (server-side, in `src/lib/sanitize.ts`; used by `SafeHtml`) |
 
 ## Folder structure
 
@@ -202,7 +202,7 @@ When adding a new fetcher with a `tags: [...]` option, add its tag to this table
 | `WorldMap` | `ui/WorldMap` | Auto-rotating country map. Desktop: floating tooltip. Mobile: card below map. Positions hardcoded in `POSITIONS` object — add new countries there if API adds them |
 | `StatRotator` | `ui/StatRotator` | Pair of StatCards that auto-advance. Pauses when off-screen or tab is hidden |
 | `StatCard` | `ui/StatCard` | `label` is optional. No label = number-first layout (About Us style). With label = manufacturing style |
-| `SafeHtml` | `ui/SafeHtml` | DOMPurify sanitiser + auto-injects `loading="lazy"` on images |
+| `SafeHtml` | `ui/SafeHtml` | `sanitize-html` sanitiser (server-side) + auto-injects `loading="lazy"` on images. Note: `Accordion` does NOT sanitise — callers must pass pre-sanitized HTML |
 | `BlogCard` | `ui/BlogCard` | Grid card — image, category pill, title, hover "Read More". Links to `/blogs/[slug]` |
 | `FeaturedBlogSlider` | `ui/FeaturedBlogSlider` | Single full-bleed slide (content + image) cycling through `is_featured` posts via dot indicators |
 | `Pagination` | `ui/Pagination` | Numbered pagination with ellipsis collapsing. Controlled: `currentPage`/`totalPages`/`onPageChange` |
@@ -230,11 +230,9 @@ When adding a new fetcher with a `tags: [...]` option, add its tag to this table
 ## Known issues to fix before launch
 
 - `src/app/globals.css` `.cta-gradient` — uses raw `color-mix()` percentages, should reference CSS tokens
-- `src/lib/api/about.ts` — `/pages/about-us` response includes `mission_vision_section`, `values_section`, `built_on_section`, and `connect_section` that aren't wired to any UI yet; only `contentMedia` and `counter_section` (stats) are consumed so far
 - `src/lib/api/blogs.ts` — `/blogs` endpoint path is a guess based on REST convention; confirm against the real Laravel route. "Medically reviewed by" name in `FeaturedBlogSlider` is a hardcoded placeholder — API has no reviewer field yet
-- `src/app/error.tsx`, `loading.tsx`, `not-found.tsx` — none exist; API failures produce unhandled crashes
+- `src/app/error.tsx`, `loading.tsx`, `not-found.tsx` — all exist and wrap the whole tree (legal routes also have their own). Remaining gaps: no `global-error.tsx` (root-layout errors fall back to Next's unstyled default), and `blogs/[slug]`/`events/[slug]` fetch without `.catch`, so a missing slug throws 404→500 instead of calling `notFound()`
 - `src/components/sections/HomeStatsMediaSection` — permanently on mock data; no `stats_media_section` defined in API yet. Track with backend
-- `src/lib/api/about.ts`, `manufacturing.ts` — do not exist; About Us and Manufacturing pages serve mock data in production. Build once backend delivers endpoints
 - `src/components/ui/WorldMap/WorldMap.tsx` — `POSITIONS` object is hardcoded for 26 countries. If API returns a new country with no entry, the pin silently does not render. Add new countries to `POSITIONS` manually until the API delivers coordinates
 
 ## Rich text
