@@ -23,7 +23,7 @@ function ArrowUpRight() {
       viewBox="0 0 16 16"
       fill="none"
       aria-hidden
-      className="shrink-0 text-mint opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+      className="shrink-0 text-[#474A5C] opacity-0 transition-opacity duration-200 group-hover:opacity-100"
     >
       <path
         d="M3 13L13 3M13 3H5M13 3V11"
