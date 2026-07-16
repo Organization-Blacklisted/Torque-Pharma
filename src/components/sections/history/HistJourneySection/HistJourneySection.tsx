@@ -366,21 +366,21 @@ export default function HistJourneySection({ section, className = "" }: HistJour
 
     scrollTriggerRef.current = st;
 
-    // ── Observer: intercept wheel + touch for discrete step advancement ──
-obs = Observer.create({
-  target: panelRef.current,
-  type: "wheel,touch",
-  preventDefault: true,
-  tolerance: 10,
-
-  onDown: () => {
-    !isAnimating && handleAdvance(currentStep + 1);
-  },
-
-  onUp: () => {
-    !isAnimating && handleAdvance(currentStep - 1);
-  },
-});
+    // ── Observer: target window so GSAP registers non-passive touch listeners at the top level ──
+    // (element-level passive listeners are silently ignored on real iOS/Android; devtools sim does not replicate this)
+    obs = Observer.create({
+      target: window,
+      type: "wheel,touch",
+      preventDefault: true,
+      tolerance: 10,
+      lockAxis: true,
+      onDown: () => {
+        !isAnimating && handleAdvance(currentStep + 1);
+      },
+      onUp: () => {
+        !isAnimating && handleAdvance(currentStep - 1);
+      },
+    });
     // Start disabled — enabled only when panel is pinned (onEnter fires)
     obs.disable();
 
