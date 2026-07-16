@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getCountryPage } from "@/lib/api/country";
 import { getCountryCategories } from "@/lib/api/country-categories";
+import CountryTopSection from "@/components/sections/country/CountryTopSection";
 import CountryEdgeSection from "@/components/sections/country/CountryEdgeSection";
 import CountryFormSection from "@/components/sections/country/CountryFormSection";
 import Section from "@/components/layouts/Section";
@@ -43,11 +44,8 @@ export default async function CountryPage({
 
   return (
     <>
-      {/* Temporary stub — will be replaced by CountryTopSection */}
       <Section first>
-        <Container size="reading">
-          <h1 className="text-center font-heading text-h1 text-primary">{page.name}</h1>
-        </Container>
+        <CountryTopSection top={page.top} counter={page.counter} />
       </Section>
 
       <Section>
