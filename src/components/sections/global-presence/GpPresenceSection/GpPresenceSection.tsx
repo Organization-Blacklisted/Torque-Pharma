@@ -153,31 +153,29 @@ export default function GpPresenceSection({
               <Link
                 key={country.slug}
                 href={`/country/${country.slug}`}
-                className="group flex shrink-0 snap-start items-center gap-4 outline-none focus-visible:rounded-lg focus-visible:ring-2 focus-visible:ring-mint md:shrink md:min-w-0"
+                className="group flex w-[248px] shrink-0 snap-start items-center justify-between border-b border-transparent pb-[6px] outline-none transition-colors duration-200 hover:border-mint focus-visible:rounded-lg focus-visible:ring-2 focus-visible:ring-mint md:w-auto md:shrink"
               >
-                {country.flagImage ? (
-                  <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full">
-                    <Image
-                      src={country.flagImage}
-                      alt={country.title}
-                      fill
-                      className="object-cover"
-                      sizes="48px"
-                    />
-                  </div>
-                ) : (
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-surface">
-                    <span className="text-body-sm font-medium text-secondary">
-                      {country.title.slice(0, 2).toUpperCase()}
-                    </span>
-                  </div>
-                )}
-                <div className="flex items-center gap-2">
-                  <span className="font-body text-body text-secondary underline decoration-transparent underline-offset-[6px] transition-[text-decoration-color] duration-200 group-hover:decoration-mint">
-                    {country.title}
-                  </span>
-                  <ArrowUpRight />
+                <div className="flex items-center gap-4">
+                  {country.flagImage ? (
+                    <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full">
+                      <Image
+                        src={country.flagImage}
+                        alt={country.title}
+                        fill
+                        className="object-cover"
+                        sizes="48px"
+                      />
+                    </div>
+                  ) : (
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-surface">
+                      <span className="text-body-sm font-medium text-secondary">
+                        {country.title.slice(0, 2).toUpperCase()}
+                      </span>
+                    </div>
+                  )}
+                  <span className="font-body text-body text-secondary">{country.title}</span>
                 </div>
+                <ArrowUpRight />
               </Link>
             ))}
           </div>
