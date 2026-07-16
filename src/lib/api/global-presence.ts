@@ -1,10 +1,9 @@
 import { apiFetch, type ApiResponse } from "./fetcher";
 import { sanitize } from "@/lib/sanitize";
+import { getCountryCategories } from "./country-categories";
 import type {
   GlobalPresencePageData,
   GpCertificationItem,
-  GpCountry,
-  GpRegion,
   GpExportCategoryItem,
   GpCredentialItem,
   GpCapabilityGroup,
@@ -85,10 +84,13 @@ interface RawGlobalPresencePage {
 // ─── Fetcher ──────────────────────────────────────────────────────────────────
 
 export async function getGlobalPresencePage(): Promise<GlobalPresencePageData> {
-  const { data } = await apiFetch<ApiResponse<RawGlobalPresencePage>>("/pages/global-presence", {
-    tags: ["global-presence"],
-    revalidate: 3600,
-  });
+  const [{ data }, countryCategories] = await Promise.all([
+    apiFetch<ApiResponse<RawGlobalPresencePage>>("/pages/global-presence", {
+      tags: ["global-presence"],
+      revalidate: 3600,
+    }),
+    getCountryCategories(),
+  ]);
 
   const c = data.content;
 
@@ -118,11 +120,13 @@ export async function getGlobalPresencePage(): Promise<GlobalPresencePageData> {
         label: c.gp_presence_section.button_text,
         href: c.gp_presence_section.button_link,
       },
-      regions: c.gp_presence_section.items.map<GpRegion>((region) => ({
-        title: region.title,
-        countries: region.countries.map<GpCountry>((c) => ({
-          image: c.image,
-          title: c.title,
+      regions: countryCategories.map((cat) => ({
+        title: cat.name,
+        slug: cat.slug,
+        countries: cat.countries.map((country) => ({
+          title: country.name,
+          slug: country.slug,
+          flagImage: country.flagImage,
         })),
       })),
     },

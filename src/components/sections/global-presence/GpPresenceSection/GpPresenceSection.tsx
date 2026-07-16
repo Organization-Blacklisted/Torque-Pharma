@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import Container from "@/components/layouts/Container";
 import SectionHeader from "@/components/ui/SectionHeading";
 import { SplitButton } from "@/components/ui/SplitButton";
@@ -10,8 +11,30 @@ import type { GpPresenceSectionProps } from "./GpPresenceSection.types";
 const MAP_CONFIG: Record<string, { src: string; width: number; height: number }> = {
   africa:          { src: "/images/map/africa-map.svg",        width: 521, height: 528 },
   asia:            { src: "/images/map/asia-map.svg",          width: 825, height: 532 },
-  "south america": { src: "/images/map/south-america-map.svg", width: 334, height: 537 },
+  "south-america": { src: "/images/map/south-america-map.svg", width: 334, height: 537 },
 };
+
+function ArrowUpRight() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="14"
+      height="14"
+      viewBox="0 0 16 16"
+      fill="none"
+      aria-hidden
+      className="shrink-0 text-mint opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+    >
+      <path
+        d="M3 13L13 3M13 3H5M13 3V11"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
 
 function useTabKeyNav(count: number, onSelect: (i: number) => void) {
   return (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -42,7 +65,7 @@ export default function GpPresenceSection({
   const swapTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const activeRegion = regions[displayedIndex];
-  const mapConfig = MAP_CONFIG[activeRegion.title.toLowerCase()] ?? null;
+  const mapConfig = MAP_CONFIG[activeRegion.slug] ?? null;
 
   const handleTabClick = (i: number) => {
     if (i === activeIndex) return;
@@ -79,7 +102,7 @@ export default function GpPresenceSection({
         >
           {regions.map((region, i) => (
             <button
-              key={region.title}
+              key={region.slug}
               ref={(el) => { tabRefs.current[i] = el; }}
               role="tab"
               id={`presence-tab-${i}`}
@@ -127,11 +150,15 @@ export default function GpPresenceSection({
 
           <div className="flex snap-x snap-mandatory overflow-x-auto gap-[var(--spacing-gutter)] pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:grid md:grid-cols-2 md:content-start md:overflow-x-visible md:pb-0">
             {activeRegion.countries.map((country) => (
-              <div key={country.title} className="flex shrink-0 snap-start items-center gap-4 md:shrink md:min-w-0">
-                {country.image ? (
+              <Link
+                key={country.slug}
+                href={`/country/${country.slug}`}
+                className="group flex shrink-0 snap-start items-center gap-4 md:shrink md:min-w-0"
+              >
+                {country.flagImage ? (
                   <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full">
                     <Image
-                      src={country.image}
+                      src={country.flagImage}
                       alt={country.title}
                       fill
                       className="object-cover"
@@ -145,8 +172,13 @@ export default function GpPresenceSection({
                     </span>
                   </div>
                 )}
-                <span className="font-body text-body text-secondary">{country.title}</span>
-              </div>
+                <div className="flex items-center gap-2">
+                  <span className="border-b border-transparent font-body text-body text-secondary transition-colors duration-200 group-hover:border-mint">
+                    {country.title}
+                  </span>
+                  <ArrowUpRight />
+                </div>
+              </Link>
             ))}
           </div>
         </div>

@@ -35,11 +35,13 @@ export interface GpCertificationsData {
 
 // gp_presence_section
 export interface GpCountry {
-  image: string | null;
+  flagImage: string | null;
   title: string;
+  slug: string;
 }
 export interface GpRegion {
   title: string;
+  slug: string;
   countries: GpCountry[];
 }
 export interface GpPresenceData {
