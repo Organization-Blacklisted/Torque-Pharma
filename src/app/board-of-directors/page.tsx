@@ -9,7 +9,7 @@ import ExecutiveDirectorateSection from "@/components/sections/board/ExecutiveDi
 import CtaSection from "@/components/sections/shared/CtaSection";
 
 export const metadata: Metadata = {
-  title: "Board of Directors | Torque Pharma",
+  title: "Board of Directors",
   description:
     "Meet the visionary leaders of Torque Pharma — a board of experienced professionals driving people-first healthcare progress since 1985.",
 };

@@ -3,7 +3,7 @@ import Section from "@/components/layouts/Section";
 import Container from "@/components/layouts/Container";
 
 export const metadata: Metadata = {
-  title: "Company | Torque Pharma",
+  title: "Company",
   description: "Learn about Torque Pharma — our history, mission, and values.",
 };
 

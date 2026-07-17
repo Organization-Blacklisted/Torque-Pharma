@@ -12,7 +12,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   try {
     const product = await getProduct(slug);
     return {
-      title: product.seo.title ?? `${product.name} | Torque Pharma`,
+      title: product.seo.title ?? `${product.name}`,
       description: product.seo.description ?? product.description,
       ...(product.seo.keywords ? { keywords: product.seo.keywords } : {}),
       robots: product.seo.index
@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         : { index: false, follow: false },
     };
   } catch {
-    return { title: "Product | Torque Pharma" };
+    return { title: "Product" };
   }
 }
 

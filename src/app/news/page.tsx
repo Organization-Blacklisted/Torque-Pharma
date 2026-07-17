@@ -7,7 +7,7 @@ import NewsAwardsSection from "@/components/sections/news/NewsAwardsSection";
 import NewsArchiveSection from "@/components/sections/news/NewsArchiveSection";
 
 export const metadata: Metadata = {
-  title: "News & Media | Torque Pharma",
+  title: "News & Media",
   description:
     "Follow Torque Pharma's latest announcements, media features, industry mentions, and updates from Torque Pharma's expanding global presence.",
 };

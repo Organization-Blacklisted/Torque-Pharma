@@ -27,9 +27,9 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const event = await getEventDetail(slug).catch(() => null);
-  if (!event) return { title: "Event | Torque Pharma" };
+  if (!event) return { title: "Event" };
   return {
-    title: `${event.title} | Torque Pharma`,
+    title: `${event.title}`,
     description: event.desc_text,
   };
 }

@@ -7,7 +7,7 @@ import Section from "@/components/layouts/Section";
 export async function generateMetadata(): Promise<Metadata> {
   const data = await getCodeOfConductPage();
   return {
-    title: `${data.title} | Torque Pharma`,
+    title: `${data.title}`,
     description: data.subtitle,
   };
 }

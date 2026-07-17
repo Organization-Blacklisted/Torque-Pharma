@@ -335,7 +335,7 @@ Editorial note: Critical + High findings below get the full treatment (why / imp
 
 ### 🔴 High
 
-**SP-1 — Double title suffix on ~20 pages (SEO)**
+**SP-1 ✅ FIXED — Double title suffix on ~20 pages (SEO)**
 - **Files:** [layout.tsx:10](torque-pharma/src/app/layout.tsx#L10) sets `title.template: "%s | Torque Pharma"`, yet ~20 pages hardcode the suffix too — about-us:15, become-a-dealer:13, board-of-directors:12, capabilities:6, career:16, certifications:11, code-of-conduct:10, company:6, contact-us:9, country/[slug]:28+30, events/[slug]:30+32, global-presence:16, life-at-torque:16, manufacturing-facility:16, news:10, our-history:9, product/[slug]:15+23, products:6, white-label-manufacturing:16, blogs/[slug]:26.
 - **Why:** Next.js inserts the page's string title into the parent template, so every one of these renders **"About Us | Torque Pharma | Torque Pharma"** in the browser tab and Google results — duplicated and likely truncated in SERPs. (Homepage is same-segment so unaffected; `/blogs` "The Torque Journal" and `/events` "Events" are the correct pattern.)
 - **Fix:** Strip the hardcoded ` | Torque Pharma` from every page title; the template appends it.

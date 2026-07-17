@@ -10,7 +10,7 @@ import CtaSection from "@/components/sections/shared/CtaSection";
 import FaqSection from "@/components/sections/shared/FaqSection";
 
 export const metadata: Metadata = {
-  title: "Become a Dealer | Torque Pharma",
+  title: "Become a Dealer",
   description:
     "Partner with Torque Pharma to access a diverse product portfolio, dependable supply, and the support needed to grow confidently in your market.",
 };

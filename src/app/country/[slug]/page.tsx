@@ -25,9 +25,9 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const page = await getCountryPage(slug).catch(() => null);
-  if (!page) return { title: "Country | Torque Pharma" };
+  if (!page) return { title: "Country" };
   return {
-    title: `${page.name} | Torque Pharma`,
+    title: `${page.name}`,
     description: `Torque Pharma's pharmaceutical products and presence in ${page.name}.`,
   };
 }

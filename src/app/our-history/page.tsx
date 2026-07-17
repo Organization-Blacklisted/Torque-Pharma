@@ -6,7 +6,7 @@ import HistJourneySection from "@/components/sections/history/HistJourneySection
 import { getHistoryPage } from "@/lib/api/history";
 
 export const metadata: Metadata = {
-  title: "Our History | Torque Pharma",
+  title: "Our History",
   description: "Four decades of formulations, GMP-certified facilities, and milestones that shaped Torque Pharma's journey in healthcare.",
 };
 

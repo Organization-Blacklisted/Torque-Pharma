@@ -13,7 +13,7 @@ import SafeHtml from "@/components/ui/SafeHtml";
 import { getLifeAtTorquePage } from "@/lib/api/life-at-torque";
 
 export const metadata: Metadata = {
-  title: "Life at Torque | Torque Pharma",
+  title: "Life at Torque",
   description: "Culture, careers, and life inside Torque Pharma.",
 };
 

@@ -13,7 +13,7 @@ import CtaSection from "@/components/sections/shared/CtaSection";
 import FaqSection from "@/components/sections/shared/FaqSection";
 
 export const metadata: Metadata = {
-  title: "White Label Manufacturing | Torque Pharma",
+  title: "White Label Manufacturing",
   description:
     "Launch your product line quickly using our established, compliant medicine bases — shelf-ready pharmaceuticals under your brand name.",
 };

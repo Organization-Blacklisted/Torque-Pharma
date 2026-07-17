@@ -13,7 +13,7 @@ import GpFormSection from "@/components/sections/global-presence/GpFormSection";
 import { getGlobalPresencePage } from "@/lib/api/global-presence";
 
 export const metadata: Metadata = {
-  title: "Global Presence | Torque Pharma",
+  title: "Global Presence",
   description: "Torque Pharma's worldwide manufacturing and distribution footprint.",
 };
 

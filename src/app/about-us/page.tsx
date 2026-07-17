@@ -12,7 +12,7 @@ import Section from "@/components/layouts/Section";
 import { getAboutUsPage } from "@/lib/api/about";
 
 export const metadata: Metadata = {
-  title: "About Us | Torque Pharma",
+  title: "About Us",
   description:
     "Learn about Torque Pharma — our history, mission, values, and commitment to better health since 1985.",
 };

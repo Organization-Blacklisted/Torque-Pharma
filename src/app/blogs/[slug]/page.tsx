@@ -23,7 +23,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const post = await getBlogPost(slug).catch(() => null);
-  if (!post) return { title: "Blog | Torque Pharma" };
+  if (!post) return { title: "Blog" };
   return {
     title: post.seo.title,
     description: post.seo.description,

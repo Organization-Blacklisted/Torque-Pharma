@@ -8,7 +8,7 @@ import Section from "@/components/layouts/Section";
 export async function generateMetadata(): Promise<Metadata> {
   const page = await getAwardsPage();
   return {
-    title: `${page.title} | Torque Pharma`,
+    title: `${page.title}`,
     description: page.description,
   };
 }

@@ -13,7 +13,7 @@ import CtaSection from "@/components/sections/shared/CtaSection";
 import FaqSection from "@/components/sections/shared/FaqSection";
 
 export const metadata: Metadata = {
-  title: "Manufacturing Facility | Torque Pharma",
+  title: "Manufacturing Facility",
   description:
     "World-class pharmaceutical manufacturing — 43.5 billion units annually across diverse dosage forms.",
 };

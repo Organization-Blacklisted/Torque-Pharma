@@ -13,7 +13,7 @@ import FaqSection from "@/components/sections/shared/FaqSection";
 import { getCareerPage } from "@/lib/api/career";
 
 export const metadata: Metadata = {
-  title: "Careers | Torque Pharma",
+  title: "Careers",
   description: "Join Torque Pharma and be part of a team dedicated to making quality healthcare more accessible across the world.",
 };
 

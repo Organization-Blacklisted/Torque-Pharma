@@ -6,7 +6,7 @@ import EnquirySupportSection from "@/components/sections/contact/EnquirySupportS
 import { getContactPage } from "@/lib/api/contact";
 
 export const metadata: Metadata = {
-  title: "Contact Us | Torque Pharma",
+  title: "Contact Us",
   description: "Get in touch with Torque Pharma — reach our teams across sales, partnerships, and manufacturing enquiries.",
 };
 
