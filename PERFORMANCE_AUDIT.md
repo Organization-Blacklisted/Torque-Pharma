@@ -48,13 +48,13 @@ Legend: ✅ done & pushed · 🅿️ parked (blocked on external input) · ⬜ o
 - ✅ Docs/other — CLAUDE.md stale facts fixed · `391b8e1`; country detail form wired to POST `/form/country-enquiry` (verified HTTP 201) · `051a0bb`
 - ✅ **H7** — added the 8 missing cache tags to the CLAUDE.md table (`blog-{slug}`, `country-{slug}`, `country-categories`, `product-{slug}`, `dealer`, `white-label`, `history`, `life-at-torque`) · `db7ca9a`
 - ✅ **H13** — `about.ts` now sanitizes `built_on_section.sub_title` via `sanitizeRichText` before `BuiltOnSection` injects it with `dangerouslySetInnerHTML`; verified `values.subTitle`/`connect.subTitle` are safe (rendered as plain text via `SectionHeader`, not HTML)
+- ✅ **H6** — raised the Server Action body limit to 25MB (`next.config.ts`) so the base64-encoded 15MB resume upload (~20MB inflated) no longer exceeds Next's default 1MB limit
 
 **🅿️ Parked — blocked on external input**
 - 🅿️ **H1** (`sitemap.ts`/`robots.ts`) + **H2** (Open Graph / `metadataBase`) — need the **production URL** + a 1200×630 share image.
 - 🅿️ **H9** (177 KB logos) — they're **raster PNGs (3000×866) wrapped in SVG, not vector**; SVGO won't help. Need a real vector export from design, or a raster downscale.
 
 **⬜ Open — no blocker (good next-session candidates)**
-- ⬜ **H6** résumé upload exceeds the 1 MB Server Action limit
 - ⬜ **H10** `EnquirySupportSection` eagerly bundles 3 phone forms · ⬜ **H11** `ImageCycler` `setTimeout` leak · ⬜ **H12** GSAP eager on `/our-history`
 - ⬜ Most Medium/Low items (M1–M21 except M14; L1–L18)
 

@@ -7,6 +7,16 @@ const cdnHostname = process.env.CDN_URL
 const nextConfig: NextConfig = {
   poweredByHeader: false,
 
+  // Server Actions default to a 1MB body limit. The career application form
+  // sends a resume as base64 (~33% larger than the raw file) alongside a few
+  // small text fields — a 15MB resume becomes ~20MB encoded, so the limit
+  // must be raised well above that.
+  experimental: {
+    serverActions: {
+      bodySizeLimit: "25mb",
+    },
+  },
+
   // Serve modern image formats — Next.js will auto-convert JPG/PNG to avif/webp
   // and pick the best format the browser supports
   images: {
