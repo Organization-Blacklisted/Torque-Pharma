@@ -46,6 +46,7 @@ Legend: ✅ done & pushed · 🅿️ parked (blocked on external input) · ⬜ o
 - ✅ **H8** — every form field given a screen-reader name, zero visual change · `5eec4ae`
 - ✅ **M14** — `apiFetch` timeout + retry w/ exponential backoff · `a4cf428`
 - ✅ Docs/other — CLAUDE.md stale facts fixed · `391b8e1`; country detail form wired to POST `/form/country-enquiry` (verified HTTP 201) · `051a0bb`
+- ✅ **H7** — added the 8 missing cache tags to the CLAUDE.md table (`blog-{slug}`, `country-{slug}`, `country-categories`, `product-{slug}`, `dealer`, `white-label`, `history`, `life-at-torque`)
 
 **🅿️ Parked — blocked on external input**
 - 🅿️ **H1** (`sitemap.ts`/`robots.ts`) + **H2** (Open Graph / `metadataBase`) — need the **production URL** + a 1200×630 share image.
@@ -53,7 +54,6 @@ Legend: ✅ done & pushed · 🅿️ parked (blocked on external input) · ⬜ o
 
 **⬜ Open — no blocker (good next-session candidates)**
 - ⬜ **H6** résumé upload exceeds the 1 MB Server Action limit
-- ⬜ **H7** add the 8 undocumented cache tags to the CLAUDE.md table
 - ⬜ **H10** `EnquirySupportSection` eagerly bundles 3 phone forms · ⬜ **H11** `ImageCycler` `setTimeout` leak · ⬜ **H12** GSAP eager on `/our-history` · ⬜ **H13** `BuiltOnSection` unsanitized XSS sink
 - ⬜ Most Medium/Low items (M1–M21 except M14; L1–L18)
 

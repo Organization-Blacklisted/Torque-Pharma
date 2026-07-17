@@ -165,6 +165,7 @@ Body: { "tag": "blogs" }          // or { "tags": ["blogs", "homepage"] }
 | `homepage` | `home.ts` |
 | `awards` | `awards.ts` |
 | `blogs` | `blogs.ts` |
+| `blog-{slug}` (e.g. `blog-spf-in-skincare`) | `blog-post.ts` — `getBlogPost(slug)`. Editing a post must bust BOTH this tag and `blogs` |
 | `code-of-conduct` | `code-of-conduct.ts` |
 | `about-us` | `about.ts` |
 | `manufacturing` | `manufacturing.ts` |
@@ -173,9 +174,16 @@ Body: { "tag": "blogs" }          // or { "tags": ["blogs", "homepage"] }
 | `contact-us` | `contact.ts` |
 | `career` | `career.ts` |
 | `global-presence` | `global-presence.ts` |
+| `country-categories` | `country-categories.ts` — `getCountryCategories()` |
+| `country-{slug}` (e.g. `country-uganda`) | `country.ts` — `getCountryPage(slug)` |
+| `dealer` | `dealer.ts` |
+| `white-label` | `white-label.ts` |
+| `history` | `history.ts` |
+| `life-at-torque` | `life-at-torque.ts` |
+| `product-{slug}` (e.g. `product-xtraderm-cream-15gm`) | `product.ts` — `getProduct(slug)` |
 | `category-{slug}` (e.g. `category-derma`) | `product-category.ts` — `getCategoryPage(slug)` |
 | `category-children-{parentSlug}` (e.g. `category-children-domestic`) | `product-category.ts` — `getSiblingCategories(parentSlug)` |
-| `event-{slug}` (e.g. `event-nainital-marathon`) | `events.ts` — `getEventDetail(slug)` |
+| `event-{slug}` (e.g. `event-nainital-marathon`) | `events.ts` — `getEventDetail(slug)`. Also tagged `events`, so busting `event-{slug}` alone won't refresh the events list |
 | `news` | `news.ts` — `getNews()` |
 | `{slug}` (e.g. `privacy-policy`) | `pages.ts` — tag is the page slug itself |
 
