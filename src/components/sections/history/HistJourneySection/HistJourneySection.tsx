@@ -509,8 +509,8 @@ export default function HistJourneySection({ section, className = "" }: HistJour
                             src={entry.bg_image}
                             alt=""
                             fill
+                            sizes="100vw"
                             className="object-cover"
-                            unoptimized
                             priority={gi === 0 && ei === 0}
                           />
                           <div className="absolute inset-0 bg-black/50" />
@@ -548,9 +548,8 @@ export default function HistJourneySection({ section, className = "" }: HistJour
                                   alt={`${group.dateStr} milestone`}
                                   width={0}
                                   height={0}
-                                  sizes="100%"
+                                  sizes="(max-width: 1024px) 100vw, 60vw"
                                   className="h-auto w-full"
-                                  unoptimized
                                 />
                               </div>
                             </div>
