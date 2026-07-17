@@ -38,6 +38,6 @@ export const subBrandsCol2: NavLink[] = [
   { label: "Kesh 999", href: "https://www.torqueonline.co.in/collections/all/products/kesh-999-ayurvedic-hair-oil-anti-hair-fall-oil-hair-oil-with-24-natural-herbs-extract", external: true },
   { label: "Orthomac", href: "https://www.torqueonline.co.in/collections/all/products/orthomac-oil", external: true },
   { label: "Power Play", href: "#" },
-  { label: "Torque Ayurveda", href: "#" },
+  { label: "Torque Ayurveda", href: "https://www.torqueonline.co.in/collections/ayurveda", external: true },
   { label: "Torque’s Kvach", href: "https://www.torqueonline.co.in/products/torque-kvach-anti-lice-cream-wash-removes-lice-and-nits-made-with-reetha-shikakai-30-ml", external: true },
 ];
