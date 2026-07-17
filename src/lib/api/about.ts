@@ -1,5 +1,6 @@
 import { apiFetch, type ApiResponse } from "./fetcher";
 import { parseStatValue } from "./utils";
+import { sanitizeRichText } from "@/lib/sanitize";
 import type { ContentMediaData } from "@/types/content-media";
 import type { StatCardProps } from "@/components/ui/StatCard/StatCard.types";
 
@@ -152,7 +153,7 @@ export async function getAboutUsPage(): Promise<AboutUsApiData> {
     },
     builtOn: {
       eyebrow: data.content.built_on_section.title,
-      subTitle: data.content.built_on_section.sub_title,
+      subTitle: sanitizeRichText(data.content.built_on_section.sub_title),
       items: data.content.built_on_section.items.map((item) => ({
         image: item.image,
         title: item.title,
