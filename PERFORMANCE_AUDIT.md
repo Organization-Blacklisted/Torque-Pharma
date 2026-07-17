@@ -33,6 +33,36 @@ Beyond those: no `sitemap.ts`/`robots.ts`/Open Graph/JSON-LD (large SEO miss for
 
 ---
 
+## Progress Tracker — updated 2026-07-16 (end of session)
+
+Legend: ✅ done & pushed · 🅿️ parked (blocked on external input) · ⬜ open
+
+**✅ Done & pushed**
+- ✅ **C1** — `dots.svg` `priority` removed + lazy/sizes (kept SVG per client) · commit `a4cf428`
+- ✅ **C2** — `sanitize-html` removed from ALL client bundles (incl. via `SectionHeader`) + `server-only` guard · `a4cf428`
+- ✅ **H3** — blog/event unknown slugs return real 404 not 500 · `f5109c7`
+- ✅ **H4** — `<JsonLd>` component wired on product/blog/legal/country; dormant until backend fills `seo.schema` · `47e98ea` *(see correction)*
+- ✅ **H5** — ~67 MB orphaned `public/` media + dead `homepage.mock.ts` deleted · `0778092`
+- ✅ **H8** — every form field given a screen-reader name, zero visual change · `5eec4ae`
+- ✅ **M14** — `apiFetch` timeout + retry w/ exponential backoff · `a4cf428`
+- ✅ Docs/other — CLAUDE.md stale facts fixed · `391b8e1`; country detail form wired to POST `/form/country-enquiry` (verified HTTP 201) · `051a0bb`
+
+**🅿️ Parked — blocked on external input**
+- 🅿️ **H1** (`sitemap.ts`/`robots.ts`) + **H2** (Open Graph / `metadataBase`) — need the **production URL** + a 1200×630 share image.
+- 🅿️ **H9** (177 KB logos) — they're **raster PNGs (3000×866) wrapped in SVG, not vector**; SVGO won't help. Need a real vector export from design, or a raster downscale.
+
+**⬜ Open — no blocker (good next-session candidates)**
+- ⬜ **H6** résumé upload exceeds the 1 MB Server Action limit
+- ⬜ **H7** add the 8 undocumented cache tags to the CLAUDE.md table
+- ⬜ **H10** `EnquirySupportSection` eagerly bundles 3 phone forms · ⬜ **H11** `ImageCycler` `setTimeout` leak · ⬜ **H12** GSAP eager on `/our-history` · ⬜ **H13** `BuiltOnSection` unsanitized XSS sink
+- ⬜ Most Medium/Low items (M1–M21 except M14; L1–L18)
+
+**Corrections to findings below (verified this session):**
+- **H4** — `seo.schema` is currently **null across the entire API**; it isn't being "discarded", it's empty. Frontend now renders it automatically once the backend populates it.
+- **H9** — the logos are **raster PNGs embedded in an SVG**, not verbose vector; the "SVGO → <10 KB" recommendation doesn't apply.
+
+---
+
 ## 2. Severity Tally
 
 | Severity | Count | Theme |
