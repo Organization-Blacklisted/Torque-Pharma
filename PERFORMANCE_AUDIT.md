@@ -341,7 +341,7 @@ Editorial note: Critical + High findings below get the full treatment (why / imp
 - **Fix:** Strip the hardcoded ` | Torque Pharma` from every page title; the template appends it.
 - **Impact:** SEO High (every SERP title on the site), effort ~30 min.
 
-**SP-2 — Nested `<main>` landmarks (invalid HTML, a11y)**
+**SP-2 ✅ FIXED — Nested `<main>` landmarks (invalid HTML, a11y)**
 - **Files:** [layout.tsx:65](torque-pharma/src/app/layout.tsx#L65) wraps children in `<main id="main-content">`; five pages render their **own** `<main>` inside it — certifications:22, code-of-conduct:19, disclaimer:29, privacy-policy:29, terms-and-conditions:29, plus the legal routes' `loading.tsx:3` / `error.tsx:5`.
 - **Why:** `<main>` must not descend from `<main>` (HTML spec violation); duplicate landmarks break screen-reader navigation.
 - **Fix:** Change page-level `<main>` to `<div>`/fragment.

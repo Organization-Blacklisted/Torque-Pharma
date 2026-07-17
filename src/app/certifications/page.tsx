@@ -19,12 +19,12 @@ export default async function CertificationsPage() {
   if (!page) notFound();
 
   return (
-    <main>
+    <div>
       <Section first>
         <Container size="wide">
           <AwardsSection data={page} />
         </Container>
       </Section>
-    </main>
+    </div>
   );
 }

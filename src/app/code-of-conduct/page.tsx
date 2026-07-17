@@ -16,12 +16,12 @@ export default async function CodeOfConductPage() {
   const data = await getCodeOfConductPage();
 
   return (
-    <main>
+    <div>
       <Section first>
         <Container size="wide">
           <CodeOfConductSection data={data} />
         </Container>
       </Section>
-    </main>
+    </div>
   );
 }

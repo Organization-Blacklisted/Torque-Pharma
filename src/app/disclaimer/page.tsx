@@ -26,7 +26,7 @@ export default async function DisclaimerPage() {
   }
 
   return (
-    <main className="py-section-inner">
+    <div className="py-section-inner">
       <JsonLd data={page.seo.schema} />
       <Container size="wide">
         <h1 className="font-heading text-h1 font-light text-primary leading-[1.1] mb-10">
@@ -34,6 +34,6 @@ export default async function DisclaimerPage() {
         </h1>
         <SafeHtml html={page.description} className="rich-text rich-text--policy" />
       </Container>
-    </main>
+    </div>
   );
 }

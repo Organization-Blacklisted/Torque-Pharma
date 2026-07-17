@@ -2,7 +2,7 @@
 
 export default function Error({ reset }: { reset: () => void }) {
   return (
-    <main className="flex min-h-[60vh] flex-col items-center justify-center gap-4">
+    <div className="flex min-h-[60vh] flex-col items-center justify-center gap-4">
       <p className="font-body text-body-sm text-secondary">
         Failed to load Terms & Conditions.
       </p>
@@ -13,6 +13,6 @@ export default function Error({ reset }: { reset: () => void }) {
       >
         Try again
       </button>
-    </main>
+    </div>
   );
 }
