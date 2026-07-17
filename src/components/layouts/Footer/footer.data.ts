@@ -36,7 +36,8 @@ export const subBrandsCol1: NavLink[] = [
 export const subBrandsCol2: NavLink[] = [
   { label: "JAL (Mineral Water)", href: "#" },
   { label: "Kesh 999", href: "#" },
-  { label: "Torque Refresh", href: "#" },
+  { label: "Orthomac", href: "#" },
+  { label: "Power Play", href: "#" },
   { label: "Torque Ayurveda", href: "#" },
-  { label: "Torque Kvach", href: "#" },
+  { label: "Torque’s Kvach", href: "#" },
 ];
