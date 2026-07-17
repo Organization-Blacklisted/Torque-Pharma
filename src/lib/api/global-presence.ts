@@ -83,14 +83,6 @@ interface RawGlobalPresencePage {
 
 // ─── Fetcher ──────────────────────────────────────────────────────────────────
 
-export async function getExportCategories(): Promise<string[]> {
-  const { data } = await apiFetch<ApiResponse<RawGlobalPresencePage>>("/pages/global-presence", {
-    tags: ["global-presence"],
-    revalidate: 3600,
-  });
-  return data.content.gp_export_categories_section.items.map((item) => item.title);
-}
-
 export async function getGlobalPresencePage(): Promise<GlobalPresencePageData> {
   const [{ data }, countryCategories] = await Promise.all([
     apiFetch<ApiResponse<RawGlobalPresencePage>>("/pages/global-presence", {
