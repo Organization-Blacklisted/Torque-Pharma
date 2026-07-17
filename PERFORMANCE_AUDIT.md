@@ -35,6 +35,8 @@ Beyond those: no `sitemap.ts`/`robots.ts`/Open Graph/JSON-LD (large SEO miss for
 
 ## Progress Tracker — updated 2026-07-16 (end of session)
 
+> **📌 Second-pass audit (2026-07-17) completed — see [Second-Pass Audit](#second-pass-audit--2026-07-17) at the bottom of this file: 35 new findings (3 High: double title suffix, nested `<main>`, missing `<h1>` on 6 pages), all 12 shipped fixes verified holding, and per-item verification of everything below.**
+
 Legend: ✅ done & pushed · 🅿️ parked (blocked on external input) · ⬜ open
 
 **✅ Done & pushed**
@@ -321,3 +323,106 @@ Editorial note: Critical + High findings below get the full treatment (why / imp
 ---
 
 *Report generated from a 5-agent parallel deep read (app-router/SEO, data/API/caching, components/React-perf, assets/bundle/CWV, TS/security/a11y) plus first-hand review of load-bearing files. Cross-agent conflicts were reconciled against direct file reads — notably confirming that `error.tsx`/`loading.tsx`/`not-found.tsx` exist despite the stale CLAUDE.md note.*
+
+---
+---
+
+# Second-Pass Audit — 2026-07-17
+
+**Method:** 4 fresh parallel deep-read agents (client-boundaries/hydration · data/caching/waterfalls · bundle/assets/config · dead-code/TS/a11y/SEO), each primed with the complete first-audit findings list so they only *verify* known items and hunt for *new* ones. Every claim below cites a file that was read in this pass. No code was changed.
+
+## New Issues Found During Second Pass
+
+### 🔴 High
+
+**SP-1 — Double title suffix on ~20 pages (SEO)**
+- **Files:** [layout.tsx:10](torque-pharma/src/app/layout.tsx#L10) sets `title.template: "%s | Torque Pharma"`, yet ~20 pages hardcode the suffix too — about-us:15, become-a-dealer:13, board-of-directors:12, capabilities:6, career:16, certifications:11, code-of-conduct:10, company:6, contact-us:9, country/[slug]:28+30, events/[slug]:30+32, global-presence:16, life-at-torque:16, manufacturing-facility:16, news:10, our-history:9, product/[slug]:15+23, products:6, white-label-manufacturing:16, blogs/[slug]:26.
+- **Why:** Next.js inserts the page's string title into the parent template, so every one of these renders **"About Us | Torque Pharma | Torque Pharma"** in the browser tab and Google results — duplicated and likely truncated in SERPs. (Homepage is same-segment so unaffected; `/blogs` "The Torque Journal" and `/events` "Events" are the correct pattern.)
+- **Fix:** Strip the hardcoded ` | Torque Pharma` from every page title; the template appends it.
+- **Impact:** SEO High (every SERP title on the site), effort ~30 min.
+
+**SP-2 — Nested `<main>` landmarks (invalid HTML, a11y)**
+- **Files:** [layout.tsx:65](torque-pharma/src/app/layout.tsx#L65) wraps children in `<main id="main-content">`; five pages render their **own** `<main>` inside it — certifications:22, code-of-conduct:19, disclaimer:29, privacy-policy:29, terms-and-conditions:29, plus the legal routes' `loading.tsx:3` / `error.tsx:5`.
+- **Why:** `<main>` must not descend from `<main>` (HTML spec violation); duplicate landmarks break screen-reader navigation.
+- **Fix:** Change page-level `<main>` to `<div>`/fragment.
+- **Impact:** a11y/validity High, effort ~10 min.
+
+**SP-3 ✅ FIXED (`3830d6e`) — No `<h1>` on 6 pages (a11y + SEO)**
+- **Files:** [ContentMediaSection.tsx:107](torque-pharma/src/components/sections/shared/ContentMediaSection/ContentMediaSection.tsx#L107) calls SectionHeader with `size="h1"` but no `as` → defaults to `as="h2"` ([SectionHeader.tsx:20](torque-pharma/src/components/ui/SectionHeading/SectionHeader.tsx#L20)); its types expose no `as` pass-through. Affects about-us, become-a-dealer, board-of-directors, manufacturing-facility, white-label-manufacturing; contact-us has the same defect via [ContactInfoSection.tsx:36](torque-pharma/src/components/sections/contact/ContactInfoSection/ContactInfoSection.tsx#L36).
+- **Why:** Visually h1-sized but semantically `<h2>` — the document outline starts at h2; crawlers/SRs find no h1. (All other 20 pages verified to have exactly one h1.)
+- **Fix:** Add an `as`/`headingAs` pass-through prop to ContentMediaSection + ContactInfoSection and set `as="h1"` from those pages.
+- **Impact:** a11y + SEO High, effort ~30 min.
+
+### 🟡 Medium
+
+**SP-4 — Fetcher timeout doesn't cover the body read** — [fetcher.ts:66,86](torque-pharma/src/lib/api/fetcher.ts#L66): `clearTimeout` runs before `res.json()`, so the 15s abort only guards headers — a server that sends headers then stalls mid-body still hangs a build worker (the exact failure M14 targeted). Fix: clear the timer after the body is consumed. *(Residual gap behind the "fixed" M14.)*
+
+**SP-5 — `enquiry_type` can be overridden by the client** — [export-enquiry.ts:25](torque-pharma/src/lib/actions/export-enquiry.ts#L25) (+ global-presence:24, manufacturing:24, white-label:25): `JSON.stringify({ enquiry_type: "Export", ...payload })` spreads the client payload **after** the server-set discriminator; server actions are publicly invokable, so a crafted request re-routes its enquiry type (extra fields also pass through — compounds M3). Fix: `{ ...payload, enquiry_type: "export" }`.
+
+**SP-6 — Legal pages have the same 404→500 bug just fixed on blogs/events** — [privacy-policy/page.tsx:9,23](torque-pharma/src/app/privacy-policy/page.tsx#L9) (+ disclaimer, terms twins): `getPage()` uncaught in generateMetadata + body; a CMS-deleted page throws → 500 instead of `notFound()`. Fix: `.catch(() => null)` → `notFound()` (fold into the M10 route-group dedup).
+
+**SP-7 — Category page `try/catch` wraps the entire JSX** — [category/[parent]/[slug]/page.tsx:49-88](torque-pharma/src/app/category/[parent]/[slug]/page.tsx#L49): any render-time bug in the five child sections is silently converted into a 404, masking real regressions. Fix: catch only the `Promise.all`, render outside the try.
+
+**SP-8 — Events is the only detail page without JsonLd/seo plumbing** — [events.ts:21-27](torque-pharma/src/lib/api/events.ts#L21) passes raw data with no `seo` mapping; [events/[slug]/page.tsx](torque-pharma/src/app/events/[slug]/page.tsx) renders no `<JsonLd>` (product/blog/legal/country all wired). Also **SP-9:** country pages don't honor `seo.index` — [country.ts:7-8](torque-pharma/src/lib/api/country.ts#L7) surfaces only `schema`; `generateMetadata` sets no `robots` (product/category/blog/legal all honor it).
+
+**SP-10 — `prefers-reduced-motion` ignored sitewide** — only [HistJourneySection.tsx:190](torque-pharma/src/components/sections/history/HistJourneySection/HistJourneySection.tsx#L190) checks it. Violators: TypewriterWord (hero, ticks every 100–160ms), WorldMap (3s interval + zoom), Marquee + `globals.css` marquee/`pill-track-spin` keyframes, StatRotator/embla autoplays, ImageCycler, autoplaying videos. WCAG 2.2.2/2.3.3. Fix: one `@media (prefers-reduced-motion: reduce)` CSS kill-switch + a shared `useReducedMotion` guard for JS-driven animation.
+
+**SP-11 — Phone-input country flags load from a third-party host** — no form passes `flags`/`flagUrl`, so react-phone-number-input defaults to `https://purecatamphetamine.github.io/country-flag-icons/...` (verified in node_modules CountryIcon.js:50) — an uncached third-party request (DNS+TLS) on **every page with a form**, plus availability/privacy exposure. Fix: self-host the flag SVGs or import `country-flag-icons/react/3x2`.
+
+**SP-12 — CertLightbox is a modal without dialog semantics** — [CertLightbox.tsx:36-101](torque-pharma/src/components/ui/CertLightbox/CertLightbox.tsx#L36): no `role="dialog"`/`aria-modal`, focus never moved in/trapped/restored (Escape + scroll-lock do work). Fix: mirror the in-repo MobileDrawer trap (MobileDrawer.tsx:38-78).
+
+**SP-13 — Mint-on-light text fails contrast** — `--color-mint #5BC4A0` on white ≈ **2.1:1** (fails even 3:1 large-text): CountryTopSection stat counters (:62, over the white blur blob), CapabilityCard:74, EventOverviewSection:16, LifeAtTorqueSection:52, NewsHeroSection:87 "READ MORE" (needs 4.5:1). Fix: use `mint-dark` for text-on-light, keep mint for decoration.
+
+**SP-14 — Header steals focus on every mobile page load** — [Header.tsx:47-49](torque-pharma/src/components/layouts/Header/Header.tsx#L47): the focus-return effect runs on initial mount (menuOpen starts false), programmatically focusing the hamburger on first paint — breaks skip-link-first order. Fix: only focus on a true→false transition via a `wasOpen` ref.
+
+**SP-15 — GSAP tweens survive unmount on /our-history** — [HistJourneySection.tsx:387-393](torque-pharma/src/components/sections/history/HistJourneySection/HistJourneySection.tsx#L387) cleanup kills barTween/Observer/ScrollTrigger but not in-flight slide tweens or `gsap.to(window, scrollTo…)`; a mid-transition route change can re-create the bar tween after cleanup and later **scroll the new page**. Fix: `gsap.context()` + `ctx.revert()`.
+
+**SP-16 — `dynamic(ssr:false)` on 4 form sections causes CLS and isn't needed** — ConnectSection:8, GpFormSection:8, DealerNetworkSection:8, CountryFormSection:8. The pattern is valid, but (a) no `loading` fallback → the form column renders empty then pops in (layout shift on 4 pages); (b) the forms are actually SSR-safe (RHF/zod/phone-input render server-side fine). Fix: drop `ssr:false` (keeps the code-split chunk, restores server HTML) or add a min-height skeleton.
+
+**SP-17 — dots.svg payload unresolved (status change on C1)** — C1's `priority` removal fixed *prioritization*, but the asset is still **2.24MB** and SVGs bypass the image optimizer entirely — the full weight still downloads once the homepage map scrolls near. Fix: SVGO or raster conversion (pairs with M1's region maps: asia 1.5MB + south-america 2.36MB + africa 272KB = ~4.1MB on /global-presence, each downloaded on tab click behind a 150ms crossfade).
+
+**SP-18 — `zod` classic in 8 client chunks** — all forms `import { z } from "zod"` (~13KB gz); zod v4 ships `zod/mini` (~2KB core, verified in node_modules). Mechanical migration for these simple schemas → ~10KB gz off every form page.
+
+### ⚪ Low
+
+- **SP-19** — Retry loop never cancels 5xx response bodies before looping ([fetcher.ts:70-74](torque-pharma/src/lib/api/fetcher.ts#L70)) — sockets/streams held until GC during backend brownouts. Fix: `res.body?.cancel()` before `continue`.
+- **SP-20** — `country-enquiry.ts` clones every sibling-action gap (no zod, no timeout, no UA) and introduces a **third** form-endpoint convention (`/form/country-enquiry` vs `/form/submit` vs `/form/about`) — align with backend before more forms ship.
+- **SP-21** — Wasted `preconnect` to the API origin ([layout.tsx:47](torque-pharma/src/app/layout.tsx#L47)) — `API_URL` is server-only; the browser never contacts it. The CDN preconnect below it is justified and stays.
+- **SP-22** — Dead header rule `source: "/fonts/(.*)"` in next.config.ts — next/font emits to `/_next/static/media/` (already immutable); `public/` has no fonts dir.
+- **SP-23** — Graphik Light (39.7KB) + Medium (40.2KB) appear unsubsetted vs Regular (18.1KB) — ~44KB extra preloaded font bytes on every page. Subset to the same glyph range.
+- **SP-24** — Font weights used but not loaded → synthetic bold: `font-semibold` (600) at EventTestimonialsSection:37 (on font-heading!), Marquee:35+38, WorldMap:223; `font-heading font-medium` at not-found.tsx:24 (BwDarius has no 500). Bonus bug: [LifeAtTorqueSection.tsx:52](torque-pharma/src/components/sections/home/LifeAtTorqueSection/LifeAtTorqueSection.tsx#L52) has **both** `font-light` and `font-medium` on one element.
+- **SP-25** — `adjustFontFallback: "Arial"` for BwDarius (a serif) — `"Times New Roman"` gives closer fallback metrics → less swap CLS. Graphik→Arial is correct.
+- **SP-26** — `public/images/map/map locations.png`: 1.15MB source with a **space in the filename** (`%20`), and it's the /global-presence LCP. Optimizer handles serving, but pre-compress + rename; set `images.minimumCacheTTL` (default 60s → repeated expensive transforms).
+- **SP-27** — TypewriterWord announces every keystroke to screen readers (`aria-live="polite"` on a span mutating every ~100ms) — announce completed words only.
+- **SP-28** — HistTopSection is a client hero (LCP inside a client boundary) for one `scrollIntoView` button — use the CareerCtaButton tiny-island pattern or an anchor link. Also `max-w-[1100]` (missing unit → class is a no-op) at line 34.
+- **SP-29** — ProductionSection `priority={activeIndex === 0}` on a below-fold image (section #2 of manufacturing page) competes with the real LCP. Remove.
+- **SP-30** — StatRotator re-invokes the embla `Autoplay()` factory every render and discards it ([StatRotator.tsx:21](torque-pharma/src/components/ui/StatRotator/StatRotator.tsx#L21)) — lazy-init in the ref.
+- **SP-31** — Accordion ids are `accordion-trigger-${index}` — two accordions on one page produce duplicate DOM ids. Prefix with `useId()`.
+- **SP-32** — EnquirySupportSection unmounts forms on tab switch → typed input is lost. Keep mounted + `hidden` (dovetails with the H10 dynamic-import fix).
+- **SP-33** — Root layout `description: "Torque Pharma"` is placeholder-grade (violates the repo's own rule) — it's the fallback for any page missing a description.
+- **SP-34** — `ManufacturingStatsSection` lives under `src/app/manufacturing-facility/sections/` instead of `components/sections/` (breaks the repo's own folder convention).
+- **SP-35** — CLAUDE.md drifted again (batch): pages table lists `/global-presence` + `/life-at-torque` as stubs (both fully built), board-of-directors sections "not yet built" (all wired), contact "form not built" (wired), homepage "statsMedia mock" (API-wired); **11 built routes missing from the table** (our-history, career, news, events, events/[slug], become-a-dealer, white-label-manufacturing, certifications, code-of-conduct, country/[slug], product/[slug]); `src/data/` description stale (only nav.config.ts remains); colors table missing 8 newer tokens; several component locations/counts stale; "Medically reviewed by is hardcoded" claim stale (real API field now).
+
+## Previously Reported Issues Verified
+
+**✅ CONFIRMED FIXED (all verified against current code with line evidence):**
+| Item | Evidence |
+|---|---|
+| C1 dots.svg priority | WorldMap.tsx:145-152 — lazy + sizes, no priority *(payload itself still 2.24MB — see SP-17)* |
+| C2 sanitize-html client leak | sanitize.ts:3 `server-only`; SectionHeader + all 4 converted components render pre-sanitized HTML via plain div; **every** SafeHtml importer repo-wide verified server-side — leak fully closed |
+| H3 blog/event 404→500 | blogs/[slug]:25,41 + events/[slug]:29,45 — `.catch(() => null)` → `notFound()` |
+| H4 JsonLd | ui/JsonLd (server, parse-guarded, `<`-escaped) wired on product/blog/legal/country — dormant by design |
+| H5 orphaned media | public/ = 9.3MB, 19 files, **all 19 referenced** — zero orphans remain |
+| H6 resume body limit | next.config.ts:14-18 `bodySizeLimit: "25mb"` |
+| H7 cache-tag table | every fetcher tag cross-checked against CLAUDE.md — **zero mismatches** |
+| H8 form a11y | FormInput/FormTextarea aria-label+aria-invalid; all 12 FormSelects + all 8 PhoneInputs verified at their call sites |
+| H13 BuiltOn XSS | about.ts:156 `sanitizeRichText(...)` |
+| M14 fetch resilience | fetcher.ts:18-20,39-74 — 4 attempts, jittered backoff *(residual gap: SP-4 body-read timeout; SP-19 uncancelled retry bodies)* |
+| M7 (corrected) | HistJourneySection images optimized + sizes; the 8 SVG `unoptimized` usages correctly untouched |
+| Revalidate route | `revalidateTag(tag, { expire: 0 })` verified against Next 16 docs — current, non-deprecated form |
+
+**⬜ CONFIRMED STILL OPEN (unchanged):** H10 (EnquirySupportSection static imports — **plus CareerFormSection, the only un-split RHF form**), H11 (ImageCycler inner setTimeout), H12 (GSAP eager on /our-history), M1 (region SVGs — now measured 4.1MB total), M3 (zero server-side zod in all 9 actions), M5 (no global-error.tsx), M6 (getNews drops meta), M9 (zero Suspense in src/app), M10 (legal triplication — diff-verified identical), M11 (product/[slug] no generateStaticParams), M12 (stubs indexable), M15/M16 (tsconfig), M17–M19 (duplication — **grown**: FormSelect ×6, SuccessState ×7, FaqSection raw types ×8, redundant `as Control` casts ×6), M20 (Accordion caller-dependent sanitization — same pattern also in SectionHeader `content`, all current callers sanitize), M21 (libphonenumber-js phantom dep), L1/L7/L8/L9/L10/L11/L14/L15/L16/L17 all confirmed unchanged. **L12 status change:** FormSubmitButton is now fully orphaned (not exported from Form/index.ts, zero importers) — safe delete. **L18 status change:** storage-host/remotePatterns coupling currently resolves correctly in this env (API and CDN share the host) — breaks silently only if they ever diverge.
+
+**🅿️ PARKED (unchanged):** H1/H2 (prod URL + share image — SP-1/SP-33 sharpen the metadata case), H9 (raster-in-SVG logos await design vector).
+
+*Second pass: 4 agents, ~230 files read, 35 new findings (3 High · 15 Medium · 17 Low), 12 fixes confirmed holding, 0 regressions found in shipped fixes.*
