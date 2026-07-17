@@ -33,11 +33,13 @@ export default function ContactInfoSection({
 }: ContactInfoSectionProps) {
   return (
     <div className={className}>
+      {/* This section is the contact page's hero — heading must be the page h1 */}
       <SectionHeader
         eyebrow={eyebrow}
         title={heading}
         description={description}
         variant="split"
+        as="h1"
         className="mb-10"
         headingClassName="max-w-[500px]"
       />

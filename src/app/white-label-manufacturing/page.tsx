@@ -27,6 +27,7 @@ export default async function WhiteLabelManufacturingPage() {
         <Container size="xl">
           <ContentMediaSection
             {...hero}
+            headingAs="h1"
             headerClassName="max-w-[1200px] mx-auto"
           />
         </Container>

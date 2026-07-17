@@ -96,6 +96,7 @@ export default function ContentMediaSection({
   layout,
   media,
   actions,
+  headingAs = "h2",
   className = "",
   headerClassName = "",
   headingClassName = "",
@@ -109,6 +110,7 @@ export default function ContentMediaSection({
           title={heading}
           description={description}
           align="center"
+          as={headingAs}
           size="h1"
           className={headerClassName}
           headingClassName={headingClassName}
@@ -142,6 +144,7 @@ export default function ContentMediaSection({
           eyebrow={eyebrow}
           title={heading}
           align="left"
+          as={headingAs}
           size="h1"
         />
         {description && (

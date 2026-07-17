@@ -24,6 +24,7 @@ export default async function BoardOfDirectorsPage() {
         <Container size="xl">
           <ContentMediaSection
             {...contentMedia}
+            headingAs="h1"
             headingClassName="max-w-[900px] mx-auto text-pretty"
           />
         </Container>

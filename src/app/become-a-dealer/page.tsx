@@ -24,6 +24,7 @@ export default async function BecomeADealerPage() {
         <Container size="xl">
           <ContentMediaSection
             {...banner}
+            headingAs="h1"
             headerClassName="max-w-[1200px] mx-auto"
           />
         </Container>

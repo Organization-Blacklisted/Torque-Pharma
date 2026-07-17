@@ -24,7 +24,7 @@ export default async function AboutUsPage() {
     <>
       <Section first spacing="none" className="mt-[var(--spacing-page-top)] pb-[var(--spacing-section-inner)]">
         <Container>
-          <ContentMediaSection {...contentMedia} />
+          <ContentMediaSection {...contentMedia} headingAs="h1" />
         </Container>
       </Section>
 

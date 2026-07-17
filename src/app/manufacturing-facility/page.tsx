@@ -25,7 +25,7 @@ export default async function ManufacturingFacilityPage() {
     <>
       <Section first>
         <Container size="xl">
-          <ContentMediaSection {...contentMedia} headingClassName="max-w-[900px] mx-auto text-pretty" descriptionClassName="mx-auto max-w-[870px]" />
+          <ContentMediaSection {...contentMedia} headingAs="h1" headingClassName="max-w-[900px] mx-auto text-pretty" descriptionClassName="mx-auto max-w-[870px]" />
         </Container>
       </Section>
 
