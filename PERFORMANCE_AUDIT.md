@@ -46,7 +46,7 @@ Legend: ✅ done & pushed · 🅿️ parked (blocked on external input) · ⬜ o
 - ✅ **H8** — every form field given a screen-reader name, zero visual change · `5eec4ae`
 - ✅ **M14** — `apiFetch` timeout + retry w/ exponential backoff · `a4cf428`
 - ✅ Docs/other — CLAUDE.md stale facts fixed · `391b8e1`; country detail form wired to POST `/form/country-enquiry` (verified HTTP 201) · `051a0bb`
-- ✅ **H7** — added the 8 missing cache tags to the CLAUDE.md table (`blog-{slug}`, `country-{slug}`, `country-categories`, `product-{slug}`, `dealer`, `white-label`, `history`, `life-at-torque`)
+- ✅ **H7** — added the 8 missing cache tags to the CLAUDE.md table (`blog-{slug}`, `country-{slug}`, `country-categories`, `product-{slug}`, `dealer`, `white-label`, `history`, `life-at-torque`) · `db7ca9a`
 
 **🅿️ Parked — blocked on external input**
 - 🅿️ **H1** (`sitemap.ts`/`robots.ts`) + **H2** (Open Graph / `metadataBase`) — need the **production URL** + a 1200×630 share image.
