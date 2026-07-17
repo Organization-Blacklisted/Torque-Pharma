@@ -1,7 +1,7 @@
 import { apiFetch, type ApiResponse } from "./fetcher";
-import { sanitize } from "@/lib/sanitize";
+import { toFaq } from "./faq";
+import type { RawFaqSection, FaqData } from "@/types/faq";
 import type { ContentMediaData } from "@/types/content-media";
-import type { AccordionItem } from "@/components/ui/Accordion/Accordion.types";
 
 // ─── Raw API shape ────────────────────────────────────────────────────────────
 
@@ -41,12 +41,7 @@ type DealerApiResponse = {
       button_text: string;
       button_link: string;
     };
-    faqs_section: {
-      title: string;
-      sub_title: string;
-      desc: string;
-      items: { title: string; desc: string }[];
-    };
+    faqs_section: RawFaqSection;
   };
 };
 
@@ -76,12 +71,7 @@ export type DealerPageData = {
     title: string;
     button: { label: string; href: string };
   };
-  faq: {
-    eyebrow: string;
-    heading: string;
-    description: string;
-    items: AccordionItem[];
-  };
+  faq: FaqData;
 };
 
 // ─── Fetcher ──────────────────────────────────────────────────────────────────
@@ -149,14 +139,6 @@ export async function getDealerPage(): Promise<DealerPageData> {
       button: { label: cta.button_text, href: cta.button_link },
     },
 
-    faq: {
-      eyebrow: faqs.title,
-      heading: faqs.sub_title,
-      description: faqs.desc,
-      items: faqs.items.map((item) => ({
-        title: item.title,
-        content: sanitize(`<p>${item.desc}</p>`),
-      })),
-    },
+    faq: toFaq(faqs),
   };
 }

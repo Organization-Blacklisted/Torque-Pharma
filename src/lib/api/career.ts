@@ -1,5 +1,6 @@
 import { apiFetch, type ApiResponse } from "./fetcher";
-import { sanitize } from "@/lib/sanitize";
+import { toFaq } from "./faq";
+import type { RawFaqSection, FaqData } from "@/types/faq";
 
 // ─── Raw API types ────────────────────────────────────────────────────────────
 
@@ -27,11 +28,7 @@ interface RawCareerPage {
       center_items: { image: string }[];
       right_items: { image: string; title: string; desc: string }[];
     };
-    career_faq_section: {
-      title: string;
-      sub_title: string;
-      items: { title: string; desc: string }[];
-    };
+    career_faq_section: RawFaqSection;
     career_cta_section: {
       title: string;
       sub_title: string;
@@ -61,12 +58,6 @@ interface RawCareerPage {
 }
 
 // ─── Transformed types ────────────────────────────────────────────────────────
-
-export interface CareerFaqData {
-  heading: string;
-  subTitle: string;
-  items: { title: string; content: string }[];
-}
 
 export interface CareerCtaData {
   eyebrow: string;
@@ -149,7 +140,7 @@ export interface CareerPageData {
   whyJoin: WhyJoinData;
   openPositions: OpenPositionsData;
   experts: CareerExpertsData;
-  faq: CareerFaqData;
+  faq: FaqData;
   cta: CareerCtaData;
   testimonial: CareerTestimonialData;
   form: CareerFormData;
@@ -223,14 +214,7 @@ export async function getCareerPage(): Promise<CareerPageData> {
         video: item.video,
       })),
     },
-    faq: {
-      heading: faqRaw.title,
-      subTitle: faqRaw.sub_title,
-      items: faqRaw.items.map((item) => ({
-        title: item.title,
-        content: sanitize(item.desc),
-      })),
-    },
+    faq: toFaq(faqRaw),
     cta: {
       eyebrow: ctaRaw.title,
       title: ctaRaw.sub_title,

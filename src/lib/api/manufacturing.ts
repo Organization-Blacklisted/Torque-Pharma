@@ -1,9 +1,9 @@
 import { apiFetch, type ApiResponse } from "./fetcher";
-import { sanitize } from "@/lib/sanitize";
+import { toFaq } from "./faq";
 import { parseStatValue } from "./utils";
+import type { RawFaqSection, FaqData } from "@/types/faq";
 import type { ContentMediaData } from "@/types/content-media";
 import type { StatCardProps } from "@/components/ui/StatCard/StatCard.types";
-import type { AccordionItem } from "@/components/ui/Accordion/Accordion.types";
 
 // ─── Raw API shape ────────────────────────────────────────────────────────────
 
@@ -60,12 +60,7 @@ type ManufacturingApiResponse = {
       button_text: string;
       button_link: string;
     };
-    faq_section: {
-      title: string;
-      sub_title: string;
-      desc: string;
-      items: { title: string; desc: string }[];
-    };
+    faq_section: RawFaqSection;
   };
 };
 
@@ -113,12 +108,7 @@ export type ManufacturingPageData = {
     title: string;
     button: { label: string; href: string };
   };
-  faq: {
-    eyebrow: string;
-    heading: string;
-    description: string;
-    items: AccordionItem[];
-  };
+  faq: FaqData;
 };
 
 // ─── Fetcher ──────────────────────────────────────────────────────────────────
@@ -243,14 +233,6 @@ export async function getManufacturingPage(): Promise<ManufacturingPageData> {
       },
     },
 
-    faq: {
-      eyebrow: faqs.title,
-      heading: faqs.sub_title,
-      description: faqs.desc,
-      items: faqs.items.map((item) => ({
-        title: item.title,
-        content: sanitize(`<p>${item.desc}</p>`),
-      })),
-    },
+    faq: toFaq(faqs),
   };
 }

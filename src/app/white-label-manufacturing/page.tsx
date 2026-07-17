@@ -55,12 +55,7 @@ export default async function WhiteLabelManufacturingPage() {
         </Container>
       </Section>
 
-      <FaqSection
-        eyebrow={faq.eyebrow}
-        title={faq.heading}
-        description={faq.description}
-        items={faq.items}
-      />
+      <FaqSection {...faq} />
 
       <CtaSection
         eyebrow={cta.eyebrow}

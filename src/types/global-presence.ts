@@ -1,3 +1,5 @@
+import type { FaqData } from "./faq";
+
 // ── Homepage snippet (used by HomeGlobalPresenceSection) ─────────────────────
 
 export interface GlobalPresenceItem {
@@ -112,18 +114,6 @@ export interface GpFormData {
   image: string;
 }
 
-// gp_faqs_section
-export interface GpFaqItem {
-  title: string;
-  content: string;
-}
-export interface GpFaqData {
-  eyebrow: string;
-  title: string;       // matches FaqSection props
-  description: string;
-  items: GpFaqItem[];
-}
-
 // ── Assembled page data passed to the page component ─────────────────────────
 export interface GlobalPresencePageData {
   top: GpTopData;
@@ -134,5 +124,5 @@ export interface GlobalPresencePageData {
   exportCapability: GpExportCapabilityData;
   torqueModel: GpTorqueModelData;
   form: GpFormData;
-  faq: GpFaqData;
+  faq: FaqData;
 }

@@ -54,12 +54,7 @@ export default async function BecomeADealerPage() {
         button={{ label: cta.button.label, href: cta.button.href }}
       />
 
-      <FaqSection
-        eyebrow={faq.eyebrow}
-        title={faq.heading}
-        description={faq.description}
-        items={faq.items}
-      />
+      <FaqSection {...faq} />
     </>
   );
 }

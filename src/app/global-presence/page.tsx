@@ -60,12 +60,7 @@ export default async function GlobalPresencePage() {
         </Container>
       </Section>
 
-      <FaqSection
-        eyebrow={faq.eyebrow}
-        title={faq.title}
-        description={faq.description}
-        items={faq.items}
-      />
+      <FaqSection {...faq} />
     </>
   );
 }

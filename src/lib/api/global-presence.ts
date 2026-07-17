@@ -1,6 +1,7 @@
 import { apiFetch, type ApiResponse } from "./fetcher";
-import { sanitize } from "@/lib/sanitize";
+import { toFaq } from "./faq";
 import { getCountryCategories } from "./country-categories";
+import type { RawFaqSection } from "@/types/faq";
 import type {
   GlobalPresencePageData,
   GpCertificationItem,
@@ -72,12 +73,7 @@ interface RawGlobalPresencePage {
       sub_title: string;
       image: string;
     };
-    gp_faqs_section: {
-      title: string;
-      sub_title: string;
-      desc: string;
-      items: { title: string; desc: string }[];
-    };
+    gp_faqs_section: RawFaqSection;
   };
 }
 
@@ -175,14 +171,6 @@ export async function getGlobalPresencePage(): Promise<GlobalPresencePageData> {
       heading: c.gp_form_section.sub_title,
       image: c.gp_form_section.image,
     },
-    faq: {
-      eyebrow: c.gp_faqs_section.title,
-      title: c.gp_faqs_section.sub_title,
-      description: c.gp_faqs_section.desc,
-      items: c.gp_faqs_section.items.map((item) => ({
-        title: item.title,
-        content: sanitize(item.desc),
-      })),
-    },
+    faq: toFaq(c.gp_faqs_section),
   };
 }

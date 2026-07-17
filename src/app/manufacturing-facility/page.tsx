@@ -55,12 +55,7 @@ export default async function ManufacturingFacilityPage() {
         button={{ label: cta.button.label, href: cta.button.href }}
       />
 
-      <FaqSection
-        eyebrow={faq.eyebrow}
-        title={faq.heading}
-        description={faq.description}
-        items={faq.items}
-      />
+      <FaqSection {...faq} />
     </>
   );
 }

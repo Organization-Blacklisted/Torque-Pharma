@@ -73,14 +73,7 @@ export default async function CategoryPage({
           button={{ label: "Become a Partner", href: "/contact-us" }}
         />
 
-        {page.faq.items.length > 0 && (
-          <FaqSection
-            eyebrow={page.faq.eyebrow}
-            title={page.faq.title}
-            description={page.faq.description}
-            items={page.faq.items}
-          />
-        )}
+        {page.faq.items.length > 0 && <FaqSection {...page.faq} />}
       </>
     );
   } catch {

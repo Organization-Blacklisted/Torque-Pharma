@@ -1,7 +1,7 @@
 import { apiFetch, type ApiResponse } from "./fetcher";
-import { sanitize } from "@/lib/sanitize";
+import { toFaq } from "./faq";
+import type { RawFaqSection, FaqData } from "@/types/faq";
 import type { ContentMediaData } from "@/types/content-media";
-import type { AccordionItem } from "@/components/ui/Accordion/Accordion.types";
 
 // ─── Raw API shape ────────────────────────────────────────────────────────────
 
@@ -51,12 +51,7 @@ type WhiteLabelApiResponse = {
       desc: string;
       items: { image: string }[];
     };
-    faq_section: {
-      title: string;
-      sub_title: string;
-      desc: string;
-      items: { title: string; desc: string }[];
-    };
+    faq_section: RawFaqSection;
     cta_section: {
       title: string;
       sub_title: string;
@@ -103,12 +98,7 @@ export type WhiteLabelPageData = {
     description: string;
     items: { image: string }[];
   };
-  faq: {
-    eyebrow: string;
-    heading: string;
-    description: string;
-    items: AccordionItem[];
-  };
+  faq: FaqData;
   cta: {
     eyebrow: string;
     title: string;
@@ -208,15 +198,7 @@ export async function getWhiteLabelPage(): Promise<WhiteLabelPageData> {
       items: comp.items.map((item) => ({ image: item.image })),
     },
 
-    faq: {
-      eyebrow: faqs.title,
-      heading: faqs.sub_title,
-      description: faqs.desc,
-      items: faqs.items.map((item) => ({
-        title: item.title,
-        content: sanitize(`<p>${item.desc}</p>`),
-      })),
-    },
+    faq: toFaq(faqs),
 
     cta: {
       eyebrow: cta.title,

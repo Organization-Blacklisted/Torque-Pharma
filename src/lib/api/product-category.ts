@@ -1,6 +1,8 @@
 import { cache } from "react";
 import { apiFetch, type ApiResponse } from "./fetcher";
-import { sanitize, sanitizeRichText } from "@/lib/sanitize";
+import { sanitizeRichText } from "@/lib/sanitize";
+import { toFaq } from "./faq";
+import type { RawFaqSection, FaqData } from "@/types/faq";
 import type { AccordionItem } from "@/components/ui/Accordion/Accordion.types";
 
 function toTitleCase(str: string): string {
@@ -45,12 +47,7 @@ interface RawCategoryPage {
   image: string | null;
   banner_image: string | null;
   medical_disclaimer: string | null;
-  faqs_section: {
-    title: string | null;
-    sub_title: string | null;
-    desc: string | null;
-    items: { title: string; desc: string }[];
-  };
+  faqs_section: RawFaqSection;
   products: RawProduct[];
   seo: {
     title: string | null;
@@ -75,13 +72,6 @@ export interface ProductListItem {
   image: string | null;
 }
 
-export interface CategoryFaqData {
-  eyebrow: string;
-  title: string;
-  description: string;
-  items: AccordionItem[];
-}
-
 export interface CategoryPageData {
   name: string;
   slug: string;
@@ -90,7 +80,7 @@ export interface CategoryPageData {
   bannerImage: string | null;
   medicalDisclaimer: string;
   products: ProductListItem[];
-  faq: CategoryFaqData;
+  faq: FaqData;
   seo: {
     title: string | null;
     description: string | null;
@@ -124,15 +114,7 @@ export const getCategoryPage = cache(async function getCategoryPage(
       slug: p.slug,
       image: p.featured_image,
     })),
-    faq: {
-      eyebrow: faqRaw.title ?? "",
-      title: faqRaw.sub_title ?? "",
-      description: faqRaw.desc ?? "",
-      items: faqRaw.items.map((item) => ({
-        title: item.title,
-        content: sanitize(item.desc),
-      })),
-    },
+    faq: toFaq(faqRaw),
     seo: data.seo,
   };
 });

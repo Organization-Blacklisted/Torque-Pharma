@@ -58,7 +58,7 @@ export default async function CareerPage() {
         </Container>
       </Section>
 
-      <FaqSection eyebrow={faq.heading} title={faq.subTitle} items={faq.items} />
+      <FaqSection {...faq} />
 
       <CtaSection eyebrow={cta.eyebrow} title={cta.title}>
         <CareerCtaButton label={cta.button.label} />
