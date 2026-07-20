@@ -1,5 +1,6 @@
 import SectionHeader from "@/components/ui/SectionHeading";
 import CategoryCard from "@/components/ui/CategoryCard";
+import MobileSlider from "@/components/ui/MobileSlider";
 import { SplitButton } from "@/components/ui/SplitButton";
 import Container from "@/components/layouts/Container";
 import type { TherapeuticAreasSectionProps } from "./TherapeuticAreasSection.types";
@@ -22,7 +23,7 @@ export default function TherapeuticAreasSection({
         className="mb-[var(--spacing-subsection)]"
       />
 
-      <div className="grid grid-cols-1 gap-[var(--spacing-gutter)] sm:grid-cols-2 md:grid-cols-4">
+      <MobileSlider desktopClassName="grid grid-cols-1 gap-[var(--spacing-gutter)] sm:grid-cols-2 md:grid-cols-4">
         {items.map((item) => (
           <CategoryCard
             key={item.title}
@@ -31,7 +32,7 @@ export default function TherapeuticAreasSection({
             href={item.href}
           />
         ))}
-      </div>
+      </MobileSlider>
 
       <div className="mt-[var(--spacing-subsection)] flex justify-center">
         <SplitButton variant="primary" href={cta.href}>

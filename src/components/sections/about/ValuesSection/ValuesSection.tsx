@@ -1,5 +1,6 @@
 import FeatureCard from "@/components/ui/FeatureCard";
 import CTACard from "@/components/ui/CTACard";
+import MobileSlider from "@/components/ui/MobileSlider";
 import SectionHeader from "@/components/ui/SectionHeading";
 import type { ValuesSectionProps } from "./ValuesSection.types";
 
@@ -19,7 +20,7 @@ export default function ValuesSection({
         size="h2"
         className="mb-[var(--spacing-section-inner)]"
       />
-      <div className="grid gap-[var(--spacing-gutter)] sm:grid-cols-2 lg:grid-cols-3">
+      <MobileSlider desktopClassName="grid gap-[var(--spacing-gutter)] sm:grid-cols-2 lg:grid-cols-3">
         {items.map((item) => (
           <FeatureCard
             key={item.title}
@@ -30,7 +31,7 @@ export default function ValuesSection({
           />
         ))}
         <CTACard title={cta.desc} linkLabel={cta.buttonText} href={cta.buttonLink} />
-      </div>
+      </MobileSlider>
     </div>
   );
 }

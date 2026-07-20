@@ -1,4 +1,5 @@
 import BrandCard from "@/components/ui/BrandCard";
+import MobileSlider from "@/components/ui/MobileSlider";
 import SectionHeader from "@/components/ui/SectionHeading";
 import type { TorqueLineupSectionProps } from "./TorqueLineupSection.types";
 
@@ -16,11 +17,11 @@ export default function TorqueLineupSection({
         size="h2"
         className="mb-[var(--spacing-subsection)]"
       />
-      <div className="grid grid-cols-1 gap-[var(--spacing-gutter)] sm:grid-cols-2 lg:grid-cols-4">
+      <MobileSlider desktopClassName="grid grid-cols-1 gap-[var(--spacing-gutter)] sm:grid-cols-2 lg:grid-cols-4">
         {items.map((item) => (
           <BrandCard key={item.brandName} {...item} />
         ))}
-      </div>
+      </MobileSlider>
     </div>
   );
 }

@@ -110,6 +110,56 @@ body {
   background: linear-gradient(92deg, var(--color-vivid-blue) -13.36%, var(--color-dark-blue) 118.24%);
 }
 
+/* ── Mobile slider ───────────────────────────────────────────────────────────
+   Turns a normal grid into a horizontal scroll-snap carousel below 450px.
+   Layout is pure CSS; the <MobileSlider> component only adds the pagination
+   dots. `!important` (scoped to the mobile media query) overrides whatever
+   grid/flex utilities the layout uses, then fully releases at >=450px so the
+   original responsive grid resumes untouched.
+   Cards are sized via CSS vars set by the component: --ms-peek, --ms-gap. */
+
+/* Each cell stretches its card to fill the cell in both dimensions, so cards
+   are equal height — in the mobile slider AND the desktop grid (the wrapper
+   div is present at all widths, so it must pass the grid's stretch through). */
+.mobile-slider__col {
+  display: flex;
+}
+.mobile-slider__col > * {
+  width: 100%;
+}
+
+@media (max-width: 449.98px) {
+  .mobile-slider {
+    position: relative;
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    justify-content: flex-start !important;
+    align-items: stretch;
+    gap: 0 !important;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;      /* Firefox */
+    -ms-overflow-style: none;   /* IE/Edge legacy */
+  }
+  .mobile-slider::-webkit-scrollbar {
+    display: none;              /* WebKit */
+  }
+  .mobile-slider > .mobile-slider__col {
+    flex: 0 0 calc(100% - var(--ms-peek, 24px)) !important;
+    scroll-snap-align: start;
+    padding-right: var(--ms-gap, 16px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobile-slider {
+    scroll-behavior: auto;
+  }
+}
+
 /* react-phone-number-input overrides */
 .connect-phone-input {
   display: flex;
