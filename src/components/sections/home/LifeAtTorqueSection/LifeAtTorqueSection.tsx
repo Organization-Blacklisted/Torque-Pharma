@@ -21,12 +21,16 @@ export default function LifeAtTorqueSection({
       <div>
         <SectionHeader eyebrow={eyebrow} title={heading} size="h2" />
         <p className="mt-5 text-body leading-6 text-secondary">{description}</p>
-        <div className="mt-8 flex flex-wrap gap-4">
+        {/* Stack full-width below 640px so wrapped buttons align; inline (content
+            width) at >=640px. */}
+        <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:flex-wrap">
           {buttons.map((btn, i) => (
             <SplitButton
               key={btn.label}
               variant={i === 0 ? "primary" : "outline-dark"}
               href={btn.href}
+              className="w-full sm:w-auto"
+              labelClassName="max-sm:flex-1 max-sm:justify-center"
             >
               {btn.label}
             </SplitButton>
