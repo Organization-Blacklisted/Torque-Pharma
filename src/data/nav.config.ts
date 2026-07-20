@@ -40,14 +40,16 @@ export const navItems: NavItem[] = [
           { label: "Nasal", href: "/category/domestic/nasal" },
           { label: "Ayurveda", href: "/category/domestic/ayurveda" },
           { label: "NSAIDs", href: "/category/domestic/nsaids" },
-          { label: "Urinary Alkalizer", href: "/category/domestic/urinary-alkalizer" },
+          // Single-product category — link straight to the product detail page
+          { label: "Urinary Alkalizer", href: "/product/alkator-syrup" },
           { label: "Anti-Allergy", href: "/category/domestic/anti-allergy" },
           { label: "Antigout", href: "/category/domestic/antigout" },
           { label: "Anti-Cardiac", href: "/category/domestic/anti-cardiac" },
           { label: "Anti-Diabetic", href: "/category/domestic/anti-diabetic" },
           { label: "Anti-Thyroid", href: "/category/domestic/anti-thyroid" },
           { label: "Erectile Dysfunction", href: "/category/domestic/erectile-dysfunction" },
-          { label: "Contraception Disorder", href: "/category/domestic/contraception-disorder" },
+          // Single-product category — link straight to the product detail page
+          { label: "Contraception Disorder", href: "/product/primotor-n-tablets" },
         ],
       },
       {
