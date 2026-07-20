@@ -6,7 +6,8 @@ import Container from "@/components/layouts/Container";
 import JsonLd from "@/components/ui/JsonLd";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const page = await getPage("terms-and-conditions");
+  const page = await getPage("terms-and-conditions").catch(() => null);
+  if (!page) return { title: "Terms & Conditions" };
   const { seo, title } = page;
 
   return {
@@ -20,8 +21,8 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function TermsAndConditionsPage() {
-  const page = await getPage("terms-and-conditions");
-  if (page.status !== "published") {
+  const page = await getPage("terms-and-conditions").catch(() => null);
+  if (!page || page.status !== "published") {
     notFound();
   }
 

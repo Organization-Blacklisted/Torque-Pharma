@@ -6,7 +6,8 @@ import Container from "@/components/layouts/Container";
 import JsonLd from "@/components/ui/JsonLd";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const page = await getPage("disclaimer");
+  const page = await getPage("disclaimer").catch(() => null);
+  if (!page) return { title: "Disclaimer" };
   const { seo, title } = page;
 
   return {
@@ -20,8 +21,8 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function DisclaimerPage() {
-  const page = await getPage("disclaimer");
-  if (page.status !== "published") {
+  const page = await getPage("disclaimer").catch(() => null);
+  if (!page || page.status !== "published") {
     notFound();
   }
 

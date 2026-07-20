@@ -359,7 +359,7 @@ Editorial note: Critical + High findings below get the full treatment (why / imp
 
 **SP-5 — `enquiry_type` can be overridden by the client** — [export-enquiry.ts:25](torque-pharma/src/lib/actions/export-enquiry.ts#L25) (+ global-presence:24, manufacturing:24, white-label:25): `JSON.stringify({ enquiry_type: "Export", ...payload })` spreads the client payload **after** the server-set discriminator; server actions are publicly invokable, so a crafted request re-routes its enquiry type (extra fields also pass through — compounds M3). Fix: `{ ...payload, enquiry_type: "export" }`.
 
-**SP-6 — Legal pages have the same 404→500 bug just fixed on blogs/events** — [privacy-policy/page.tsx:9,23](torque-pharma/src/app/privacy-policy/page.tsx#L9) (+ disclaimer, terms twins): `getPage()` uncaught in generateMetadata + body; a CMS-deleted page throws → 500 instead of `notFound()`. Fix: `.catch(() => null)` → `notFound()` (fold into the M10 route-group dedup).
+**SP-6 ✅ FIXED — Legal pages have the same 404→500 bug just fixed on blogs/events** — [privacy-policy/page.tsx:9,23](torque-pharma/src/app/privacy-policy/page.tsx#L9) (+ disclaimer, terms twins): `getPage()` uncaught in generateMetadata + body; a CMS-deleted page throws → 500 instead of `notFound()`. Fix: `.catch(() => null)` → `notFound()` (fold into the M10 route-group dedup).
 
 **SP-7 — Category page `try/catch` wraps the entire JSX** — [category/[parent]/[slug]/page.tsx:49-88](torque-pharma/src/app/category/[parent]/[slug]/page.tsx#L49): any render-time bug in the five child sections is silently converted into a 404, masking real regressions. Fix: catch only the `Promise.all`, render outside the try.
 
