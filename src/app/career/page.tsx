@@ -6,7 +6,8 @@ import CareerFormSection from "@/components/sections/career/CareerFormSection";
 import WhyJoinSection from "@/components/sections/career/WhyJoinSection";
 import CareerTopSection from "@/components/sections/career/CareerTopSection";
 import OpenPositionsSection from "@/components/sections/career/OpenPositionsSection";
-import CareerExpertsSection from "@/components/sections/career/CareerExpertsSection";
+// Temporarily hidden per client — component, career.ts `experts` mapping and data kept.
+// import CareerExpertsSection from "@/components/sections/career/CareerExpertsSection";
 import CareerCtaButton from "@/components/sections/career/CareerCtaButton";
 import CtaSection from "@/components/sections/shared/CtaSection";
 import FaqSection from "@/components/sections/shared/FaqSection";
@@ -18,7 +19,8 @@ export const metadata: Metadata = {
 };
 
 export default async function CareerPage() {
-  const { topSection, whyJoin, openPositions, experts, faq, cta, testimonial, form } = await getCareerPage();
+  // `experts` still returned by getCareerPage — omitted here while the section is hidden.
+  const { topSection, whyJoin, openPositions, faq, cta, testimonial, form } = await getCareerPage();
 
   return (
     <>
@@ -46,11 +48,14 @@ export default async function CareerPage() {
         </Section>
       </div>
 
+      {/* Experts section hidden per client. To re-add: restore the import, add
+          `experts` back to the destructure above, and uncomment this block.
       <Section>
         <Container size="content">
           <CareerExpertsSection {...experts} />
         </Container>
       </Section>
+      */}
 
       <Section>
         <Container size="standard">
