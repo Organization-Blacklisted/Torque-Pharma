@@ -9,6 +9,7 @@ export default function MobileSlider({
   peek = 24,
   gap = 16,
   className = "",
+  cellClassName = "",
   ariaLabel = "Carousel",
 }: MobileSliderProps) {
   const slides = Children.toArray(children).filter(isValidElement);
@@ -78,7 +79,7 @@ export default function MobileSlider({
             ref={(el) => {
               cellRefs.current[i] = el;
             }}
-            className="mobile-slider__col"
+            className={`mobile-slider__col ${cellClassName}`.trim()}
           >
             {child}
           </div>

@@ -35,7 +35,7 @@ export default async function WhiteLabelManufacturingPage() {
       <WhiteLabelScaleSection {...scale} />
       <Section>
         <Container size="wide">
-          <FeatureGridSection {...partnering} />
+          <FeatureGridSection {...partnering} mobileSlider />
         </Container>
       </Section>
       <Section>

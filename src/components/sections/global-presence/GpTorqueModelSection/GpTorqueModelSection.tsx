@@ -1,5 +1,6 @@
 import Container from "@/components/layouts/Container";
 import FeatureCard from "@/components/ui/FeatureCard";
+import MobileSlider from "@/components/ui/MobileSlider";
 import SectionHeader from "@/components/ui/SectionHeading";
 import type { GpTorqueModelSectionProps } from "./GpTorqueModelSection.types";
 
@@ -25,7 +26,7 @@ export default function GpTorqueModelSection({
             eyebrowColor="text-white"
             size="h2"
           />
-          <div className="grid grid-cols-2 gap-[var(--spacing-gutter)] md:grid-cols-4">
+          <MobileSlider desktopClassName="grid grid-cols-2 gap-[var(--spacing-gutter)] md:grid-cols-4">
             {items.map((item, i) => (
               <FeatureCard
                 key={item.title}
@@ -35,7 +36,7 @@ export default function GpTorqueModelSection({
                 className="items-center text-center"
               />
             ))}
-          </div>
+          </MobileSlider>
         </div>
       </Container>
     </div>

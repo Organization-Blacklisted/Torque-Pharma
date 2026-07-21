@@ -32,7 +32,7 @@ export default async function BecomeADealerPage() {
 
       <Section>
         <Container size="wide">
-          <FeatureGridSection {...benefits} />
+          <FeatureGridSection {...benefits} mobileSlider />
         </Container>
       </Section>
 

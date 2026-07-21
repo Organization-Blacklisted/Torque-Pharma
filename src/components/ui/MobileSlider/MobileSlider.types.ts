@@ -16,6 +16,12 @@ export interface MobileSliderProps {
   gap?: number;
   /** Optional class on the outer wrapper. */
   className?: string;
+  /**
+   * Optional classes applied to each slide cell — use for non-grid desktop
+   * layouts (e.g. flex-wrap with per-item widths). Ignored below 450px, where
+   * the slider sizing takes over.
+   */
+  cellClassName?: string;
   /** Accessible label for the carousel region (default "Carousel"). */
   ariaLabel?: string;
 }
