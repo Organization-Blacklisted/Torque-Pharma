@@ -55,15 +55,17 @@ export const navItems: NavItem[] = [
       {
         label: "International",
         slug: "export",
+        // hrefs use the real export category slugs from the API (several are
+        // suffixed, e.g. gastro-1); labels stay as the curated menu names.
         areas: [
           { label: "Anti-Allergies", href: "/category/export/anti-allergies" },
           { label: "Antibiotics", href: "/category/export/antibiotics" },
-          { label: "Dermatologicals", href: "/category/export/dermatologicals" },
-          { label: "Gastrointestinals", href: "/category/export/gastrointestinals" },
-          { label: "Haematinics", href: "/category/export/haematinics" },
-          { label: "Multivitamins", href: "/category/export/multivitamins" },
-          { label: "NSAIDs", href: "/category/export/nsaids" },
-          { label: "Respiratory", href: "/category/export/respiratory" },
+          { label: "Dermatologicals", href: "/category/export/dermatology-1" },
+          { label: "Gastrointestinals", href: "/category/export/gastro-1" },
+          { label: "Haematinics", href: "/category/export/haematinics-1" },
+          { label: "Multivitamins", href: "/category/export/multi-vitamins" },
+          { label: "NSAIDs", href: "/category/export/nsaid" },
+          { label: "Respiratory", href: "/category/export/respiratory-1" },
           { label: "Miscellaneous", href: "/category/export/miscellaneous" },
         ],
       },
