@@ -117,12 +117,12 @@ export default function ProductListingSection({
   }
 
   const sortSelect = (
-    <div className="relative shrink-0 flex items-center">
+    <div className="relative flex min-w-0 shrink items-center lg:shrink-0">
       <select
         value={sortBy}
         onChange={(e) => handleSort(e.target.value as "default" | "az" | "za")}
         aria-label="Sort products"
-        className="appearance-none bg-transparent border-none pr-7 font-body text-h5 font-normal leading-[26px] text-[#3F4255] focus:outline-none cursor-pointer"
+        className="w-full appearance-none truncate bg-transparent border-none pr-6 lg:pr-7 font-body text-sm lg:text-h5 font-normal leading-[26px] text-[#3F4255] focus:outline-none cursor-pointer"
       >
         <option value="default">Sort by: Popularity</option>
         <option value="az">Sort by: A–Z</option>
@@ -135,7 +135,7 @@ export default function ProductListingSection({
         viewBox="0 0 20 20"
         fill="none"
         aria-hidden="true"
-        className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 shrink-0"
+        className="pointer-events-none absolute right-0 top-1/2 h-4 w-4 -translate-y-1/2 shrink-0 lg:h-5 lg:w-5"
       >
         <path d="M10 15L16 6H4L10 15Z" fill="#3F4255" />
       </svg>
@@ -274,12 +274,14 @@ export default function ProductListingSection({
               {/* ── Mobile controls (hidden on desktop) ────────────── */}
               <div className="lg:hidden space-y-4 mb-8">
 
-                {/* Row 1: Categories button + Sort */}
-                <div className="flex items-center justify-between gap-3">
+                {/* Row 1: Categories button + Sort — one line; mobile sizes are
+                    reduced so they fit side-by-side without forcing horizontal
+                    page scroll (Sort also truncates as a last resort). */}
+                <div className="flex items-center justify-between gap-2">
                   <button
                     type="button"
                     onClick={() => setDrawerOpen(true)}
-                    className="flex items-center gap-2 h-[42px] px-4 rounded-full border border-primary/15 bg-white/60 font-body text-h5 font-normal text-[#3F4255] transition-colors hover:border-primary/30"
+                    className="flex items-center gap-1.5 h-[42px] px-3 rounded-full border border-primary/15 bg-white/60 font-body text-sm font-normal text-[#3F4255] transition-colors hover:border-primary/30 shrink-0"
                   >
                     <svg width="18" height="14" viewBox="0 0 18 14" fill="none" aria-hidden="true">
                       <path d="M1 1h16M4 7h10M7 13h4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
