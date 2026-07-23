@@ -15,7 +15,7 @@ export const navItems: NavItem[] = [
   {
     label: "Company",
     children: [
-      { label: "Company Profile", href: "/company" },
+      { label: "About Us", href: "/about-us" },
       { label: "Our History", href: "/our-history" },
       { label: "Board of Directors", href: "/board-of-directors" },
       { label: "Manufacturing Facilities", href: "/manufacturing-facility" },
@@ -89,9 +89,8 @@ export const navItems: NavItem[] = [
       { label: "Blogs", href: "/blogs" },
       { label: "Events", href: "/events" },
       { label: "Become a Dealer", href: "/become-a-dealer" },
-      { label: "Media Center", href: "/media-center" },
+      { label: "News & Media", href: "/news-and-media" },
       { label: "Certifications & Accreditations", href: "/certifications" },
-      { label: "Product Dossiers", href: "/product-dossiers" },
     ],
   },
 ];

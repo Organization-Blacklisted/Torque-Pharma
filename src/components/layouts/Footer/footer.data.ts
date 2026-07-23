@@ -6,9 +6,9 @@ export type NavLink = {
 
 export const quickLinksCol1: NavLink[] = [
   { label: "About Us", href: "/about-us" },
-  { label: "Leadership", href: "/leadership" },
+  { label: "Board of Directors", href: "/board-of-directors" },
   { label: "Life at Torque", href: "/life-at-torque" },
-  { label: "Our Presence", href: "/our-presence" },
+  { label: "Global Presence", href: "/global-presence" },
   { label: "History", href: "/our-history" },
   { label: "Careers", href: "/career" },
   { label: "Manufacturing Units", href: "/manufacturing-facility" },
@@ -16,12 +16,11 @@ export const quickLinksCol1: NavLink[] = [
 
 export const quickLinksCol2: NavLink[] = [
   { label: "Distributor Connect", href: "https://directorque.com/login", external: true },
-  { label: "Depot", href: "/depot" },
   { label: "Torque Online Stores", href: "https://www.torqueonline.co.in/", external: true },
   { label: "Torque HRMS", href: "https://torque.keka.com/", external: true },
   { label: "Torque SFA", href: "https://dashboard.fieldassist.io/home", external: true },
   { label: "Blogs", href: "/blogs" },
-  { label: "News", href: "/news" },
+  { label: "News & Media", href: "/news-and-media" },
 ];
 
 export const subBrandsCol1: NavLink[] = [

@@ -80,7 +80,7 @@ export default function EventSidebarSection({
             })}
           </div>
           <div className="mt-6">
-            <SplitButton href="/news" variant="primary">
+            <SplitButton href="/news-and-media" variant="primary">
               Explore All News
             </SplitButton>
           </div>
