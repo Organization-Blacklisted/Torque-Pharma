@@ -121,6 +121,19 @@ function normalizeExternalUrl(url: string): string {
   return `https://${url}`;
 }
 
+// Several homepage CTA links are still placeholder "#" in the CMS. Until the
+// backend fills them, fall back to the correct internal route (the real link
+// wins automatically once it's populated).
+function linkOrFallback(link: string | undefined, fallback: string): string {
+  return link && link !== "#" ? link : fallback;
+}
+
+// Life-at-Torque homepage buttons, keyed by their CMS label.
+const LIFE_AT_TORQUE_HREFS: Record<string, string> = {
+  "Discover Life at Torque": "/life-at-torque",
+  "Explore Career": "/career",
+};
+
 // ─── Transformed shape ─────────────────────────────────────────────────────────
 // What page.tsx receives — component-ready, no raw API types leak out.
 
@@ -210,7 +223,10 @@ export async function getHomePage(): Promise<HomePageData> {
         label: c.life_at_torque_section.dedicated_professionals_text,
       },
       buttons: Array.isArray(c.life_at_torque_section.buttons)
-        ? c.life_at_torque_section.buttons.map((btn) => ({ label: btn.title, href: btn.link }))
+        ? c.life_at_torque_section.buttons.map((btn) => ({
+            label: btn.title,
+            href: linkOrFallback(btn.link, LIFE_AT_TORQUE_HREFS[btn.title] ?? "#"),
+          }))
         : [],
       images: Array.isArray(c.life_at_torque_section.images)
         ? c.life_at_torque_section.images.map((group) =>
@@ -229,7 +245,7 @@ export async function getHomePage(): Promise<HomePageData> {
       })),
       cta: {
         label: c.contract_manufacturing_section.view_text,
-        href: c.contract_manufacturing_section.view_link,
+        href: linkOrFallback(c.contract_manufacturing_section.view_link, "/contact-us"),
       },
     },
     therapeuticAreas: {
@@ -243,7 +259,7 @@ export async function getHomePage(): Promise<HomePageData> {
       })),
       cta: {
         label: c.therapeutic_areas_section.view_text,
-        href: c.therapeutic_areas_section.view_link,
+        href: linkOrFallback(c.therapeutic_areas_section.view_link, "/category/domestic/dermatology"),
       },
     },
     blogsPreview: c.blogs_section,
