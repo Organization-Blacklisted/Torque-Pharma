@@ -13,6 +13,7 @@ export default function CountryFormSection({
   image,
   pageName,
   pageUrl,
+  defaultCountry,
   className = "",
 }: CountryFormSectionProps) {
   return (
@@ -35,7 +36,7 @@ export default function CountryFormSection({
             sizes="(max-width: 768px) 100vw, 40vw"
           />
         </div>
-        <CountryForm pageName={pageName} pageUrl={pageUrl} />
+        <CountryForm pageName={pageName} pageUrl={pageUrl} defaultCountry={defaultCountry} />
       </div>
     </div>
   );

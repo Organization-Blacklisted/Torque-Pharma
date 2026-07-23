@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getCountryPage } from "@/lib/api/country";
 import { getCountryCategories } from "@/lib/api/country-categories";
+import { countrySlugToIso } from "@/lib/country-iso";
 import CountryTopSection from "@/components/sections/country/CountryTopSection";
 import CountryEdgeSection from "@/components/sections/country/CountryEdgeSection";
 import CountryFormSection from "@/components/sections/country/CountryFormSection";
@@ -56,7 +57,12 @@ export default async function CountryPage({
 
       <Section>
         <Container size="large">
-          <CountryFormSection {...page.form} pageName={page.name} pageUrl={`/country/${slug}`} />
+          <CountryFormSection
+            {...page.form}
+            pageName={page.name}
+            pageUrl={`/country/${slug}`}
+            defaultCountry={countrySlugToIso(slug)}
+          />
         </Container>
       </Section>
     </>

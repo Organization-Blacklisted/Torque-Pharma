@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useForm, Controller, type Control } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import PhoneInput, { isValidPhoneNumber } from "react-phone-number-input/min";
+import PhoneInput, { isValidPhoneNumber, type Country } from "react-phone-number-input/min";
 import parsePhoneNumber from "libphonenumber-js/min";
 import "react-phone-number-input/style.css";
 import { FormField, FormInput, FormTextarea } from "@/components/ui/Form";
@@ -87,9 +87,11 @@ function SuccessState() {
 interface CountryFormProps {
   pageName: string;
   pageUrl: string;
+  /** ISO 3166-1 alpha-2 code to pre-select in the phone field (editable). */
+  defaultCountry?: string;
 }
 
-export default function CountryForm({ pageName, pageUrl }: CountryFormProps) {
+export default function CountryForm({ pageName, pageUrl, defaultCountry = "IN" }: CountryFormProps) {
   const [isSuccess, setIsSuccess] = useState(false);
   const [serverError, setServerError] = useState("");
 
@@ -150,7 +152,7 @@ export default function CountryForm({ pageName, pageUrl }: CountryFormProps) {
               <PhoneInput
                 {...field}
                 onChange={(val) => { if (!val || val.length <= 16) field.onChange(val); }}
-                defaultCountry="IN"
+                defaultCountry={defaultCountry as Country}
                 international
                 numberInputProps={{ "aria-label": "Phone number" }}
                 placeholder="Phone Number"
