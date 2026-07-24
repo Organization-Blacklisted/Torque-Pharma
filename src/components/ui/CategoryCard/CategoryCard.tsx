@@ -23,9 +23,19 @@ function ArrowIcon() {
   );
 }
 
-export default function CategoryCard({ image, title, href, className = "", imageClassName = "", fillImage = true }: CategoryCardProps) {
+export default function CategoryCard({
+  image,
+  title,
+  href,
+  className = "",
+  imageClassName = "",
+  fillImage = true,
+  interactive = true,
+}: CategoryCardProps) {
+  const zoom = interactive ? "transition-transform duration-500 group-hover:scale-105" : "";
+
   const inner = (
-    <div className={`group flex flex-col gap-3 ${className}`}>
+    <div className={`${interactive ? "group" : ""} flex flex-col gap-3 ${className}`}>
       {fillImage ? (
         <div className={`relative aspect-square overflow-hidden rounded-lg bg-card-bg ${imageClassName}`}>
           {image && (
@@ -33,7 +43,7 @@ export default function CategoryCard({ image, title, href, className = "", image
               src={image}
               alt={title}
               fill
-              className="object-contain transition-transform duration-500 group-hover:scale-105"
+              className={`object-contain ${zoom}`}
               sizes="(max-width: 768px) 50vw, 25vw"
             />
           )}
@@ -47,18 +57,22 @@ export default function CategoryCard({ image, title, href, className = "", image
               width={0}
               height={0}
               sizes="(max-width: 768px) 50vw, 25vw"
-              className="w-full h-auto transition-transform duration-500 group-hover:scale-105"
+              className={`w-full h-auto ${zoom}`}
             />
           )}
         </div>
       )}
-      <div className="flex items-center justify-between">
-        <p className="text-body font-medium text-primary">{title}</p>
-        <ArrowIcon />
-      </div>
+      {interactive ? (
+        <div className="flex items-center justify-between">
+          <p className="text-body font-medium text-primary">{title}</p>
+          <ArrowIcon />
+        </div>
+      ) : (
+        <p className="text-center text-body font-medium text-primary">{title}</p>
+      )}
     </div>
   );
 
-  if (href) return <Link href={href} aria-label={title}>{inner}</Link>;
+  if (href && interactive) return <Link href={href} aria-label={title}>{inner}</Link>;
   return inner;
 }
