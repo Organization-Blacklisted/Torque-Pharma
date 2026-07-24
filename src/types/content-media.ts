@@ -5,6 +5,7 @@ export type ContentMediaLayout = "centered" | "split-left" | "split-right";
 export interface ContentMediaAction {
   label: string;
   href: string;
+  external?: boolean;
   variant?: "primary" | "secondary" | "outline" | "outline-dark" | "ghost";
 }
 

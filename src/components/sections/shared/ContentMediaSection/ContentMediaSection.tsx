@@ -81,6 +81,7 @@ function Actions({
           key={action.href}
           variant={action.variant ?? "primary"}
           href={action.href}
+          external={action.external}
         >
           {action.label}
         </SplitButton>

@@ -14,7 +14,7 @@ type AboutUsApiResponse = {
     title_text: string;
     sub_title: string;
     desc: string;
-    company_profile: { pdf: string | null; url: string };
+    company_profile: { pdf: string | null; url: string | null };
     overview_section: {
       title: string;
       desc: string;
@@ -118,7 +118,9 @@ export async function getAboutUsPage(): Promise<AboutUsApiData> {
       actions: [
         {
           label: "View Company Profile",
-          href: data.content.company_profile.url,
+          // Laravel serves the PDF via its own `pdf` field, separate from `url`
+          href: data.content.company_profile.pdf ?? data.content.company_profile.url ?? "#",
+          external: (data.content.company_profile.pdf ?? data.content.company_profile.url) != null,
           variant: "primary",
         },
       ],
