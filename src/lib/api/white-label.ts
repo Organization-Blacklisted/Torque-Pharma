@@ -13,10 +13,10 @@ type WhiteLabelApiResponse = {
       desc: string;
       video: string | null;
       video_poster: string;
-      button_text: string;
-      button_link: string;
-      button2_text: string;
-      button2_link: string;
+      button_text: string | null;
+      button_link: string | null;
+      button2_text: string | null;
+      button2_link: string | null;
     };
     scale_section: {
       title: string;
@@ -141,10 +141,12 @@ export async function getWhiteLabelPage(): Promise<WhiteLabelPageData> {
             src: vs.video_poster,
             alt: vs.sub_title,
           },
+      // Drop either button cleanly if Laravel clears its text — a removed
+      // button shouldn't leave an empty/dead button behind.
       actions: [
-        { label: vs.button_text, href: vs.button_link, variant: "primary" },
-        { label: vs.button2_text, href: vs.button2_link, variant: "outline-dark" },
-      ],
+        vs.button_text ? { label: vs.button_text, href: vs.button_link ?? "#", variant: "primary" as const } : null,
+        vs.button2_text ? { label: vs.button2_text, href: vs.button2_link ?? "#", variant: "outline-dark" as const } : null,
+      ].filter((action): action is NonNullable<typeof action> => action !== null),
     },
 
     scale: {
