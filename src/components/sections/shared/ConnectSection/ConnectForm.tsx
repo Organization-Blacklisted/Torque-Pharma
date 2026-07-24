@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useForm, Controller, type UseFormRegister, type Control } from "react-hook-form";
+import { useForm, Controller, type UseFormRegister, type Control, type FieldValues } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import PhoneInput, { isValidPhoneNumber } from "react-phone-number-input/min";
@@ -103,8 +103,8 @@ function AboutForm() {
           <FormInput placeholder="Last Name" hasError={!!errors.lastName} {...nameField("lastName")} />
         </FormField>
       </div>
-      <SharedEmailPhoneRow errors={errors} register={register} control={control as Control<any>} />
-      <SharedMessageRow errors={errors} register={register} />
+      <SharedEmailPhoneRow errors={errors} register={register as unknown as UseFormRegister<FieldValues>} control={control as unknown as Control<FieldValues>} />
+      <SharedMessageRow errors={errors} register={register as unknown as UseFormRegister<FieldValues>} />
       <ServerError message={serverError} variant="light" />
       <SubmitButton isSubmitting={isSubmitting} label="Submit" />
     </form>
@@ -168,8 +168,8 @@ function WhiteLabelForm() {
           <FormInput placeholder="Company Name" hasError={!!errors.companyName} className="!bg-white" {...register("companyName")} />
         </FormField>
       </div>
-      <SharedEmailPhoneRow errors={errors} register={register} control={control as Control<any>} white />
-      <SharedMessageRow errors={errors} register={register} white />
+      <SharedEmailPhoneRow errors={errors} register={register as unknown as UseFormRegister<FieldValues>} control={control as unknown as Control<FieldValues>} white />
+      <SharedMessageRow errors={errors} register={register as unknown as UseFormRegister<FieldValues>} white />
       <ServerError message={serverError} variant="dark" />
       <SubmitButton isSubmitting={isSubmitting} label="Request a Quote" />
     </form>
@@ -178,11 +178,10 @@ function WhiteLabelForm() {
 
 // ─── Shared sub-components ────────────────────────────────────────────────────
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type SharedRowProps = {
   errors: Record<string, { message?: string } | undefined>;
-  register: UseFormRegister<any>;
-  control?: Control<any>;
+  register: UseFormRegister<FieldValues>;
+  control?: Control<FieldValues>;
   white?: boolean;
 };
 

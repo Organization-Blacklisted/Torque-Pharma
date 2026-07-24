@@ -375,10 +375,10 @@ export default function HistJourneySection({ section, className = "" }: HistJour
       tolerance: 10,
       lockAxis: true,
       onDown: () => {
-        !isAnimating && handleAdvance(currentStep + 1);
+        if (!isAnimating) handleAdvance(currentStep + 1);
       },
       onUp: () => {
-        !isAnimating && handleAdvance(currentStep - 1);
+        if (!isAnimating) handleAdvance(currentStep - 1);
       },
     });
     // Start disabled — enabled only when panel is pinned (onEnter fires)

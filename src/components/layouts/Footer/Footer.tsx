@@ -48,7 +48,7 @@ export default function Footer() {
             <div className="flex flex-col gap-6 py-section-inner-sm md:flex-row md:items-center md:justify-between">
               <div className="max-w-4xl">
                 <h2 className="font-heading text-h2 font-light leading-[1.1] text-white">
-                  Let's Work Together
+                  Let&apos;s Work Together
                 </h2>
                 <p className="mt-3 font-body text-body-lg font-light text-white leading-6 max-w-[830px]">
                   Whether you are a distributor looking to bring trusted

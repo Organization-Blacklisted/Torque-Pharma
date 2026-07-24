@@ -24,7 +24,7 @@ export default function BlogPostBody({ post, className = "" }: BlogPostBodyProps
       <div className="min-w-0 flex-1">
         {/* Content sections */}
         <div className="flex flex-col">
-          {content.map((section, i) => (
+          {content.map((section) => (
             <section
               key={section.id}
               id={section.id}

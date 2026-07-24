@@ -3,7 +3,6 @@ import { apiFetch, type ApiResponse } from "./fetcher";
 import { sanitizeRichText } from "@/lib/sanitize";
 import { toFaq } from "./faq";
 import type { RawFaqSection, FaqData } from "@/types/faq";
-import type { AccordionItem } from "@/components/ui/Accordion/Accordion.types";
 
 function toTitleCase(str: string): string {
   return str.toLowerCase().replace(/\b[a-z]/g, (c) => c.toUpperCase());
