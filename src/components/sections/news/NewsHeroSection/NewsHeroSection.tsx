@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import SectionHeader from "@/components/ui/SectionHeading";
 import type { NewsHeroSectionProps } from "./NewsHeroSection.types";
 
@@ -79,16 +80,12 @@ export default function NewsHeroSection({ featured, editorsPicks, className = ""
 
               <h2 className="mt-8 font-body text-h4 font-medium text-secondary">{featured.title}</h2>
 
-              {featured.tag_link && featured.tag_link !== "#" && (
-                <a
-                  href={featured.tag_link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-[var(--spacing-subsection)] inline-flex items-center gap-2 font-body text-body-sm font-medium uppercase text-mint after:absolute after:inset-0"
-                >
-                  Read Now <ExternalArrow />
-                </a>
-              )}
+              <Link
+                href={`/news-and-media/${featured.slug}`}
+                className="mt-[var(--spacing-subsection)] inline-flex items-center gap-2 font-body text-body-sm font-medium uppercase text-mint after:absolute after:inset-0"
+              >
+                Read More <ExternalArrow />
+              </Link>
             </div>
           </article>
         )}
@@ -101,41 +98,34 @@ export default function NewsHeroSection({ featured, editorsPicks, className = ""
             </p>
 
             <div className="flex flex-col">
-              {editorsPicks.map((item, i) => {
-                const href = item.tag_link && item.tag_link !== "#" ? item.tag_link : undefined;
-                return (
-                  <div key={item.id} className="group flex items-start gap-4 py-5 first:pt-0 last:pb-0">
-                    <span className="mt-4 shrink-0 font-heading text-h2 font-normal italic leading-[24px] text-mint/30">
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
+              {editorsPicks.map((item, i) => (
+                <div key={item.id} className="group flex items-start gap-4 py-5 first:pt-0 last:pb-0">
+                  <span className="mt-4 shrink-0 font-heading text-h2 font-normal italic leading-[24px] text-mint/30">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
 
-                    <div className="flex flex-1 flex-col">
-                      {item.tag_text && (
-                        <span className="font-body text-body-sm font-normal text-primary">
-                          {item.tag_text}
-                        </span>
-                      )}
-                      <p className="mt-1 font-body text-body font-medium leading-[26px] text-secondary line-clamp-2">
-                        {item.title}
-                      </p>
-                      <div className="mt-[clamp(2rem,2vw,55px)] flex items-center gap-3">
-                        <span className="font-body text-h5 font-light text-secondary">{item.news_date}</span>
-                        {href && (
-                          <a
-                            href={href}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            aria-label={`Read: ${item.title}`}
-                            className="ml-auto rounded-lg border border-mint p-5 text-mint opacity-0 transition-opacity duration-200 group-hover:opacity-100"
-                          >
-                            <ExternalArrow />
-                          </a>
-                        )}
-                      </div>
+                  <div className="flex flex-1 flex-col">
+                    {item.tag_text && (
+                      <span className="font-body text-body-sm font-normal text-primary">
+                        {item.tag_text}
+                      </span>
+                    )}
+                    <p className="mt-1 font-body text-body font-medium leading-[26px] text-secondary line-clamp-2">
+                      {item.title}
+                    </p>
+                    <div className="mt-[clamp(2rem,2vw,55px)] flex items-center gap-3">
+                      <span className="font-body text-h5 font-light text-secondary">{item.news_date}</span>
+                      <Link
+                        href={`/news-and-media/${item.slug}`}
+                        aria-label={`Read: ${item.title}`}
+                        className="ml-auto rounded-lg border border-mint p-5 text-mint opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+                      >
+                        <ExternalArrow />
+                      </Link>
                     </div>
                   </div>
-                );
-              })}
+                </div>
+              ))}
             </div>
           </aside>
         )}

@@ -20,3 +20,21 @@ export interface NewsItem {
   status: string;
   category: NewsCategory | null;
 }
+
+export interface NewsContentBlockImage {
+  id: number;
+  url: string;
+}
+
+export interface NewsContentBlock {
+  id: string;               // slugified from title, used as the TOC anchor
+  title: string;
+  description: string | null; // sanitized HTML
+  images: NewsContentBlockImage[];
+}
+
+export interface NewsDetail extends NewsItem {
+  short_description: string | null;
+  description: string;      // sanitized HTML — the intro copy
+  content_blocks: NewsContentBlock[];
+}

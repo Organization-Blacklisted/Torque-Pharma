@@ -185,6 +185,7 @@ Body: { "tag": "blogs" }          // or { "tags": ["blogs", "homepage"] }
 | `category-children-{parentSlug}` (e.g. `category-children-domestic`) | `product-category.ts` — `getSiblingCategories(parentSlug)` |
 | `event-{slug}` (e.g. `event-nainital-marathon`) | `events.ts` — `getEventDetail(slug)`. Also tagged `events`, so busting `event-{slug}` alone won't refresh the events list |
 | `news` | `news.ts` — `getNews()` |
+| `news-{slug}` (e.g. `news-torque-free-rx-closure-allows-for-single-handed-operation`) | `news.ts` — `getNewsDetail(slug)`. Also tagged `news`, so busting `news-{slug}` alone won't refresh the news list |
 | `{slug}` (e.g. `privacy-policy`) | `pages.ts` — tag is the page slug itself |
 
 When adding a new fetcher with a `tags: [...]` option, add its tag to this table so Laravel knows what to send.
@@ -231,6 +232,8 @@ When adding a new fetcher with a `tags: [...]` option, add its tag to this table
 | `/company` `/global-presence` `/products` `/capabilities` `/life-at-torque` | Stub — h1 only | None |
 | `/blogs` | Active — featured slider, category tabs, paginated grid | `getBlogs()` |
 | `/blogs/[slug]` | Active — fully built | `getBlogPost(slug)` — hero, body, related posts; SSG via `generateStaticParams` |
+| `/news-and-media` | Active — hero (featured + editor's picks), category-tabbed paginated archive | `getNews()` |
+| `/news-and-media/[slug]` | Active — fully built | `getNewsDetail(slug)` — hero, TOC + content-block body, related news; SSG via `generateStaticParams` |
 | `/resources` | **Does not exist** — no nav link points here directly (Resources dropdown links straight to children) | None |
 | `/contact-us` | Active — ContactInfoSection wired | `getContactPage()` — info section live; enquiry form section not yet built |
 | `/disclaimer` `/privacy-policy` `/terms-and-conditions` | Active — API-driven | `getPage(slug)` |

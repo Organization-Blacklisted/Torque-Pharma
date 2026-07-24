@@ -91,6 +91,7 @@ export default function NewsArchiveSection({ items, className = "" }: NewsArchiv
         {paginated.map((item) => (
           <NewsCard
             key={item.id}
+            slug={item.slug}
             title={item.title}
             tag_image={item.tag_image}
             tag_text={item.tag_text}

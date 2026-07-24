@@ -1,4 +1,5 @@
 export interface NewsCardProps {
+  slug: string;
   title: string;
   tag_image: string | null;
   tag_text: string | null;

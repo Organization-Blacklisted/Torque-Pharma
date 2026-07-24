@@ -58,26 +58,21 @@ export default function EventSidebarSection({
             Latest News &amp; Media
           </h3>
           <div className="flex flex-col divide-y divide-[#C6CCD8]/80">
-            {latestNews.map((item) => {
-              const href = item.tag_link && item.tag_link !== "#" ? item.tag_link : undefined;
-              return (
-                <div key={item.id} className="flex flex-col gap-4 py-6 first:pt-0 last:pb-0">
-                  {item.tag_text && (
-                    <span className="inline-flex h-8 w-fit items-center rounded-full bg-mint px-3.5 py-1 font-body text-h5 font-normal capitalize text-mint-dark">
-                      {item.tag_text}
-                    </span>
-                  )}
-                  <p className="font-body text-body font-normal leading-[24px] text-secondary line-clamp-2">
-                    {href ? (
-                      <a href={href} target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-mint">
-                        {item.title}
-                      </a>
-                    ) : item.title}
-                  </p>
-                  <p className="font-body text-h5 font-normal leading-[24px] text-primary">{item.news_date}</p>
-                </div>
-              );
-            })}
+            {latestNews.map((item) => (
+              <div key={item.id} className="flex flex-col gap-4 py-6 first:pt-0 last:pb-0">
+                {item.tag_text && (
+                  <span className="inline-flex h-8 w-fit items-center rounded-full bg-mint px-3.5 py-1 font-body text-h5 font-normal capitalize text-mint-dark">
+                    {item.tag_text}
+                  </span>
+                )}
+                <p className="font-body text-body font-normal leading-[24px] text-secondary line-clamp-2">
+                  <Link href={`/news-and-media/${item.slug}`} className="transition-colors hover:text-mint">
+                    {item.title}
+                  </Link>
+                </p>
+                <p className="font-body text-h5 font-normal leading-[24px] text-primary">{item.news_date}</p>
+              </div>
+            ))}
           </div>
           <div className="mt-6">
             <SplitButton href="/news-and-media" variant="primary">

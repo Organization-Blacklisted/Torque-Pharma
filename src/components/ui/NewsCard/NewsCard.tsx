@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import type { NewsCardProps } from "./NewsCard.types";
 
 const ExternalArrow = () => (
@@ -13,15 +14,15 @@ const ExternalArrow = () => (
 );
 
 export default function NewsCard({
+  slug,
   title,
   tag_image,
   tag_text,
-  tag_link,
   featured_image,
   news_date,
   className = "",
 }: NewsCardProps) {
-  const href = tag_link && tag_link !== "#" ? tag_link : undefined;
+  const href = `/news-and-media/${slug}`;
 
   return (
     <article className={`group relative flex flex-col overflow-hidden rounded-xl bg-white/40 ${className}`}>
@@ -60,35 +61,20 @@ export default function NewsCard({
         )}
 
         <h3 className="flex-1 font-body text-body font-medium text-secondary">
-          {href ? (
-            <a
-              href={href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="after:absolute after:inset-0"
-            >
-              {title}
-            </a>
-          ) : (
-            title
-          )}
+          <Link href={href} className="after:absolute after:inset-0">
+            {title}
+          </Link>
         </h3>
 
         <div className="relative z-10 flex items-center justify-between gap-4">
-          {href ? (
-            <a
-              href={href}
-              target="_blank"
-              rel="noopener noreferrer"
-              tabIndex={-1}
-              aria-hidden="true"
-              className="inline-flex items-center gap-2 font-body text-body-sm font-medium uppercase text-mint"
-            >
-              Read Now <ExternalArrow />
-            </a>
-          ) : (
-            <span />
-          )}
+          <Link
+            href={href}
+            tabIndex={-1}
+            aria-hidden="true"
+            className="inline-flex items-center gap-2 font-body text-body-sm font-medium uppercase text-mint"
+          >
+            Read More <ExternalArrow />
+          </Link>
           <span className="font-body text-h5 font-light text-secondary">{news_date}</span>
         </div>
       </div>
