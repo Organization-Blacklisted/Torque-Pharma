@@ -37,6 +37,7 @@ export default function CountryTopSection({
                 src={top.bgImage}
                 alt=""
                 fill
+                priority
                 className="object-contain object-center"
                 sizes="100vw"
               />
