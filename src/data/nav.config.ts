@@ -36,14 +36,14 @@ export const navItems: NavItem[] = [
           { label: "Haematinics", href: "/category/domestic/haematinics" },
           { label: "Antibiotics", href: "/category/domestic/antibiotics" },
           { label: "Respiratory", href: "/category/domestic/respiratory" },
-          { label: "Eye/Ear", href: "/category/domestic/eye-ear" },
-          { label: "Nasal", href: "/category/domestic/nasal" },
+          // Backend merged Eye/Ear and Nasal into a single category
+          { label: "Eye/Ear/Nasal", href: "/category/domestic/eye-ear-nasal" },
           { label: "Ayurveda", href: "/category/domestic/ayurveda" },
           { label: "NSAIDs", href: "/category/domestic/nsaids" },
           // Single-product category — link straight to the product detail page
           { label: "Urinary Alkalizer", href: "/product/alkator-syrup" },
           { label: "Anti-Allergy", href: "/category/domestic/anti-allergy" },
-          { label: "Antigout", href: "/category/domestic/antigout" },
+          { label: "Antigout", href: "/category/domestic/anti-gout" },
           { label: "Anti-Cardiac", href: "/category/domestic/anti-cardiac" },
           { label: "Anti-Diabetic", href: "/category/domestic/anti-diabetic" },
           { label: "Anti-Thyroid", href: "/category/domestic/anti-thyroid" },
