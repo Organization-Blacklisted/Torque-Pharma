@@ -43,9 +43,11 @@ export default async function BecomeADealerPage() {
       </Section>
 
       <Section padded className="bg-dark-blue">
-        <Container size="xl">
-          <DealerNetworkSection {...network} />
-        </Container>
+        <div id="dealer-form" style={{ scrollMarginTop: "100px" }}>
+          <Container size="xl">
+            <DealerNetworkSection {...network} />
+          </Container>
+        </div>
       </Section>
 
       <CtaSection

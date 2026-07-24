@@ -103,7 +103,8 @@ export async function getDealerPage(): Promise<DealerPageData> {
       actions: [
         {
           label: b.button_text,
-          href: b.button_link,
+          // Jumps to the dealer application form further down this page, not the CMS link
+          href: "#dealer-form",
           variant: "primary",
         },
       ],
