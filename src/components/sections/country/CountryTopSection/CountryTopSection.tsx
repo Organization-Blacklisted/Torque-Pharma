@@ -74,8 +74,8 @@ export default function CountryTopSection({
             className="rich-text mx-auto max-w-[1065px] text-center text-secondary [&>p+p]:mt-4 [&_strong]:!text-secondary"
           />
 
-          {/* CTA */}
-          <SplitButton href={counter.cta.href} variant="primary">
+          {/* CTA — links to the country's PDF company profile; opens in a new tab once Laravel sets a real URL */}
+          <SplitButton href={counter.cta.href} external={counter.cta.href !== "#"} variant="primary">
             {counter.cta.label}
           </SplitButton>
         </div>
