@@ -14,7 +14,7 @@ export default function CountryEdgeSection({
   return (
     <div className={className}>
       <Container size="wide">
-        <div className="mx-auto max-w-[800px]">
+        <div className="mx-auto max-w-[900px]">
           <SectionHeader
             eyebrow={eyebrow}
             title={heading}
