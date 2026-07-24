@@ -32,10 +32,10 @@ export default function CategoryCard({
   fillImage = true,
   interactive = true,
 }: CategoryCardProps) {
-  const zoom = interactive ? "transition-transform duration-500 group-hover:scale-105" : "";
+  const zoom = "transition-transform duration-500 group-hover:scale-105";
 
   const inner = (
-    <div className={`${interactive ? "group" : ""} flex flex-col gap-3 ${className}`}>
+    <div className={`group flex flex-col gap-3 ${className}`}>
       {fillImage ? (
         <div className={`relative aspect-square overflow-hidden rounded-lg bg-card-bg ${imageClassName}`}>
           {image && (
