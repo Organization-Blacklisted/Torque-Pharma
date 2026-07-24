@@ -17,7 +17,8 @@ interface RawCountryPage {
   counter_section: {
     desc: string;
     button_text: string;
-    button_link: string;
+    button_link: string | null;
+    pdf: string | null;
     items: { title: string; desc: string }[];
   };
   edge_section: {
@@ -61,7 +62,8 @@ export async function getCountryPage(slug: string): Promise<CountryPageData> {
         .join(""),
       cta: {
         label: data.counter_section.button_text,
-        href: data.counter_section.button_link,
+        // Laravel serves the PDF via its own `pdf` field, separate from `button_link`
+        href: data.counter_section.pdf ?? data.counter_section.button_link ?? "#",
       },
     },
     edge: {
