@@ -42,7 +42,7 @@ export default function CountryTopSection({
                 sizes="100vw"
               />
             </div>
-            <div className="relative z-10 mx-auto w-full max-w-[380px] py-8">
+            <div className="relative z-10 mx-auto w-full max-w-[220px] py-4 sm:max-w-[380px] sm:py-8">
               <Image
                 src={top.featuredImage}
                 alt={top.title}
