@@ -59,7 +59,7 @@ export default function CountryTopSection({
               <div key={item.description} className="flex flex-col items-center gap-1">
                 <SafeHtml
                   html={item.title}
-                  className="font-heading text-h1 leading-none text-mint [&_span]:text-h3"
+                  className="font-heading text-stat leading-none text-mint [&_span]:text-h3"
                 />
                 <span className="font-body text-body-sm text-secondary">
                   {item.description}

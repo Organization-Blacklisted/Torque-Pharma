@@ -81,6 +81,7 @@ text-h2   32–50px    text-h5  18px
 text-h3   22–32px    text-h6  16px
 text-body 16–20px    text-body-sm  16px (fixed)
 text-button 14px
+text-stat 24–40px   — used for counter/stat values (e.g. CountryTopSection)
 ```
 
 **Spacing** (`spacings.css`)

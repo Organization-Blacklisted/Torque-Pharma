@@ -13,6 +13,7 @@
   --text-h6: 1rem;
 
   --text-xl-h: clamp(2.2rem, 5vw, 5rem);
+  --text-stat: clamp(1.5rem, 3vw, 2.5rem);
 
   --text-body: clamp(1rem, 1.2vw, 1.25rem);
   --text-body--line-height: 1.5rem;
