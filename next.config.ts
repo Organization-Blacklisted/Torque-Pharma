@@ -17,10 +17,14 @@ const nextConfig: NextConfig = {
     },
   },
 
-  // Serve modern image formats — Next.js will auto-convert JPG/PNG to avif/webp
-  // and pick the best format the browser supports
+  // TEMPORARY: Vercel's image-optimization quota is exhausted (402 on every
+  // /_next/image request, breaking every image on the site). unoptimized:true
+  // bypasses that pipeline entirely — images load at original size/format
+  // straight from the source. Revert once the plan/quota is sorted; this
+  // formats config is what to restore.
+  // formats: ["image/avif", "image/webp"],
   images: {
-    formats: ["image/avif", "image/webp"],
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: "https",
