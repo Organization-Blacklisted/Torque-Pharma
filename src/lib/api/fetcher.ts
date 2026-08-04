@@ -10,6 +10,25 @@ export type ApiResponse<T> = {
   data: T;
 };
 
+// Carries the HTTP status so callers can tell "genuinely not found" (404)
+// apart from a transient network/server failure — the two should not be
+// treated the same way (e.g. one deserves notFound(), the other doesn't).
+export class ApiError extends Error {
+  status?: number;
+  constructor(message: string, status?: number) {
+    super(message);
+    this.name = "ApiError";
+    this.status = status;
+  }
+}
+
+// True only for a genuine 404 from the API — everything else (timeouts,
+// 5xx, network failures) is transient and should NOT be treated as
+// "this page doesn't exist".
+export function isNotFoundError(err: unknown): boolean {
+  return err instanceof ApiError && err.status === 404;
+}
+
 type FetchOptions = {
   revalidate?: number | false;
   tags?: string[];
@@ -68,13 +87,13 @@ export async function apiFetch<T>(
     // Retry transient server errors (5xx) — the endpoint may be briefly overloaded.
     // 4xx (e.g. 404) is not transient, so it falls through and throws immediately.
     if (res.status >= 500 && attempt < MAX_ATTEMPTS) {
-      lastError = new Error(`API error ${res.status}: ${res.statusText} — ${url}`);
+      lastError = new ApiError(`API error ${res.status}: ${res.statusText} — ${url}`, res.status);
       await sleep(backoff(attempt));
       continue;
     }
 
     if (!res.ok) {
-      throw new Error(`API error ${res.status}: ${res.statusText} — ${url}`);
+      throw new ApiError(`API error ${res.status}: ${res.statusText} — ${url}`, res.status);
     }
 
     if (dev) {

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { isNotFoundError } from "@/lib/api/fetcher";
 import { getCategoryPage, getSiblingCategories } from "@/lib/api/product-category";
 import ProductCategoryHero from "@/components/sections/products/ProductCategoryHero";
 import MedicalDisclaimerSection from "@/components/sections/products/MedicalDisclaimerSection";
@@ -46,37 +47,43 @@ export default async function CategoryPage({
 }) {
   const { parent, slug } = await params;
 
+  let page: Awaited<ReturnType<typeof getCategoryPage>>;
+  let siblings: Awaited<ReturnType<typeof getSiblingCategories>>;
   try {
-    const [page, siblings] = await Promise.all([
+    [page, siblings] = await Promise.all([
       getCategoryPage(slug),
       getSiblingCategories(parent),
     ]);
-
-    return (
-      <>
-        <ProductCategoryHero name={page.name} bannerImage={page.bannerImage} />
-
-        {page.medicalDisclaimer && (
-          <MedicalDisclaimerSection disclaimer={page.medicalDisclaimer} />
-        )}
-
-        <ProductListingSection
-          products={page.products}
-          siblings={siblings}
-          parentSlug={parent}
-          currentSlug={slug}
-        />
-
-        <CtaSection
-          eyebrow="Global Horizons"
-          title="Your Efforts Extended Through a Partnership That's Better Together"
-          button={{ label: "Become a Partner", href: "/contact-us" }}
-        />
-
-        {page.faq.items.length > 0 && <FaqSection {...page.faq} />}
-      </>
-    );
-  } catch {
-    notFound();
+  } catch (err) {
+    // Only a genuine 404 from the API means the category doesn't exist.
+    // Anything else (timeout, 5xx, network blip) is transient — surface
+    // it as a real error instead of a misleading "page not found".
+    if (isNotFoundError(err)) notFound();
+    throw err;
   }
+
+  return (
+    <>
+      <ProductCategoryHero name={page.name} bannerImage={page.bannerImage} />
+
+      {page.medicalDisclaimer && (
+        <MedicalDisclaimerSection disclaimer={page.medicalDisclaimer} />
+      )}
+
+      <ProductListingSection
+        products={page.products}
+        siblings={siblings}
+        parentSlug={parent}
+        currentSlug={slug}
+      />
+
+      <CtaSection
+        eyebrow="Global Horizons"
+        title="Your Efforts Extended Through a Partnership That's Better Together"
+        button={{ label: "Become a Partner", href: "/contact-us" }}
+      />
+
+      {page.faq.items.length > 0 && <FaqSection {...page.faq} />}
+    </>
+  );
 }
