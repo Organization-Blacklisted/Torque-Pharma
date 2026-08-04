@@ -17,10 +17,12 @@ const nextConfig: NextConfig = {
     },
   },
 
-  // Serve modern image formats — Next.js will auto-convert JPG/PNG to avif/webp
-  // and pick the best format the browser supports
+  // Serve one modern format (not avif+webp) and cache transformed images for
+  // 31 days — each extra format/width variant is its own billed Vercel image
+  // transformation, and these banners/photos rarely change.
   images: {
-    formats: ["image/avif", "image/webp"],
+    formats: ["image/webp"],
+    minimumCacheTTL: 2678400,
     remotePatterns: [
       {
         protocol: "https",
