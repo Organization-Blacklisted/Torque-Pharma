@@ -6,8 +6,8 @@ export interface HistTopData {
 }
 
 export interface HistJourneyEntry {
-  bg_image: string;
-  image: string;
+  bg_image: string | null;
+  image: string | null;
   desc: string;
 }
 

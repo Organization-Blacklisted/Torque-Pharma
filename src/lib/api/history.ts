@@ -3,8 +3,8 @@ import { sanitizeRichText } from "@/lib/sanitize";
 import type { HistoryPageData } from "@/types/history";
 
 interface RawEntry {
-  bg_image: string;
-  image: string;
+  bg_image: string | null;
+  image: string | null;
   desc: string;
 }
 

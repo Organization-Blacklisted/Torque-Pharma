@@ -22,6 +22,7 @@ const BAR_DURATION = 4;       // seconds each progress bar takes to fill
 const TRANSITION = 0.72;      // slide transition duration
 const PARALLAX = 40;          // px background depth offset
 const SCROLL_PER_STEP = 600;  // virtual scroll px reserved per step
+const ACCORDION_MS = 500;     // sidebar decade expand/collapse duration
 
 interface DateGroup {
   decadeIndex: number;
@@ -29,7 +30,7 @@ interface DateGroup {
   decadeTitle: string;
   decadeSubTitle: string;
   dateStr: string;
-  entries: Array<{ bg_image: string; image: string; desc: string }>;
+  entries: Array<{ bg_image: string | null; image: string | null; desc: string }>;
 }
 
 export default function HistJourneySection({ section, className = "" }: HistJourneySectionProps) {
@@ -84,7 +85,8 @@ export default function HistJourneySection({ section, className = "" }: HistJour
   const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
   const barFillCache = useRef<Record<string, Element[]>>({});
   const quickIndicator = useRef<((value: number) => void) | null>(null);
-  const btnYPositions = useRef<number[]>([]);
+  const isFirstIndicatorMove = useRef(true);
+  const prevDecadeIndexRef = useRef<number | null>(null);
   // Exposes goToStep to jumpToDate (which lives outside the effect)
   const goToStepRef = useRef<((step: number) => void) | null>(null);
 
@@ -107,28 +109,61 @@ export default function HistJourneySection({ section, className = "" }: HistJour
     });
   }, [dateGroups]);
 
-  // quickTo indicator + button position cache
+  // quickTo indicator setup — created once, target position is set by the
+  // effect below (only the active decade's dates are in the DOM at any
+  // time, so button positions can't be precomputed up front any more)
   useEffect(() => {
-    if (!sidebarNavRef.current || !sidebarIndicatorRef.current) return;
-    const nav = sidebarNavRef.current;
-    const indicator = sidebarIndicatorRef.current;
-
-    quickIndicator.current = gsap.quickTo(indicator, "y", {
+    if (!sidebarIndicatorRef.current) return;
+    quickIndicator.current = gsap.quickTo(sidebarIndicatorRef.current, "y", {
       duration: 0.65,
       ease: "power3.out",
     });
+  }, []);
 
-    const navTop = nav.getBoundingClientRect().top;
-    const buttons = nav.querySelectorAll<HTMLElement>("[data-date-key]");
-    btnYPositions.current = Array.from(buttons).map((btn) => {
-      const r = btn.getBoundingClientRect();
-      return r.top - navTop + r.height / 2 - 3;
-    });
+  // Re-measure and move the indicator dot to the active date button whenever
+  // the active date changes. Only delayed when the decade accordion is
+  // actually expanding/collapsing (row positions shift during that
+  // transition) — moving within an already-open decade repositions instantly.
+  useEffect(() => {
+    const nav = sidebarNavRef.current;
+    const indicator = sidebarIndicatorRef.current;
+    const group = dateGroups[activeDateIdx];
+    if (!nav || !indicator || !group) return;
 
-    if (btnYPositions.current[0] !== undefined) {
-      gsap.set(indicator, { y: btnYPositions.current[0] });
+    const key = `${group.decadeIndex}-${group.dateIndex}`;
+    const isFirst = isFirstIndicatorMove.current;
+    isFirstIndicatorMove.current = false;
+
+    const decadeChanged = !isFirst && prevDecadeIndexRef.current !== group.decadeIndex;
+    prevDecadeIndexRef.current = group.decadeIndex;
+
+    const place = () => {
+      const activeBtn = nav.querySelector<HTMLElement>(`[data-date-key="${key}"]`);
+      if (!activeBtn) return;
+
+      const navTop = nav.getBoundingClientRect().top;
+      const r = activeBtn.getBoundingClientRect();
+      const y = r.top - navTop + r.height / 2 - 3;
+
+      if (isFirst) {
+        gsap.set(indicator, { y });
+      } else if (quickIndicator.current) {
+        quickIndicator.current(y);
+      } else {
+        gsap.set(indicator, { y });
+      }
+
+      // Keep the active date visible as the sidebar scrolls through a long decade
+      activeBtn.scrollIntoView({ behavior: isFirst ? "auto" : "smooth", block: "nearest" });
+    };
+
+    if (!decadeChanged) {
+      place();
+      return;
     }
-  }, [dateGroups]);
+    const timer = setTimeout(place, ACCORDION_MS);
+    return () => clearTimeout(timer);
+  }, [activeDateIdx, dateGroups]);
 
   // Set all bars to their filled/empty state; active bar is reset to 0 (startBar fills it)
   const updateProgressBars = useCallback(
@@ -198,13 +233,11 @@ export default function HistJourneySection({ section, className = "" }: HistJour
     let st: ScrollTrigger | null = null;
     let obs: ReturnType<typeof Observer.create> | null = null;
 
-    // ── Sidebar sync (bypasses React state for the indicator, React state for button colours) ──
+    // ── Sidebar sync — React state drives both button colour and the
+    // accordion open/close; the indicator-repositioning effect reacts to it ──
     const syncSidebar = (dateIdx: number) => {
       activeDateRef.current = dateIdx;
       setActiveDateIdx(dateIdx);
-      if (quickIndicator.current && btnYPositions.current[dateIdx] !== undefined) {
-        quickIndicator.current(btnYPositions.current[dateIdx]);
-      }
     };
 
     // ── Start auto-fill timer for progress bar at gi/ei ──
@@ -432,49 +465,61 @@ export default function HistJourneySection({ section, className = "" }: HistJour
           {/* Sidebar — desktop only, floats above slides */}
           <div className="pointer-events-none absolute inset-0 z-30 hidden lg:block">
             <Container size="wide" className="flex h-full py-[var(--spacing-section-inner)]">
-              <aside className="pointer-events-auto flex w-84 shrink-0 flex-col gap-8 overflow-y-auto pr-8">
+              <aside className="pointer-events-auto flex w-84 shrink-0 flex-col gap-8 overflow-y-auto pr-8 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                 <nav ref={sidebarNavRef} className="relative flex flex-col gap-8">
                   <div
                     ref={sidebarIndicatorRef}
                     className="absolute left-0 top-0 h-1.5 w-1.5 rounded-full bg-mint will-change-transform"
                     aria-hidden
                   />
-                  {section.items.map((decade, di) => (
-                    <div key={di}>
-                      <p className="mb-subsection font-body text-body font-medium leading-[24px] text-white">
-                        {decade.title}
-                        <br />
-                        {decade.sub_title}
-                      </p>
-                      <div className="flex flex-col">
-                        {decade.dates.map((date, dti) => {
-                          const key = `${di}-${dti}`;
-                          const gi = dateGroups.findIndex(
-                            (g) => g.decadeIndex === di && g.dateIndex === dti
-                          );
-                          const isActive = key === activeDateKey;
-                          const isLast = dti === decade.dates.length - 1;
-                          return (
-                            <div key={dti}>
-                              <button
-                                type="button"
-                                data-date-key={key}
-                                onClick={() => jumpToDate(gi, 0)}
-                                className={`flex items-center gap-2 py-0.5 pl-3.5 text-left font-body text-body font-normal leading-[24px] transition-colors duration-500 ${
-                                  isActive ? "text-mint" : "text-white hover:text-mint"
-                                }`}
-                              >
-                                {date.date}
-                              </button>
-                              {!isLast && (
-                                <div className="ml-[3px] h-10 w-px bg-white/30" />
-                              )}
-                            </div>
-                          );
-                        })}
+                  {section.items.map((decade, di) => {
+                    const isActiveDecade = di === activeGroup.decadeIndex;
+                    return (
+                      <div key={di}>
+                        <p className="mb-subsection font-body text-body font-medium leading-[24px] text-white">
+                          {decade.title}
+                          <br />
+                          {decade.sub_title}
+                        </p>
+                        {/* Grid-rows trick animates smoothly to/from auto-height without
+                            JS measuring — content stays mounted so positions/scroll-into-view
+                            keep working, just visually clipped to 0 height when collapsed. */}
+                        <div
+                          className={`grid transition-[grid-template-rows] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                            isActiveDecade ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+                          }`}
+                        >
+                          <div className="flex flex-col overflow-hidden">
+                            {decade.dates.map((date, dti) => {
+                              const key = `${di}-${dti}`;
+                              const gi = dateGroups.findIndex(
+                                (g) => g.decadeIndex === di && g.dateIndex === dti
+                              );
+                              const isActive = key === activeDateKey;
+                              const isLast = dti === decade.dates.length - 1;
+                              return (
+                                <div key={dti}>
+                                  <button
+                                    type="button"
+                                    data-date-key={key}
+                                    onClick={() => jumpToDate(gi, 0)}
+                                    className={`flex items-center gap-2 py-0.5 pl-3.5 text-left font-body text-body font-normal leading-[24px] transition-colors duration-500 ${
+                                      isActive ? "text-mint" : "text-white hover:text-mint"
+                                    }`}
+                                  >
+                                    {date.date}
+                                  </button>
+                                  {!isLast && (
+                                    <div className="ml-[3px] h-10 w-px bg-white/30" />
+                                  )}
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </nav>
               </aside>
             </Container>
@@ -505,14 +550,16 @@ export default function HistJourneySection({ section, className = "" }: HistJour
                           data-slide-bg
                           className="absolute inset-[-4%] will-change-transform"
                         >
-                          <Image
-                            src={entry.bg_image}
-                            alt=""
-                            fill
-                            sizes="100vw"
-                            className="object-cover"
-                            priority={gi === 0 && ei === 0}
-                          />
+                          {entry.bg_image && (
+                            <Image
+                              src={entry.bg_image}
+                              alt=""
+                              fill
+                              sizes="100vw"
+                              className="object-cover"
+                              priority={gi === 0 && ei === 0}
+                            />
+                          )}
                           <div className="absolute inset-0 bg-black/50" />
                         </div>
                       </div>
@@ -539,19 +586,21 @@ export default function HistJourneySection({ section, className = "" }: HistJour
                                 </p>
                               </div>
 
-                              <div
-                                data-slide-image
-                                className="flex items-center justify-center lg:px-10"
-                              >
-                                <Image
-                                  src={entry.image}
-                                  alt={`${group.dateStr} milestone`}
-                                  width={0}
-                                  height={0}
-                                  sizes="(max-width: 1024px) 100vw, 60vw"
-                                  className="h-auto w-full"
-                                />
-                              </div>
+                              {entry.image && (
+                                <div
+                                  data-slide-image
+                                  className="flex items-center justify-center lg:px-10"
+                                >
+                                  <Image
+                                    src={entry.image}
+                                    alt={`${group.dateStr} milestone`}
+                                    width={0}
+                                    height={0}
+                                    sizes="(max-width: 1024px) 100vw, 60vw"
+                                    className="h-auto w-full"
+                                  />
+                                </div>
+                              )}
                             </div>
 
                             {/* Controls — positioned under the text column */}
