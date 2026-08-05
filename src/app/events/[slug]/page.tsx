@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getEvents, getEventDetail } from "@/lib/api/events";
-import { getNews } from "@/lib/api/news";
 import Section from "@/components/layouts/Section";
 import Container from "@/components/layouts/Container";
 import EventHeroSection from "@/components/sections/events/EventHeroSection";
@@ -41,10 +40,9 @@ export default async function EventDetailPage({
 }) {
   const { slug } = await params;
 
-  const [event, allEvents, allNews] = await Promise.all([
+  const [event, allEvents] = await Promise.all([
     getEventDetail(slug).catch(() => null),
     getEvents().catch(() => []),
-    getNews().catch(() => []),
   ]);
 
   if (!event || event.status !== "published") notFound();
@@ -52,8 +50,6 @@ export default async function EventDetailPage({
   const upcomingEvents = allEvents
     .filter((e) => e.slug !== slug)
     .slice(0, 3);
-
-  const latestNews = allNews.slice(0, 3);
 
   const relatedEvents = allEvents
     .filter((e) => e.slug !== slug)
@@ -91,10 +87,7 @@ export default async function EventDetailPage({
             </div>
 
             {/* Right: sticky sidebar */}
-            <EventSidebarSection
-              upcomingEvents={upcomingEvents}
-              latestNews={latestNews}
-            />
+            <EventSidebarSection upcomingEvents={upcomingEvents} />
           </div>
         </Container>
       </Section>

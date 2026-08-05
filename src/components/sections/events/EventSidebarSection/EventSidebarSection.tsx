@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { SplitButton } from "@/components/ui/SplitButton";
 import { socialLinks } from "@/components/layouts/Footer/footer.icons";
 import type { EventSidebarSectionProps } from "./EventSidebarSection.types";
 
@@ -16,7 +15,6 @@ const ExternalArrow = () => (
 
 export default function EventSidebarSection({
   upcomingEvents,
-  latestNews,
   className = "",
 }: EventSidebarSectionProps) {
   return (
@@ -47,37 +45,6 @@ export default function EventSidebarSection({
                 </Link>
               </div>
             ))}
-          </div>
-        </div>
-      )}
-
-      {/* Latest News */}
-      {latestNews.length > 0 && (
-        <div className="rounded-lg border border-[#C6CCD8] p-[var(--spacing-card)]">
-          <h3 className="mb-6 font-heading text-h3 font-light text-primary">
-            Latest News &amp; Media
-          </h3>
-          <div className="flex flex-col divide-y divide-[#C6CCD8]/80">
-            {latestNews.map((item) => (
-              <div key={item.id} className="flex flex-col gap-4 py-6 first:pt-0 last:pb-0">
-                {item.tag_text && (
-                  <span className="inline-flex h-8 w-fit items-center rounded-full bg-mint px-3.5 py-1 font-body text-h5 font-normal capitalize text-mint-dark">
-                    {item.tag_text}
-                  </span>
-                )}
-                <p className="font-body text-body font-normal leading-[24px] text-secondary line-clamp-2">
-                  <Link href={`/news-and-media/${item.slug}`} className="transition-colors hover:text-mint">
-                    {item.title}
-                  </Link>
-                </p>
-                <p className="font-body text-h5 font-normal leading-[24px] text-primary">{item.news_date}</p>
-              </div>
-            ))}
-          </div>
-          <div className="mt-6">
-            <SplitButton href="/news-and-media" variant="primary">
-              Explore All News
-            </SplitButton>
           </div>
         </div>
       )}

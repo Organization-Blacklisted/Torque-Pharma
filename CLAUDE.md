@@ -233,8 +233,8 @@ When adding a new fetcher with a `tags: [...]` option, add its tag to this table
 | `/company` `/global-presence` `/products` `/capabilities` `/life-at-torque` | Stub — h1 only | None |
 | `/blogs` | Active — featured slider, category tabs, paginated grid | `getBlogs()` |
 | `/blogs/[slug]` | Active — fully built | `getBlogPost(slug)` — hero, body, related posts; SSG via `generateStaticParams` |
-| `/news-and-media` | Active — hero (featured + editor's picks), category-tabbed paginated archive | `getNews()` |
-| `/news-and-media/[slug]` | Active — fully built | `getNewsDetail(slug)` — hero, TOC + content-block body, related news; SSG via `generateStaticParams` |
+| `/news-and-media` | Active but unlinked — removed from header/footer nav and the Events sidebar; reachable only by direct URL | `getNews()` |
+| `/news-and-media/[slug]` | Active but unlinked — same as above | `getNewsDetail(slug)` — hero, TOC + content-block body, related news; SSG via `generateStaticParams` |
 | `/resources` | **Does not exist** — no nav link points here directly (Resources dropdown links straight to children) | None |
 | `/contact-us` | Active — ContactInfoSection wired | `getContactPage()` — info section live; enquiry form section not yet built |
 | `/disclaimer` `/privacy-policy` `/terms-and-conditions` | Active — API-driven | `getPage(slug)` |

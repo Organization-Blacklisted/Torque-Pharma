@@ -89,7 +89,6 @@ export const navItems: NavItem[] = [
       { label: "Blogs", href: "/blogs" },
       { label: "Events", href: "/events" },
       { label: "Become a Dealer", href: "/become-a-dealer" },
-      { label: "News & Media", href: "/news-and-media" },
       { label: "Certifications & Accreditations", href: "/certifications" },
     ],
   },
