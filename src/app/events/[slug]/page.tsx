@@ -69,13 +69,19 @@ export default async function EventDetailPage({
           <div className="grid gap-10 lg:grid-cols-[3fr_2fr] lg:items-start">
             {/* Left: all main sections stacked */}
             <div className="flex flex-col gap-[var(--spacing-section-inner)]">
-              <EventOverviewSection overview={event.overview_section} />
+              {(event.overview_section.title ||
+                event.overview_section.desc ||
+                event.overview_section.items.length > 0) && (
+                <EventOverviewSection overview={event.overview_section} />
+              )}
 
               {event.impressions_section.items.length > 0 && (
                 <EventImpressionsSection section={event.impressions_section} />
               )}
 
-              <EventGallerySection section={event.gallery_section} />
+              {event.gallery_section.items.length > 0 && (
+                <EventGallerySection section={event.gallery_section} />
+              )}
 
               {event.takeaways_section.items.length > 0 && (
                 <EventTakeawaysSection section={event.takeaways_section} />
