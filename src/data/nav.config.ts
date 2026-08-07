@@ -39,7 +39,7 @@ export const navItems: NavItem[] = [
           // Backend merged Eye/Ear and Nasal into a single category
           { label: "Eye/Ear/Nasal", href: "/category/domestic/eye-ear-nasal" },
           { label: "Ayurveda", href: "/category/domestic/ayurveda" },
-          { label: "NSAIDs", href: "/category/domestic/nsaids" },
+          { label: "Painkillers", href: "/category/domestic/painkillers-1" },
           // Single-product category — link straight to the product detail page
           { label: "Urinary Alkalizer", href: "/product/alkator-syrup" },
           { label: "Anti-Allergy", href: "/category/domestic/anti-allergy" },
@@ -64,7 +64,7 @@ export const navItems: NavItem[] = [
           { label: "Gastro", href: "/category/export/gastro-1" },
           { label: "Haematinics", href: "/category/export/haematinics-1" },
           { label: "Multi Vitamins", href: "/category/export/multi-vitamins" },
-          { label: "NSAID", href: "/category/export/nsaid" },
+          { label: "Painkillers", href: "/category/export/painkillers-2" },
           { label: "Respiratory", href: "/category/export/respiratory-1" },
           { label: "Miscellaneous", href: "/category/export/miscellaneous" },
         ],
