@@ -3,7 +3,8 @@ import { getWhiteLabelPage } from "@/lib/api/white-label";
 import ContentMediaSection from "@/components/sections/shared/ContentMediaSection";
 import FeatureGridSection from "@/components/sections/shared/FeatureGridSection";
 import ConnectSection from "@/components/sections/shared/ConnectSection";
-import WhiteLabelPartnerSection from "@/components/sections/white-label/WhiteLabelPartnerSection";
+// Temporarily hidden per client — component, white-label.ts `partner` mapping and data kept.
+// import WhiteLabelPartnerSection from "@/components/sections/white-label/WhiteLabelPartnerSection";
 import CertificationsSection from "@/components/sections/manufacturing/CertificationsSection";
 import ProductionScaleSection from "@/components/sections/manufacturing/ProductionScaleSection";
 import WhiteLabelScaleSection from "@/components/sections/white-label/WhiteLabelScaleSection";
@@ -19,7 +20,8 @@ export const metadata: Metadata = {
 };
 
 export default async function WhiteLabelManufacturingPage() {
-  const { hero, scale, partnering, partner, productionScale, connect, compliance, faq, cta } = await getWhiteLabelPage();
+  // `partner` still returned by getWhiteLabelPage — omitted here while the section is hidden.
+  const { hero, scale, partnering, productionScale, connect, compliance, faq, cta } = await getWhiteLabelPage();
 
   return (
     <>
@@ -38,9 +40,12 @@ export default async function WhiteLabelManufacturingPage() {
           <FeatureGridSection {...partnering} mobileSlider />
         </Container>
       </Section>
+      {/* "Who We Manufacture For" hidden per client. To re-add: restore the import, add
+          `partner` back to the destructure above, and uncomment this block.
       <Section>
         <WhiteLabelPartnerSection {...partner} className="mx-2" />
       </Section>
+      */}
 
       <ProductionScaleSection {...productionScale} />
 
