@@ -7,6 +7,6 @@ export interface Event {
   event_date: string;
   created_by: string;
   tag: string | null;
-  featured_image: string;
+  featured_image: string | null;
   is_featured: boolean;
 }

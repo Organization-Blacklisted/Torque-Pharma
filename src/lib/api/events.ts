@@ -12,9 +12,11 @@ export async function getEvents(): Promise<Event[]> {
 
   return data.map((event) => ({
     ...event,
-    featured_image: event.featured_image.startsWith("http")
-      ? event.featured_image
-      : `${STORAGE_BASE}/${event.featured_image}`,
+    featured_image: event.featured_image
+      ? event.featured_image.startsWith("http")
+        ? event.featured_image
+        : `${STORAGE_BASE}/${event.featured_image}`
+      : null,
   }));
 }
 

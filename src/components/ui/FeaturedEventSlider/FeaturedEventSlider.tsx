@@ -52,16 +52,18 @@ function FeaturedSlide({ event }: { event: Event }) {
         </div>
       </div>
 
-      <div className="relative aspect-[4/3] md:aspect-auto">
-        <Image
-          src={event.featured_image}
-          alt={event.title}
-          fill
-          draggable={false}
-          sizes="(max-width: 768px) 100vw, 50vw"
-          className="object-cover"
-        />
-      </div>
+      {event.featured_image && (
+        <div className="relative aspect-[4/3] md:aspect-auto">
+          <Image
+            src={event.featured_image}
+            alt={event.title}
+            fill
+            draggable={false}
+            sizes="(max-width: 768px) 100vw, 50vw"
+            className="object-cover"
+          />
+        </div>
+      )}
     </div>
   );
 }
