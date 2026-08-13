@@ -68,7 +68,7 @@ export default function CategoryCard({
           <ArrowIcon />
         </div>
       ) : (
-        <p className="text-center text-body font-medium text-primary">{title}</p>
+        <p className="text-body font-medium text-primary">{title}</p>
       )}
     </div>
   );
