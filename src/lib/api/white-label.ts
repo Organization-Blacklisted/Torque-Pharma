@@ -1,5 +1,6 @@
 import { apiFetch, type ApiResponse } from "./fetcher";
 import { toFaq } from "./faq";
+import { textOrNull } from "./utils";
 import type { RawFaqSection, FaqData } from "@/types/faq";
 import type { ContentMediaData } from "@/types/content-media";
 
@@ -38,7 +39,7 @@ type WhiteLabelApiResponse = {
       title: string;
       sub_title: string;
       desc: string;
-      items: { image: string; title: string; desc: string; link: string }[];
+      items: { image: string; title: string; desc: string | null; link: string }[];
     };
     connect_section: {
       title: string;
@@ -85,7 +86,7 @@ export type WhiteLabelPageData = {
     eyebrow: string;
     title: string;
     description: string;
-    items: { image: string; name: string; capacity: string }[];
+    items: { image: string; name: string; capacity: string | null }[];
   };
   connect: {
     eyebrow: string;
@@ -183,7 +184,7 @@ export async function getWhiteLabelPage(): Promise<WhiteLabelPageData> {
       items: wl.items.map((item) => ({
         image: item.image,
         name: item.title,
-        capacity: item.desc,
+        capacity: textOrNull(item.desc),
       })),
     },
 

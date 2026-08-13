@@ -7,6 +7,13 @@ export function parseStatValue(raw: string): { value: string; suffix?: string } 
   return { value: match[1].trim(), suffix: match[2].trim() };
 }
 
+// A cleared rich-text field often leaves "<br>" (or similar empty markup)
+// behind rather than a true empty string — treat that as no content too.
+export function textOrNull(html: string | null): string | null {
+  if (!html) return null;
+  return html.replace(/<[^>]*>/g, "").trim() ? html : null;
+}
+
 export function slugify(str: string): string {
   return str
     .toLowerCase()

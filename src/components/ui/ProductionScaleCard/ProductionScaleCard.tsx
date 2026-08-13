@@ -15,7 +15,7 @@ export default function ProductionScaleCard({ image, name, capacity, className =
       </div>
       <div>
         <h3 className="font-body text-body font-medium text-primary">{name}</h3>
-        <p className="text-body-sm text-secondary">{capacity}</p>
+        {capacity && <p className="text-body-sm text-secondary">{capacity}</p>}
       </div>
     </div>
   );

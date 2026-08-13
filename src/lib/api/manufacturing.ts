@@ -1,6 +1,6 @@
 import { apiFetch, type ApiResponse } from "./fetcher";
 import { toFaq } from "./faq";
-import { parseStatValue } from "./utils";
+import { parseStatValue, textOrNull } from "./utils";
 import type { RawFaqSection, FaqData } from "@/types/faq";
 import type { ContentMediaData } from "@/types/content-media";
 import type { StatCardProps } from "@/components/ui/StatCard/StatCard.types";
@@ -52,7 +52,7 @@ type ManufacturingApiResponse = {
       title: string;
       sub_title: string;
       desc: string;
-      items: { image: string; title: string; desc: string; link: string }[];
+      items: { image: string; title: string; desc: string | null; link: string }[];
     };
     act_with_purpose_section: {
       title: string;
@@ -101,7 +101,7 @@ export type ManufacturingPageData = {
     eyebrow: string;
     title: string;
     description: string;
-    items: { image: string; name: string; capacity: string }[];
+    items: { image: string; name: string; capacity: string | null }[];
   };
   cta: {
     eyebrow: string;
@@ -220,7 +220,7 @@ export async function getManufacturingPage(): Promise<ManufacturingPageData> {
       items: pss.items.map((item) => ({
         image: item.image,
         name: item.title,
-        capacity: item.desc,
+        capacity: textOrNull(item.desc),
       })),
     },
 
