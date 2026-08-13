@@ -8,9 +8,9 @@ export default function ProductionScaleCard({ image, name, capacity, className =
         <Image
           src={image}
           alt={name}
-          width={400}
+          width={300}
           height={300}
-          className="aspect-[4/3] w-full object-cover"
+          className="aspect-square w-full object-cover"
         />
       </div>
       <div>
