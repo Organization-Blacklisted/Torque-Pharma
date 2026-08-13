@@ -4,11 +4,10 @@ import { useState } from "react";
 import SectionHeader from "@/components/ui/SectionHeading";
 import { TabList, Tab } from "@/components/ui/Tabs";
 import ManufacturingForm from "./ManufacturingForm";
-import WhiteLabelForm from "./WhiteLabelForm";
 import ExportForm from "./ExportForm";
 import type { EnquirySupportSectionProps } from "./EnquirySupportSection.types";
 
-const TABS = ["Manufacturing", "White Label", "Export"] as const;
+const TABS = ["Manufacturing", "Export"] as const;
 
 export default function EnquirySupportSection({
   eyebrow,
@@ -56,8 +55,7 @@ export default function EnquirySupportSection({
           aria-labelledby={`enquiry-tab-${activeTab}`}
         >
           {activeTab === 0 && <ManufacturingForm />}
-          {activeTab === 1 && <WhiteLabelForm />}
-          {activeTab === 2 && <ExportForm />}
+          {activeTab === 1 && <ExportForm />}
         </div>
       </div>
     </div>
