@@ -7,7 +7,7 @@ import ManufacturingForm from "./ManufacturingForm";
 import ExportForm from "./ExportForm";
 import type { EnquirySupportSectionProps } from "./EnquirySupportSection.types";
 
-const TABS = ["Manufacturing", "Export"] as const;
+const TABS = ["Domestic", "Export"] as const;
 
 export default function EnquirySupportSection({
   eyebrow,
