@@ -131,17 +131,14 @@ export async function getWhiteLabelPage(): Promise<WhiteLabelPageData> {
       heading: vs.sub_title,
       description: vs.desc,
       layout: "centered",
-      media: vs.video
-        ? {
-            type: "video",
-            sources: [{ src: vs.video, type: "video/mp4" as const }],
-            poster: vs.video_poster,
-          }
-        : {
-            type: "image",
-            src: vs.video_poster,
-            alt: vs.sub_title,
-          },
+      // The CMS no longer exposes a video upload for this section (poster image
+      // only) — `video` can still hold a stale value from before that field was
+      // removed, so it's ignored here rather than trusted.
+      media: {
+        type: "image",
+        src: vs.video_poster,
+        alt: vs.sub_title,
+      },
       // Drop either button cleanly if Laravel clears its text — a removed
       // button shouldn't leave an empty/dead button behind.
       actions: [

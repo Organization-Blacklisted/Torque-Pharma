@@ -18,6 +18,12 @@ type ContactApiResponse = {
       description: string;
       description_2: string | null;
     };
+    cta_section: {
+      title: string;
+      sub_title: string;
+      button_text: string;
+      button_link: string;
+    };
   };
 };
 
@@ -38,6 +44,11 @@ export type ContactPageData = {
     eyebrow: string;
     heading: string;
     description: string;
+  };
+  cta: {
+    eyebrow: string;
+    title: string;
+    button: { label: string; href: string };
   };
 };
 
@@ -70,6 +81,15 @@ export async function getContactPage(): Promise<ContactPageData> {
       eyebrow: c.enquiry_support_section.title,
       heading: c.enquiry_support_section.sub_title,
       description: c.enquiry_support_section.description,
+    },
+
+    cta: {
+      eyebrow: c.cta_section.title,
+      title: c.cta_section.sub_title,
+      button: {
+        label: c.cta_section.button_text,
+        href: c.cta_section.button_link,
+      },
     },
   };
 }

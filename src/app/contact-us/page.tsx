@@ -3,6 +3,7 @@ import Section from "@/components/layouts/Section";
 import Container from "@/components/layouts/Container";
 import ContactInfoSection from "@/components/sections/contact/ContactInfoSection";
 import EnquirySupportSection from "@/components/sections/contact/EnquirySupportSection";
+import CtaSection from "@/components/sections/shared/CtaSection";
 import { getContactPage } from "@/lib/api/contact";
 
 export const metadata: Metadata = {
@@ -11,7 +12,7 @@ export const metadata: Metadata = {
 };
 
 export default async function ContactUsPage() {
-  const { info, enquiry } = await getContactPage();
+  const { info, enquiry, cta } = await getContactPage();
 
   return (
     <>
@@ -25,6 +26,7 @@ export default async function ContactUsPage() {
           <EnquirySupportSection {...enquiry} />
         </Container>
       </Section>
+      <CtaSection eyebrow={cta.eyebrow} title={cta.title} button={cta.button} />
     </>
   );
 }

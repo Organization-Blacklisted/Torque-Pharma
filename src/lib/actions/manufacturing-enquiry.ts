@@ -21,7 +21,7 @@ export async function submitManufacturingEnquiry(
     const res = await fetch(`${process.env.API_URL}/form/submit`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ enquiry_type: "manufacturing", ...payload }),
+      body: JSON.stringify({ enquiry_type: "domestic", ...payload }),
     });
 
     if (!res.ok) {
