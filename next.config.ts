@@ -1,9 +1,5 @@
 import type { NextConfig } from "next";
 
-const cdnHostname = process.env.CDN_URL
-  ? new URL(process.env.CDN_URL).hostname
-  : "blacklistedagency.com";
-
 const nextConfig: NextConfig = {
   poweredByHeader: false,
 
@@ -23,12 +19,13 @@ const nextConfig: NextConfig = {
   images: {
     formats: ["image/webp"],
     minimumCacheTTL: 2678400,
+    // Two real hosts currently serve images: the old shared-hosting backend and
+    // the new AWS-hosted one. Hardcoded rather than derived from CDN_URL — that
+    // env var wasn't reliably propagating on the AWS deployment, silently
+    // falling back to the old host and rejecting every new-host image.
     remotePatterns: [
-      {
-        protocol: "https",
-        hostname: cdnHostname,
-        pathname: "/projects/torque-main-backend/**",
-      },
+      { protocol: "https", hostname: "blacklistedagency.com", pathname: "/**" },
+      { protocol: "https", hostname: "backend.torquepharma.com", pathname: "/**" },
     ],
   },
 
