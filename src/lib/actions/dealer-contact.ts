@@ -22,7 +22,7 @@ export async function submitDealerContactForm(
   try {
     const res = await fetch(`${process.env.API_URL}/form/become-a-dealer`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", "Accept": "application/json" },
       body: JSON.stringify(payload),
     });
 

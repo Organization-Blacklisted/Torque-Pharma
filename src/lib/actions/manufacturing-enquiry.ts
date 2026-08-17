@@ -20,8 +20,10 @@ export async function submitManufacturingEnquiry(
   try {
     const res = await fetch(`${process.env.API_URL}/form/submit`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ enquiry_type: "domestic", ...payload }),
+      headers: { "Content-Type": "application/json", "Accept": "application/json" },
+      // Laravel's enquiry_type validation only accepts "manufacturing" here —
+      // the Contact Us tab is labelled "Domestic" for display purposes only.
+      body: JSON.stringify({ enquiry_type: "manufacturing", ...payload }),
     });
 
     if (!res.ok) {

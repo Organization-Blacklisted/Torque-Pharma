@@ -18,10 +18,16 @@ export async function submitGlobalPresenceEnquiry(
   payload: GlobalPresenceEnquiryPayload,
 ): Promise<{ success: boolean; error?: string }> {
   try {
+    // Laravel's shared /form/submit endpoint expects a single full_name field,
+    // not first_name/last_name — combined here so the form can keep two inputs.
+    const { first_name, last_name, ...rest } = payload;
     const res = await fetch(`${process.env.API_URL}/form/submit`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ enquiry_type: "Global Presence", ...payload }),
+      headers: { "Content-Type": "application/json", "Accept": "application/json" },
+      // "Global Presence" isn't a value Laravel's enquiry_type validation
+      // accepts (confirmed live) — omit it rather than fail the submission;
+      // ask Laravel what the correct value should be, if any.
+      body: JSON.stringify({ full_name: `${first_name} ${last_name}`.trim(), ...rest }),
     });
 
     if (!res.ok) {

@@ -17,7 +17,7 @@ export async function submitWhiteLabelContactForm(
   try {
     const res = await fetch(`${process.env.API_URL}/form/white-label-manufacturing`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", "Accept": "application/json" },
       body: JSON.stringify(payload),
     });
 

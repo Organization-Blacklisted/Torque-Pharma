@@ -21,8 +21,9 @@ export async function submitExportEnquiry(
   try {
     const res = await fetch(`${process.env.API_URL}/form/submit`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ enquiry_type: "Export", ...payload }),
+      headers: { "Content-Type": "application/json", "Accept": "application/json" },
+      // Laravel's enquiry_type validation is case-sensitive and lowercase-only
+      body: JSON.stringify({ enquiry_type: "export", ...payload }),
     });
 
     if (!res.ok) {

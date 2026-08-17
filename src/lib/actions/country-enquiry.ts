@@ -19,7 +19,7 @@ export async function submitCountryEnquiry(
   try {
     const res = await fetch(`${process.env.API_URL}/form/country-enquiry`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", "Accept": "application/json" },
       body: JSON.stringify(payload),
     });
 
