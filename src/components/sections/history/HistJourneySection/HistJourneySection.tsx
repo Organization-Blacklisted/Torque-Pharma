@@ -407,11 +407,18 @@ export default function HistJourneySection({ section, className = "" }: HistJour
       preventDefault: true,
       tolerance: 10,
       lockAxis: true,
-      onDown: () => {
-        if (!isAnimating) handleAdvance(currentStep + 1);
+      onDown: (self) => {
+        if (isAnimating) return;
+        // GSAP derives touch deltaY from raw finger movement, so a natural
+        // upward swipe (advance) reports the opposite sign of a wheel
+        // scroll-down (also advance) — invert direction for touch only.
+        const isTouch = self.event?.type?.startsWith("touch");
+        handleAdvance(currentStep + (isTouch ? -1 : 1));
       },
-      onUp: () => {
-        if (!isAnimating) handleAdvance(currentStep - 1);
+      onUp: (self) => {
+        if (isAnimating) return;
+        const isTouch = self.event?.type?.startsWith("touch");
+        handleAdvance(currentStep + (isTouch ? 1 : -1));
       },
     });
     // Start disabled — enabled only when panel is pinned (onEnter fires)
