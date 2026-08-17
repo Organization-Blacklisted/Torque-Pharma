@@ -18,7 +18,6 @@ export const navItems: NavItem[] = [
       { label: "About Us", href: "/about-us" },
       { label: "Our History", href: "/our-history" },
       { label: "Board of Directors", href: "/board-of-directors" },
-      { label: "Manufacturing Facilities", href: "/manufacturing-facility" },
       { label: "Certifications", href: "/certifications" },
     ],
   },
@@ -74,6 +73,7 @@ export const navItems: NavItem[] = [
   {
     label: "Capabilities",
     children: [
+      { label: "Manufacturing Facilities", href: "/manufacturing-facility" },
       { label: "White Label Manufacturing", href: "/white-label-manufacturing" },
     ],
   },
