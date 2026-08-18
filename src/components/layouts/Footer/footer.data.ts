@@ -15,7 +15,7 @@ export const quickLinksCol1: NavLink[] = [
 ];
 
 export const quickLinksCol2: NavLink[] = [
-  { label: "Distributor Connect", href: "https://directorque.com/login", external: true },
+  { label: "Become a Dealer", href: "/become-a-dealer" },
   { label: "Torque Online Stores", href: "https://www.torqueonline.co.in/", external: true },
   { label: "Torque HRMS", href: "https://torque.keka.com/", external: true },
   { label: "Torque SFA", href: "https://dashboard.fieldassist.io/home", external: true },
@@ -26,12 +26,10 @@ export const subBrandsCol1: NavLink[] = [
   { label: "Torex", href: "https://torex.co.in/", external: true },
   { label: "No Scars", href: "http://noscars.in/", external: true },
   { label: "U-B Fair", href: "https://www.ubfair.com/", external: true },
-  { label: "Medisalic", href: "https://www.medisalic.com/", external: true },
-  { label: "Ketomac", href: "https://ketomac.co.in/", external: true },
 ];
 
 export const subBrandsCol2: NavLink[] = [
   { label: "JAL (Mineral Water)", href: "https://www.torquesjal.com/", external: true },
-  { label: "Kesh 999", href: "https://kesh999.com/", external: true },
-  { label: "Torque Ayurveda", href: "https://www.torqueayurveda.com/", external: true },
+  { label: "Medisalic", href: "https://www.medisalic.com/", external: true },
+  { label: "Ketomac", href: "https://ketomac.co.in/", external: true },
 ];
