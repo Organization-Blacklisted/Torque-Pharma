@@ -48,8 +48,9 @@ export default function DirectorSection({
         </blockquote>
       </div>
 
-      {/* Image */}
-      <div className="rounded-lg overflow-hidden">
+      {/* Image — shown first on mobile (single-column), back to its natural
+          second-column position once the lg 2-column grid kicks in */}
+      <div className="order-first lg:order-none rounded-lg overflow-hidden">
         <Image
           src={image}
           alt={name}
