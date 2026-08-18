@@ -26,6 +26,7 @@ export const subBrandsCol1: NavLink[] = [
   { label: "Torex", href: "https://torex.co.in/", external: true },
   { label: "No Scars", href: "http://noscars.in/", external: true },
   { label: "U-B Fair", href: "https://www.ubfair.com/", external: true },
+  { label: "Torque Multipower", href: "https://www.multipower.co.in/", external: true },
 ];
 
 export const subBrandsCol2: NavLink[] = [
