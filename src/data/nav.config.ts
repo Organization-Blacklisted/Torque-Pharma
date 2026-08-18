@@ -7,7 +7,7 @@ export type MegaParent = {
 };
 
 export type NavItem =
-  | { label: string; href: string; children?: undefined; mega?: undefined }
+  | { label: string; href: string; external?: boolean; children?: undefined; mega?: undefined }
   | { label: string; href?: undefined; children: NavChild[]; mega?: undefined }
   | { label: string; href?: undefined; children?: undefined; mega: MegaParent[] };
 
@@ -19,6 +19,8 @@ export const navItems: NavItem[] = [
       { label: "Our History", href: "/our-history" },
       { label: "Board of Directors", href: "/board-of-directors" },
       { label: "Certifications", href: "/certifications" },
+      { label: "Life at Torque", href: "/life-at-torque" },
+      { label: "Career", href: "/career" },
     ],
   },
   { label: "Global Presence", href: "/global-presence" },
@@ -40,7 +42,7 @@ export const navItems: NavItem[] = [
           { label: "Ayurveda", href: "/category/domestic/ayurveda" },
           { label: "Painkillers", href: "/category/domestic/painkillers-1" },
           // Single-product category — link straight to the product detail page
-          { label: "Urinary Alkalizer", href: "/product/alkator-syrup" },
+          { label: "Urinary Alkalizer", href: "/alkator-syrup" },
           { label: "Anti-Allergy", href: "/category/domestic/anti-allergy" },
           { label: "Antigout", href: "/category/domestic/anti-gout" },
           { label: "Anti-Cardiac", href: "/category/domestic/anti-cardiac" },
@@ -48,7 +50,7 @@ export const navItems: NavItem[] = [
           { label: "Anti-Thyroid", href: "/category/domestic/anti-thyroid" },
           { label: "Erectile Dysfunction", href: "/category/domestic/erectile-dysfunction" },
           // Single-product category — link straight to the product detail page
-          { label: "Contraception Disorder", href: "/product/primotor-n-tablets" },
+          { label: "Contraception Disorder", href: "/primotor-n-tablets" },
         ],
       },
       {
@@ -78,12 +80,6 @@ export const navItems: NavItem[] = [
     ],
   },
   {
-    label: "Life at Torque",
-    children: [
-      { label: "Career", href: "/career" },
-    ],
-  },
-  {
     label: "Resources",
     children: [
       { label: "Blogs", href: "/blogs" },
@@ -92,4 +88,5 @@ export const navItems: NavItem[] = [
       { label: "Certifications & Accreditations", href: "/certifications" },
     ],
   },
+  { label: "Visit Our Store", href: "https://www.torqueonline.co.in/", external: true },
 ];

@@ -216,6 +216,22 @@ export default function MobileDrawer({ menuOpen, closeMenu, pathname }: MobileDr
             );
           }
 
+          // ── External link — opens in a new tab, never "active" ─────────────
+          if (item.external) {
+            return (
+              <a
+                key={item.label}
+                href={item.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={closeMenu}
+                className="border-b border-gray-100 last:border-0 py-3 font-body text-body-sm font-normal text-dark-blue transition-colors duration-200 hover:text-primary"
+              >
+                {item.label}
+              </a>
+            );
+          }
+
           // ── Plain link ─────────────────────────────────────────────────────
           return (
             <Link

@@ -13,6 +13,20 @@ function ChevronRight() {
   );
 }
 
+function ChevronDown({ isOpen }: { isOpen: boolean }) {
+  return (
+    <svg
+      width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true"
+      // Geometrically centered against the label reads as sitting too high —
+      // a downward-pointing chevron's visual weight is at its bottom tip, so
+      // it needs a slight downward nudge to look optically centered.
+      className={`shrink-0 translate-y-px transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
+    >
+      <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
 export default function DesktopNav({ pathname }: DesktopNavProps) {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [activeMegaParent, setActiveMegaParent] = useState("domestic");
@@ -54,11 +68,12 @@ export default function DesktopNav({ pathname }: DesktopNavProps) {
                 aria-haspopup="true"
                 aria-expanded={isOpen}
                 className={[
-                  "font-body text-body-sm font-normal whitespace-nowrap transition-colors duration-200 outline-none",
+                  "flex items-center gap-1.5 font-body text-body-sm font-normal whitespace-nowrap transition-colors duration-200 outline-none",
                   isActive ? "text-primary font-medium" : "text-dark-blue hover:text-primary",
                 ].join(" ")}
               >
                 {item.label}
+                <ChevronDown isOpen={isOpen} />
               </button>
 
               {/* Mega panel */}
@@ -144,11 +159,12 @@ export default function DesktopNav({ pathname }: DesktopNavProps) {
                 aria-haspopup="true"
                 aria-expanded={openDropdown === item.label}
                 className={[
-                  "font-body text-body-sm font-normal whitespace-nowrap transition-colors duration-200 outline-none",
+                  "flex items-center gap-1.5 font-body text-body-sm font-normal whitespace-nowrap transition-colors duration-200 outline-none",
                   isActive ? "text-primary font-medium" : "text-dark-blue hover:text-primary",
                 ].join(" ")}
               >
                 {item.label}
+                <ChevronDown isOpen={openDropdown === item.label} />
               </button>
 
               <div
@@ -174,6 +190,21 @@ export default function DesktopNav({ pathname }: DesktopNavProps) {
                 </div>
               </div>
             </div>
+          );
+        }
+
+        // ── External link — opens in a new tab, never "active" ───────────────
+        if (item.external) {
+          return (
+            <a
+              key={item.label}
+              href={item.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-body text-body-sm font-normal whitespace-nowrap text-dark-blue transition-colors duration-200 hover:text-primary"
+            >
+              {item.label}
+            </a>
           );
         }
 
