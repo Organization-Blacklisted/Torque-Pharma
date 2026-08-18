@@ -1,11 +1,18 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getProduct } from "@/lib/api/product";
+import { getProduct, getAllProductSlugs } from "@/lib/api/product";
 import ProductDetailSection from "@/components/sections/products/ProductDetailSection";
 import CtaSection from "@/components/sections/shared/CtaSection";
 import JsonLd from "@/components/ui/JsonLd";
 
 type Props = { params: Promise<{ slug: string }> };
+
+export async function generateStaticParams() {
+  const slugs = await getAllProductSlugs();
+  return slugs.map((slug) => ({ slug }));
+}
+
+export const dynamicParams = true;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;

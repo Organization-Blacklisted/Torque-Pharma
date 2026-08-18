@@ -182,6 +182,7 @@ Body: { "tag": "blogs" }          // or { "tags": ["blogs", "homepage"] }
 | `history` | `history.ts` |
 | `life-at-torque` | `life-at-torque.ts` |
 | `product-{slug}` (e.g. `product-xtraderm-cream-15gm`) | `product.ts` — `getProduct(slug)` |
+| `products` | `product.ts` — `getAllProductSlugs()`, used by `/[slug]`'s `generateStaticParams` (paginated Laravel endpoint, fetched across all pages at build time) |
 | `category-{slug}` (e.g. `category-derma`) | `product-category.ts` — `getCategoryPage(slug)` |
 | `category-children-{parentSlug}` (e.g. `category-children-domestic`) | `product-category.ts` — `getSiblingCategories(parentSlug)` |
 | `event-{slug}` (e.g. `event-nainital-marathon`) | `events.ts` — `getEventDetail(slug)`. Also tagged `events`, so busting `event-{slug}` alone won't refresh the events list |
@@ -230,7 +231,7 @@ When adding a new fetcher with a `tags: [...]` option, add its tag to this table
 | `/manufacturing-facility` | Active — fully built | `getManufacturingPage()` — all sections wired: hero, production, process, stats, certifications, quality-assessment, production-scale, cta, faq |
 | `/board-of-directors` | Active — 2 sections API-driven | `getBoardPage()` — executive_board + cta wired; founder, director, executive_directorate sections not yet built |
 | `/category/[parent]/[slug]` | Active — fully built | `getCategoryPage(slug)` + `getSiblingCategories(parent)` — hero, disclaimer, product grid (client-filtered), CTA, FAQ; SSG via `generateStaticParams` |
-| `/[slug]` | Active — fully built | `getProduct(slug)` — product detail page. Deliberately flat (client requirement) rather than nested under `/product/`; old `/product/:slug` links 301-redirect here (see `next.config.ts`). Sits at app root — any new top-level static route must not collide with a real product slug |
+| `/[slug]` | Active — fully built | `getProduct(slug)` — product detail page. SSG via `generateStaticParams` (`getAllProductSlugs()`) — without this every navigation was a fully dynamic render, showing the loading fallback on every click regardless of the 1hr ISR window. Deliberately flat (client requirement) rather than nested under `/product/`; old `/product/:slug` links 301-redirect here (see `next.config.ts`). Sits at app root — any new top-level static route must not collide with a real product slug |
 | `/company` `/global-presence` `/products` `/capabilities` `/life-at-torque` | Stub — h1 only | None |
 | `/blogs` | Active — featured slider, category tabs, paginated grid | `getBlogs()` |
 | `/blogs/[slug]` | Active — fully built | `getBlogPost(slug)` — hero, body, related posts; SSG via `generateStaticParams` |

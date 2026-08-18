@@ -46,7 +46,40 @@ export interface ProductDetailData {
   };
 }
 
-// ─── Fetcher ──────────────────────────────────────────────────────────────────
+interface RawProductListPage {
+  current_page: number;
+  last_page: number;
+  data: { slug: string; status: string }[];
+}
+
+// ─── Fetchers ─────────────────────────────────────────────────────────────────
+
+// Used by generateStaticParams so every product is pre-rendered at build
+// time — without this, /[slug] has no static params, so every navigation
+// is a fully dynamic server render and shows the loading fallback on every
+// single click, even for a product that's been live for months. Laravel's
+// /products endpoint is paginated and ignores ?per_page, so page 1 is
+// fetched first to learn the page count, then the rest in parallel.
+export async function getAllProductSlugs(): Promise<string[]> {
+  const first = await apiFetch<ApiResponse<RawProductListPage>>("/products?page=1", {
+    revalidate: 3600,
+    tags: ["products"],
+  });
+
+  const rest = await Promise.all(
+    Array.from({ length: first.data.last_page - 1 }, (_, i) =>
+      apiFetch<ApiResponse<RawProductListPage>>(`/products?page=${i + 2}`, {
+        revalidate: 3600,
+        tags: ["products"],
+      })
+    )
+  );
+
+  return [first.data, ...rest.map((r) => r.data)]
+    .flatMap((page) => page.data)
+    .filter((p) => p.status === "published")
+    .map((p) => p.slug);
+}
 
 export const getProduct = cache(async function getProduct(slug: string): Promise<ProductDetailData> {
   const { data } = await apiFetch<ApiResponse<RawProduct>>(`/products/${slug}`, {
