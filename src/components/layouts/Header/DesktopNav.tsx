@@ -20,7 +20,7 @@ function ChevronDown({ isOpen }: { isOpen: boolean }) {
       // Geometrically centered against the label reads as sitting too high —
       // a downward-pointing chevron's visual weight is at its bottom tip, so
       // it needs a slight downward nudge to look optically centered.
-      className={`shrink-0 translate-y-px transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
+      className={`shrink-0 translate-y-0.5 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
     >
       <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
