@@ -59,7 +59,7 @@ export const navItems: NavItem[] = [
         areas: [
           { label: "Anti-Allergies", href: "/category/export/anti-allergies" },
           { label: "Antibiotics", href: "/category/export/antibiotics" },
-          { label: "Dermatology", href: "/category/export/dermatology-1" },
+          { label: "Dermatology", href: "/category/export/dermatology-export" },
           { label: "Gastro", href: "/category/export/gastro-1" },
           { label: "Haematinics", href: "/category/export/haematinics-1" },
           { label: "Multi Vitamins", href: "/category/export/multi-vitamins" },
