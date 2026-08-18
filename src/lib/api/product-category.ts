@@ -32,6 +32,7 @@ interface RawProduct {
   id: number;
   name: string;
   slug: string;
+  status: string;
   featured_image: string | null;
   categories: { id: number; name: string; slug: string }[];
 }
@@ -107,12 +108,16 @@ export const getCategoryPage = cache(async function getCategoryPage(
     image: data.image || null,
     bannerImage: data.banner_image || null,
     medicalDisclaimer: data.medical_disclaimer ? sanitizeRichText(toHtmlParagraphs(data.medical_disclaimer)) : "",
-    products: data.products.map((p) => ({
-      id: p.id,
-      name: toTitleCase(p.name),
-      slug: p.slug,
-      image: p.featured_image,
-    })),
+    // Laravel's listing endpoint doesn't filter drafts itself (only the
+    // single-product endpoint does) — filter here as a safety net.
+    products: data.products
+      .filter((p) => p.status === "published")
+      .map((p) => ({
+        id: p.id,
+        name: toTitleCase(p.name),
+        slug: p.slug,
+        image: p.featured_image,
+      })),
     faq: toFaq(faqRaw),
     seo: data.seo,
   };
