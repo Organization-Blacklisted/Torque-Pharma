@@ -57,7 +57,10 @@ export default async function CareerPage() {
       </Section>
       */}
 
-      <Section>
+      {/* my-[170px] is a one-off per client request for this specific
+          section on mobile — no spacing token matches 170px, and this
+          resets back to the standard token at sm: and up */}
+      <Section className="my-[170px] sm:my-[var(--spacing-section)]" spacing="none">
         <Container size="standard">
           <QuoteSection quote={testimonial.quote} attribution={testimonial.attribution} />
         </Container>
