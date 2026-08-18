@@ -4,7 +4,7 @@ import type { ProductCardProps } from "./ProductCard.types";
 
 export default function ProductCard({ name, slug, image, className = "" }: ProductCardProps) {
   return (
-    <Link href={`/product/${slug}`} className={`group block rounded-lg bg-white/20 ${className}`}>
+    <Link href={`/${slug}`} className={`group block rounded-lg bg-white/20 ${className}`}>
       <div className="p-4 sm:p-6 lg:p-8">
         <div className="relative aspect-square overflow-hidden">
           {image && (

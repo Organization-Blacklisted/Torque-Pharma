@@ -29,6 +29,15 @@ const nextConfig: NextConfig = {
     ],
   },
 
+  // Product pages moved from /product/:slug to a flat /:slug at the
+  // client's request. Permanent redirect so old bookmarks/search-indexed
+  // links keep working and pass their SEO equity to the new URL.
+  async redirects() {
+    return [
+      { source: "/product/:slug", destination: "/:slug", permanent: true },
+    ];
+  },
+
   // HTTP response headers applied to every route
   async headers() {
     return [
