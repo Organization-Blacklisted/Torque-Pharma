@@ -153,8 +153,22 @@ export default function HistJourneySection({ section, className = "" }: HistJour
         gsap.set(indicator, { y });
       }
 
-      // Keep the active date visible as the sidebar scrolls through a long decade
-      activeBtn.scrollIntoView({ behavior: isFirst ? "auto" : "smooth", block: "nearest" });
+      // Keep the active date visible as the sidebar scrolls through a long
+      // decade. Deliberately NOT using Element.scrollIntoView here: it walks
+      // every scrollable ancestor, including the window — and since this
+      // whole section can be far below the fold on mount, it was dragging
+      // the entire page down to reveal a sidebar button nobody had scrolled
+      // to yet. Scrolling nav.scrollTop directly keeps this contained to
+      // the sidebar's own list, never touching page scroll.
+      const btnRect = activeBtn.getBoundingClientRect();
+      const navRect = nav.getBoundingClientRect();
+      let delta = 0;
+      if (btnRect.top < navRect.top) delta = btnRect.top - navRect.top;
+      else if (btnRect.bottom > navRect.bottom) delta = btnRect.bottom - navRect.bottom;
+      if (delta !== 0) {
+        if (isFirst) nav.scrollTop += delta;
+        else gsap.to(nav, { scrollTop: nav.scrollTop + delta, duration: 0.4, ease: "power2.out" });
+      }
     };
 
     if (!decadeChanged) {
