@@ -17,6 +17,17 @@ export default function Header() {
 
   const closeMenu = useCallback(() => setMenuOpen(false), []);
 
+  // Browsers restore the last scroll position on reload by default, which
+  // on the history page can land inside HistJourneySection's ScrollTrigger
+  // zone before it even mounts — GSAP then sees it as "already entered" and
+  // kicks off its auto-advance scroll immediately. Take manual control so
+  // every load reliably starts at the top instead.
+  useEffect(() => {
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+  }, []);
+
   // Hide/reveal on scroll
   useEffect(() => {
     const handleScroll = () => {
@@ -32,9 +43,13 @@ export default function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Close drawer on route change
+  // Close drawer on route change. Also force scroll-to-top here: the body
+  // scroll lock below freezes body.scrollTop while the drawer is open, and
+  // toggling it back off races Next's own post-navigation scroll-to-top,
+  // so the old page's scroll offset can bleed into the new page.
   useEffect(() => {
     closeMenu();
+    window.scrollTo(0, 0);
   }, [pathname, closeMenu]);
 
   // Lock body scroll when drawer is open
