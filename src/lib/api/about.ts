@@ -118,9 +118,15 @@ export async function getAboutUsPage(): Promise<AboutUsApiData> {
       actions: [
         {
           label: "Discover Our Legacy",
-          // Laravel serves the PDF via its own `pdf` field, separate from `url`
-          href: data.content.company_profile.pdf ?? data.content.company_profile.url ?? "#",
-          external: (data.content.company_profile.pdf ?? data.content.company_profile.url) != null,
+          // Laravel has no way to clear an uploaded PDF once set, so `url`
+          // (which the dashboard can actually clear/edit) takes priority —
+          // `pdf` is only a fallback for pages that genuinely want the PDF.
+          href: data.content.company_profile.url ?? data.content.company_profile.pdf ?? "#",
+          // `url` can be an internal path (e.g. "/our-history"), so only
+          // treat it as external when it's actually an absolute URL.
+          external: /^https?:\/\//.test(
+            data.content.company_profile.url ?? data.content.company_profile.pdf ?? ""
+          ),
           variant: "primary",
         },
       ],
