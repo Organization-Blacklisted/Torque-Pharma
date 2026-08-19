@@ -2,11 +2,8 @@ import { cache } from "react";
 import { apiFetch, type ApiResponse } from "./fetcher";
 import { sanitizeRichText } from "@/lib/sanitize";
 import { toFaq } from "./faq";
+import { toTitleCase } from "./utils";
 import type { RawFaqSection, FaqData } from "@/types/faq";
-
-function toTitleCase(str: string): string {
-  return str.toLowerCase().replace(/\b[a-z]/g, (c) => c.toUpperCase());
-}
 
 // Converts plain-text disclaimers to HTML paragraphs.
 // If the API already returns HTML (starts with "<"), passes it through unchanged.
