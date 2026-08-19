@@ -117,7 +117,7 @@ export async function getAboutUsPage(): Promise<AboutUsApiData> {
       },
       actions: [
         {
-          label: "View Company Profile",
+          label: "Discover Our Legacy",
           // Laravel serves the PDF via its own `pdf` field, separate from `url`
           href: data.content.company_profile.pdf ?? data.content.company_profile.url ?? "#",
           external: (data.content.company_profile.pdf ?? data.content.company_profile.url) != null,
