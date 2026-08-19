@@ -175,11 +175,15 @@ export default function GpPresenceSection({
           </div>
         </div>
 
-        <div className="mt-[var(--spacing-section-inner)] flex justify-center">
-          <SplitButton href={cta.href} variant="primary">
-            {cta.label}
-          </SplitButton>
-        </div>
+        {/* Backed by a direct file upload — Laravel can remove it entirely,
+            so only render when there's actually something to link to */}
+        {cta?.label && cta?.href && (
+          <div className="mt-[var(--spacing-section-inner)] flex justify-center">
+            <SplitButton href={cta.href} external={cta.external} variant="primary">
+              {cta.label}
+            </SplitButton>
+          </div>
+        )}
       </Container>
     </div>
   );

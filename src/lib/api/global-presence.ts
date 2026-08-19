@@ -32,7 +32,9 @@ interface RawGlobalPresencePage {
       sub_title: string;
       desc: string;
       button_text: string;
-      button_link: string;
+      // Laravel replaced the old button_link field with a direct file
+      // upload (PDF/image) — no separate URL option for this section.
+      file: string | null;
       items: {
         title: string;
         countries: { image: string | null; title: string }[];
@@ -114,7 +116,10 @@ export async function getGlobalPresencePage(): Promise<GlobalPresencePageData> {
       description: c.gp_presence_section.desc,
       cta: {
         label: c.gp_presence_section.button_text,
-        href: c.gp_presence_section.button_link,
+        // No fallback to "#" — an empty href must stay falsy so the
+        // section can hide the button entirely when there's no file.
+        href: c.gp_presence_section.file ?? "",
+        external: c.gp_presence_section.file != null,
       },
       regions: countryCategories.map((cat) => ({
         title: cat.name,

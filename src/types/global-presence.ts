@@ -50,7 +50,9 @@ export interface GpPresenceData {
   eyebrow: string;
   heading: string;
   description: string;
-  cta: { label: string; href: string };
+  // Backed by a direct file upload — can be missing/removed, so href/label
+  // aren't guaranteed to be present
+  cta: { label: string; href: string; external?: boolean };
   regions: GpRegion[];
 }
 
