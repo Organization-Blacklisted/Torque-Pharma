@@ -34,11 +34,16 @@ export default function CountryEdgeSection({
             />
           ))}
         </div>
-        <div className="mt-[var(--spacing-subsection)] flex justify-center">
-          <SplitButton href={cta.href} variant="primary">
-            {cta.label}
-          </SplitButton>
-        </div>
+        {/* Laravel can delete this CTA entirely — without this check, a
+            missing/empty href falls back to SplitButton rendering as a
+            dead, non-functional <button> instead of disappearing */}
+        {cta?.label && cta?.href && (
+          <div className="mt-[var(--spacing-subsection)] flex justify-center">
+            <SplitButton href={cta.href} variant="primary">
+              {cta.label}
+            </SplitButton>
+          </div>
+        )}
       </Container>
     </div>
   );

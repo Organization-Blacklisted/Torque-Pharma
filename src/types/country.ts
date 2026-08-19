@@ -25,7 +25,9 @@ export interface CountryEdgeItem {
 export interface CountryEdgeData {
   eyebrow: string;
   heading: string;
-  cta: { label: string; href: string };
+  // Laravel can delete this CTA entirely — label/href fall back to null rather
+  // than a fake string, so the section can tell "no CTA" from "empty string"
+  cta: { label: string | null; href: string | null };
   items: CountryEdgeItem[];
 }
 

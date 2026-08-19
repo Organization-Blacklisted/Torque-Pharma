@@ -24,8 +24,8 @@ interface RawCountryPage {
   edge_section: {
     title: string;
     sub_title: string;
-    button_text: string;
-    button_link: string;
+    button_text: string | null;
+    button_link: string | null;
     items: { image: string; title: string; desc: string }[];
   };
   form_section: {
