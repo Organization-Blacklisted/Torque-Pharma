@@ -14,13 +14,6 @@ export function textOrNull(html: string | null): string | null {
   return html.replace(/<[^>]*>/g, "").trim() ? html : null;
 }
 
-// Laravel product names arrive inconsistently cased (some ALL CAPS, some
-// already Title Case, depending on how each was typed into the dashboard).
-// Normalize to Title Case so display is consistent regardless of source casing.
-export function toTitleCase(str: string): string {
-  return str.toLowerCase().replace(/\b[a-z]/g, (c) => c.toUpperCase());
-}
-
 export function slugify(str: string): string {
   return str
     .toLowerCase()

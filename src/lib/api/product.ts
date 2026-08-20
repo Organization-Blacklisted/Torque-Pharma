@@ -1,7 +1,6 @@
 import { cache } from "react";
 import { apiFetch, type ApiResponse } from "./fetcher";
 import { sanitizeRichText } from "@/lib/sanitize";
-import { toTitleCase } from "./utils";
 
 // ─── Raw API shape ────────────────────────────────────────────────────────────
 
@@ -89,7 +88,7 @@ export const getProduct = cache(async function getProduct(slug: string): Promise
   });
 
   return {
-    name: toTitleCase(data.name),
+    name: data.name,
     slug: data.slug,
     description: data.description,
     featuredImage: data.featured_image || null,
