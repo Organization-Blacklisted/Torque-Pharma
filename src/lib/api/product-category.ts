@@ -2,7 +2,6 @@ import { cache } from "react";
 import { apiFetch, type ApiResponse } from "./fetcher";
 import { sanitizeRichText } from "@/lib/sanitize";
 import { toFaq } from "./faq";
-import { toTitleCase } from "./utils";
 import type { RawFaqSection, FaqData } from "@/types/faq";
 
 // Converts plain-text disclaimers to HTML paragraphs.
@@ -111,7 +110,7 @@ export const getCategoryPage = cache(async function getCategoryPage(
       .filter((p) => p.status === "published")
       .map((p) => ({
         id: p.id,
-        name: toTitleCase(p.name),
+        name: p.name,
         slug: p.slug,
         image: p.featured_image,
       })),

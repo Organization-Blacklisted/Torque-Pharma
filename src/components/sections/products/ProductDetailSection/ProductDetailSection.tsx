@@ -168,7 +168,7 @@ export default function ProductDetailSection({
           {/* Right: product name, description, content items */}
           <div>
             <h1 className="font-heading font-light text-h1 text-primary mb-4">
-              {name.toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase())}
+              {name}
             </h1>
             <p className="text-body text-secondary mb-8">{description}</p>
 
