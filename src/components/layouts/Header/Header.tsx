@@ -16,16 +16,18 @@ export default function Header() {
   const pathname = usePathname();
 
   const closeMenu = useCallback(() => setMenuOpen(false), []);
+  // Set on popstate (back/forward) so the route-change effect below can
+  // skip its forced scroll-to-top and let the browser restore the
+  // previous scroll position (and whatever list/pagination state that
+  // page restores itself from the URL) instead of always landing at 0.
+  const isPopStateRef = useRef(false);
 
-  // Browsers restore the last scroll position on reload by default, which
-  // on the history page can land inside HistJourneySection's ScrollTrigger
-  // zone before it even mounts — GSAP then sees it as "already entered" and
-  // kicks off its auto-advance scroll immediately. Take manual control so
-  // every load reliably starts at the top instead.
   useEffect(() => {
-    if ("scrollRestoration" in window.history) {
-      window.history.scrollRestoration = "manual";
-    }
+    const onPopState = () => {
+      isPopStateRef.current = true;
+    };
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
   }, []);
 
   // Hide/reveal on scroll
@@ -43,13 +45,20 @@ export default function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Close drawer on route change. Also force scroll-to-top here: the body
-  // scroll lock below freezes body.scrollTop while the drawer is open, and
-  // toggling it back off races Next's own post-navigation scroll-to-top,
-  // so the old page's scroll offset can bleed into the new page.
+  // Close drawer on route change. Also force scroll-to-top here for a real
+  // forward navigation: the body scroll lock below freezes body.scrollTop
+  // while the drawer is open, and toggling it back off races Next's own
+  // post-navigation scroll-to-top, so the old page's scroll offset can
+  // bleed into the new page. Skipped on back/forward (popstate) — there
+  // the browser should restore the previous scroll position instead of
+  // being forced to the top every time.
   useEffect(() => {
     closeMenu();
-    window.scrollTo(0, 0);
+    if (isPopStateRef.current) {
+      isPopStateRef.current = false;
+    } else {
+      window.scrollTo(0, 0);
+    }
   }, [pathname, closeMenu]);
 
   // Lock body scroll when drawer is open

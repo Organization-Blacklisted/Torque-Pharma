@@ -11,6 +11,24 @@ import type { ProductListingSectionProps } from "./ProductListingSection.types";
 const ALL_LETTERS = Array.from({ length: 26 }, (_, i) => String.fromCharCode(65 + i));
 const PER_PAGE = 9;
 
+// Read directly from window.location rather than Next's useSearchParams —
+// this page is statically generated, and useSearchParams would force a
+// Suspense boundary; a plain browser API read needs neither Suspense nor
+// keeping this in step with Next's own router state.
+function readQueryParams() {
+  if (typeof window === "undefined") {
+    return { search: "", activeLetter: "ALL", sortBy: "default" as const, page: 1 };
+  }
+  const params = new URLSearchParams(window.location.search);
+  const sort = params.get("sort");
+  return {
+    search: params.get("q") ?? "",
+    activeLetter: params.get("letter") ?? "ALL",
+    sortBy: (sort === "az" || sort === "za" ? sort : "default") as "default" | "az" | "za",
+    page: Number(params.get("page")) || 1,
+  };
+}
+
 function ChevronDown({ className = "" }: { className?: string }) {
   return (
     <svg
@@ -48,10 +66,26 @@ export default function ProductListingSection({
   const sectionRef = useRef<HTMLDivElement>(null);
   const [categoryOpen, setCategoryOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [search, setSearch] = useState("");
-  const [activeLetter, setActiveLetter] = useState("ALL");
-  const [sortBy, setSortBy] = useState<"default" | "az" | "za">("default");
-  const [page, setPage] = useState(1);
+  const [search, setSearch] = useState(() => readQueryParams().search);
+  const [activeLetter, setActiveLetter] = useState(() => readQueryParams().activeLetter);
+  const [sortBy, setSortBy] = useState<"default" | "az" | "za">(() => readQueryParams().sortBy);
+  const [page, setPage] = useState(() => readQueryParams().page);
+
+  // Keep the URL in sync with search/filter/page state (via replaceState,
+  // not a navigation) so that navigating to a product and hitting the
+  // browser back button restores this exact view — both the filters
+  // above and the scroll position the browser naturally restores for it —
+  // instead of always landing back on page 1 at the top.
+  useEffect(() => {
+    const params = new URLSearchParams();
+    if (search) params.set("q", search);
+    if (activeLetter !== "ALL") params.set("letter", activeLetter);
+    if (sortBy !== "default") params.set("sort", sortBy);
+    if (page !== 1) params.set("page", String(page));
+    const qs = params.toString();
+    const newUrl = qs ? `${window.location.pathname}?${qs}` : window.location.pathname;
+    window.history.replaceState(window.history.state, "", newUrl);
+  }, [search, activeLetter, sortBy, page]);
 
   // Lock body scroll when drawer is open
   useEffect(() => {
