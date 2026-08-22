@@ -133,14 +133,16 @@ export default function WorldMap({ items, className = "" }: WorldMapProps) {
               transformOrigin: activePos ? `${activePos.x}% ${activePos.y}%` : "50% 50%",
             } as CSSProperties}
           >
-            {/* Figma Ellipse 76 — behind the dots, glow baked into SVG */}
+            {/* Figma Ellipse 76 — behind the dots, glow baked into SVG.
+                Hidden per client request (white glow behind the map) —
+                kept in code rather than removed in case it's wanted back. */}
             <Image
               src="/images/map/ellipse.svg"
               alt=""
               aria-hidden
               width={1472}
               height={1472}
-              className="pointer-events-none absolute w-[120%] h-auto -translate-x-1/2 -translate-y-1/2 left-[54%] top-[55%] opacity-100"
+              className="hidden pointer-events-none absolute w-[120%] h-auto -translate-x-1/2 -translate-y-1/2 left-[54%] top-[55%] opacity-100"
             />
             <Image
               src="/images/map/dots.svg"
