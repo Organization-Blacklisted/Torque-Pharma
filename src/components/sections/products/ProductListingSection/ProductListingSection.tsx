@@ -150,6 +150,19 @@ export default function ProductListingSection({
     }
   }
 
+  // Scroll after the page number actually commits and the new grid has
+  // rendered, rather than inline in the click handler (which measures the
+  // DOM before React's batched re-render lands) — the prev/next arrows and
+  // numbered buttons all funnel through the same setPage call, so this
+  // fires identically for all of them instead of racing render timing.
+  const prevPageRef = useRef(page);
+  useEffect(() => {
+    if (prevPageRef.current !== page) {
+      scrollToSection();
+      prevPageRef.current = page;
+    }
+  }, [page]);
+
   const sortSelect = (
     <div className="relative flex min-w-0 shrink items-center lg:shrink-0">
       <select
@@ -374,10 +387,7 @@ export default function ProductListingSection({
                   <Pagination
                     currentPage={page}
                     totalPages={totalPages}
-                    onPageChange={(p) => {
-                      setPage(p);
-                      scrollToSection();
-                    }}
+                    onPageChange={setPage}
                   />
                 </div>
               )}
