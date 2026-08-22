@@ -66,7 +66,7 @@ export const navItems: NavItem[] = [
           { label: "Haematinics", href: "/category/export/haematinics-export" },
           { label: "Multi Vitamins", href: "/category/export/multi-vitamins" },
           { label: "Painkillers", href: "/category/export/painkillers-2" },
-          { label: "Respiratory", href: "/category/export/respiratory-1" },
+          { label: "Respiratory", href: "/category/export/respiratory-export" },
           { label: "Miscellaneous", href: "/category/export/miscellaneous" },
         ],
       },
