@@ -21,6 +21,15 @@ export default function Header() {
   // previous scroll position (and whatever list/pagination state that
   // page restores itself from the URL) instead of always landing at 0.
   const isPopStateRef = useRef(false);
+  // The route-change effect below fires on mount too (its [pathname] dep
+  // "changes" from nothing to a value on the very first run) — that's a
+  // fresh page load/hard refresh, not a navigation, and must never force
+  // scroll-to-top: on JS-heavy pages (e.g. /our-history, which loads GSAP/
+  // ScrollTrigger/Observer) this effect can run late enough to win the race
+  // against the browser's own scroll restoration, snapping back to 0 and
+  // leaving ScrollTrigger's boundary tracking out of sync with where the
+  // page visually landed.
+  const isInitialMountRef = useRef(true);
 
   useEffect(() => {
     const onPopState = () => {
@@ -54,7 +63,9 @@ export default function Header() {
   // being forced to the top every time.
   useEffect(() => {
     closeMenu();
-    if (isPopStateRef.current) {
+    if (isInitialMountRef.current) {
+      isInitialMountRef.current = false;
+    } else if (isPopStateRef.current) {
       isPopStateRef.current = false;
     } else {
       window.scrollTo(0, 0);

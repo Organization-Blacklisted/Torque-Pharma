@@ -391,13 +391,39 @@ export default function HistJourneySection({ section, className = "" }: HistJour
       trigger: wrapperRef.current,
       start: `top top+=${HEADER_H}`,
       end: () => `+=${(totalSteps - 1) * SCROLL_PER_STEP}`,
-      onEnter: () => {
+      onEnter: (self) => {
         obs?.enable();
-        currentStep = 0;
         isAnimating = false;
-        animateContentIn(0, 0);
-        updateProgressBars(0, 0);
-        startBar(0, 0);
+
+        // Usually this fires from a natural scroll-down from above the
+        // section, where step 0 is correct. But if the page mounted with
+        // the browser already scrolled deep inside this section (e.g. a
+        // refresh restoring scroll position here), step 0 would be wrong —
+        // derive the real starting step from where we actually landed.
+        const rawStep = Math.round((window.scrollY - self.start) / SCROLL_PER_STEP);
+        const initialStep = Math.min(Math.max(rawStep, 0), totalSteps - 1);
+        currentStep = initialStep;
+
+        const pos = positions[initialStep];
+        syncSidebar(pos.dateIdx);
+        updateProgressBars(pos.dateIdx, pos.entryIdx);
+
+        if (initialStep === 0) {
+          animateContentIn(0, 0);
+        } else {
+          // No "previous" slide to transition from here — snap straight to
+          // the correct date/entry instead of animating in from entry 0,
+          // which would otherwise flash the wrong slide before correcting.
+          const track = entryTrackRefs.current[pos.dateIdx];
+          if (track) gsap.set(track, { x: -pos.entryIdx * getPanelWidth() });
+          if (slidesTrackRef.current) gsap.set(slidesTrackRef.current, { y: -pos.dateIdx * getPanelHeight() });
+          const activeSlide = track?.querySelectorAll<HTMLElement>("[data-slide]")[pos.entryIdx];
+          if (activeSlide) {
+            gsap.set(activeSlide.querySelectorAll("[data-slide-text], [data-slide-image]"), { opacity: 1, y: 0 });
+          }
+        }
+
+        startBar(pos.dateIdx, pos.entryIdx);
       },
       onLeave: () => {
         obs?.disable();
