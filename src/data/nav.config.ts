@@ -35,7 +35,7 @@ export const navItems: NavItem[] = [
           { label: "Gastro", href: "/category/domestic/gastro" },
           { label: "Multi-Vitamins", href: "/category/domestic/multi-vitamins" },
           { label: "Haematinics", href: "/category/domestic/haematinics" },
-          { label: "Antibiotics", href: "/category/domestic/antibiotics" },
+          { label: "Antibiotics", href: "/category/domestic/antibiotic" },
           { label: "Respiratory", href: "/category/domestic/respiratory" },
           // Backend merged Eye/Ear and Nasal into a single category
           { label: "Eye/Ear/Nasal", href: "/category/domestic/eye-ear-nasal" },
