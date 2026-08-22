@@ -15,8 +15,16 @@ const PER_PAGE = 9;
 // this page is statically generated, and useSearchParams would force a
 // Suspense boundary; a plain browser API read needs neither Suspense nor
 // keeping this in step with Next's own router state.
-function readQueryParams() {
-  if (typeof window === "undefined") {
+//
+// expectedPath guards against Next's own link prefetching: prefetching a
+// sibling category renders this component in the background to warm the
+// cache, while window.location still shows whatever page you're currently
+// on — so a naive read would pick up THAT page's query string (e.g. a
+// "?letter=M" filter) and bake it into the prefetched instance, which then
+// appears already-filtered the moment the real navigation swaps it in.
+// Only trust the query string when we can confirm it's actually ours.
+function readQueryParams(expectedPath: string) {
+  if (typeof window === "undefined" || window.location.pathname !== expectedPath) {
     return { search: "", activeLetter: "ALL", sortBy: "default" as const, page: 1 };
   }
   const params = new URLSearchParams(window.location.search);
@@ -66,10 +74,11 @@ export default function ProductListingSection({
   const sectionRef = useRef<HTMLDivElement>(null);
   const [categoryOpen, setCategoryOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [search, setSearch] = useState(() => readQueryParams().search);
-  const [activeLetter, setActiveLetter] = useState(() => readQueryParams().activeLetter);
-  const [sortBy, setSortBy] = useState<"default" | "az" | "za">(() => readQueryParams().sortBy);
-  const [page, setPage] = useState(() => readQueryParams().page);
+  const expectedPath = `/category/${parentSlug}/${currentSlug}`;
+  const [search, setSearch] = useState(() => readQueryParams(expectedPath).search);
+  const [activeLetter, setActiveLetter] = useState(() => readQueryParams(expectedPath).activeLetter);
+  const [sortBy, setSortBy] = useState<"default" | "az" | "za">(() => readQueryParams(expectedPath).sortBy);
+  const [page, setPage] = useState(() => readQueryParams(expectedPath).page);
 
   // Keep the URL in sync with search/filter/page state (via replaceState,
   // not a navigation) so that navigating to a product and hitting the
@@ -77,6 +86,11 @@ export default function ProductListingSection({
   // above and the scroll position the browser naturally restores for it —
   // instead of always landing back on page 1 at the top.
   useEffect(() => {
+    // Guard against a prefetched/backgrounded instance (see readQueryParams
+    // above) writing this category's filters onto whatever page happens to
+    // be visible right now, which won't be this one.
+    if (window.location.pathname !== expectedPath) return;
+
     const params = new URLSearchParams();
     if (search) params.set("q", search);
     if (activeLetter !== "ALL") params.set("letter", activeLetter);
@@ -85,7 +99,7 @@ export default function ProductListingSection({
     const qs = params.toString();
     const newUrl = qs ? `${window.location.pathname}?${qs}` : window.location.pathname;
     window.history.replaceState(window.history.state, "", newUrl);
-  }, [search, activeLetter, sortBy, page]);
+  }, [search, activeLetter, sortBy, page, expectedPath]);
 
   // Lock body scroll when drawer is open
   useEffect(() => {

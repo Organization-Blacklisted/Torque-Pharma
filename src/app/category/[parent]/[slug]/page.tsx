@@ -70,7 +70,13 @@ export default async function CategoryPage({
         <MedicalDisclaimerSection disclaimer={page.medicalDisclaimer} />
       )}
 
+      {/* key forces a full remount on category change — otherwise React
+          reuses this instance across navigations to a sibling category
+          (same page.tsx, only the param differs), and its search/letter/
+          sort/page state — along with the URL query params it syncs to —
+          would leak over from the previous category. */}
       <ProductListingSection
+        key={`${parent}/${slug}`}
         products={page.products}
         siblings={siblings}
         parentSlug={parent}

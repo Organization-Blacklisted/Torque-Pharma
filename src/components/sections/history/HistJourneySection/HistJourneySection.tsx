@@ -385,62 +385,14 @@ export default function HistJourneySection({ section, className = "" }: HistJour
 
     goToStepRef.current = goToStep;
 
-    // ── Track active zone via ScrollTrigger (panel is CSS sticky — no pin needed) ──
-    st = ScrollTrigger.create({
-      id: "hist-journey",
-      trigger: wrapperRef.current,
-      start: `top top+=${HEADER_H}`,
-      end: () => `+=${(totalSteps - 1) * SCROLL_PER_STEP}`,
-      onEnter: (self) => {
-        obs?.enable();
-        isAnimating = false;
-
-        // Usually this fires from a natural scroll-down from above the
-        // section, where step 0 is correct. But if the page mounted with
-        // the browser already scrolled deep inside this section (e.g. a
-        // refresh restoring scroll position here), step 0 would be wrong —
-        // derive the real starting step from where we actually landed.
-        const rawStep = Math.round((window.scrollY - self.start) / SCROLL_PER_STEP);
-        const initialStep = Math.min(Math.max(rawStep, 0), totalSteps - 1);
-        currentStep = initialStep;
-
-        const pos = positions[initialStep];
-        syncSidebar(pos.dateIdx);
-        updateProgressBars(pos.dateIdx, pos.entryIdx);
-
-        if (initialStep === 0) {
-          animateContentIn(0, 0);
-        } else {
-          // No "previous" slide to transition from here — snap straight to
-          // the correct date/entry instead of animating in from entry 0,
-          // which would otherwise flash the wrong slide before correcting.
-          const track = entryTrackRefs.current[pos.dateIdx];
-          if (track) gsap.set(track, { x: -pos.entryIdx * getPanelWidth() });
-          if (slidesTrackRef.current) gsap.set(slidesTrackRef.current, { y: -pos.dateIdx * getPanelHeight() });
-          const activeSlide = track?.querySelectorAll<HTMLElement>("[data-slide]")[pos.entryIdx];
-          if (activeSlide) {
-            gsap.set(activeSlide.querySelectorAll("[data-slide-text], [data-slide-image]"), { opacity: 1, y: 0 });
-          }
-        }
-
-        startBar(pos.dateIdx, pos.entryIdx);
-      },
-      onLeave: () => {
-        obs?.disable();
-      },
-      onEnterBack: () => {
-        obs?.enable();
-      },
-      onLeaveBack: () => {
-        barTween?.kill();
-        obs?.disable();
-      },
-    });
-
-    scrollTriggerRef.current = st;
-
     // ── Observer: target window so GSAP registers non-passive touch listeners at the top level ──
     // (element-level passive listeners are silently ignored on real iOS/Android; devtools sim does not replicate this)
+    // Created BEFORE the ScrollTrigger below: if the page mounts already
+    // scrolled inside the trigger zone (e.g. a refresh), ScrollTrigger can
+    // fire onEnter synchronously during .create() itself — if `obs` were
+    // still null at that moment, onEnter's obs?.enable() would silently
+    // no-op, and the disable() a few lines below would leave it off for
+    // good, breaking all further scroll/touch input.
     obs = Observer.create({
       target: window,
       type: "wheel,touch",
@@ -463,6 +415,55 @@ export default function HistJourneySection({ section, className = "" }: HistJour
     });
     // Start disabled — enabled only when panel is pinned (onEnter fires)
     obs.disable();
+
+    // ── Track active zone via ScrollTrigger (panel is CSS sticky — no pin needed) ──
+    st = ScrollTrigger.create({
+      id: "hist-journey",
+      trigger: wrapperRef.current,
+      start: `top top+=${HEADER_H}`,
+      end: () => `+=${(totalSteps - 1) * SCROLL_PER_STEP}`,
+      onEnter: (self) => {
+        obs?.enable();
+        isAnimating = false;
+
+        // Usually this fires from a natural scroll-down from above the
+        // section, where step 0 is correct. But if the page mounted with
+        // the browser already scrolled deep inside this section (e.g. a
+        // refresh restoring scroll position here), step 0 would be wrong —
+        // derive the real starting step from where we actually landed.
+        const rawStep = Math.round((window.scrollY - self.start) / SCROLL_PER_STEP);
+        const initialStep = Math.min(Math.max(rawStep, 0), totalSteps - 1);
+
+        if (initialStep === 0) {
+          currentStep = 0;
+          animateContentIn(0, 0);
+          updateProgressBars(0, 0);
+          startBar(0, 0);
+        } else {
+          // currentStep is still its default (0) here, matching the DOM's
+          // actual untransformed state — goToStep treats that as "coming
+          // from" entry 0 and transitions to initialStep through the exact
+          // same path any other jump uses (e.g. a sidebar date click),
+          // which already keeps ScrollTrigger's scroll-position tracking
+          // correctly in sync. A hand-rolled duplicate of that logic here
+          // previously drifted out of sync with it and silently broke all
+          // further scroll/touch input after the first real transition.
+          goToStep(initialStep);
+        }
+      },
+      onLeave: () => {
+        obs?.disable();
+      },
+      onEnterBack: () => {
+        obs?.enable();
+      },
+      onLeaveBack: () => {
+        barTween?.kill();
+        obs?.disable();
+      },
+    });
+
+    scrollTriggerRef.current = st;
 
     return () => {
       barTween?.kill();
