@@ -1,8 +1,13 @@
 import type { Metadata, Viewport } from "next";
+import { GoogleTagManager } from "@next/third-parties/google";
 import "./globals.css";
 import { bwDarius, graphik } from "@/fonts";
 import Footer from "@/components/layouts/Footer";
 import Header from "@/components/layouts/Header";
+
+// GA4 is configured inside this GTM container rather than added as a
+// separate component — avoids two competing analytics scripts.
+const GTM_ID = "GTM-MJNCPCGG";
 
 export const metadata: Metadata = {
   title: {
@@ -43,6 +48,7 @@ export default function RootLayout({
       lang="en"
       className={`h-full antialiased ${bwDarius.variable} ${graphik.variable}`}
     >
+      <GoogleTagManager gtmId={GTM_ID} />
       <head>
         {apiOrigin && <link rel="preconnect" href={apiOrigin} />}
         {process.env.CDN_URL && (
