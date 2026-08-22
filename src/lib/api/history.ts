@@ -54,7 +54,16 @@ export async function getHistoryPage(): Promise<HistoryPageData> {
     journey: {
       title: c.hist_journey_section.title,
       sub_title: c.hist_journey_section.sub_title,
-      items: c.hist_journey_section.items,
+      items: c.hist_journey_section.items.map((item) => ({
+        ...item,
+        dates: item.dates.map((date) => ({
+          ...date,
+          entries: date.entries.map((entry) => ({
+            ...entry,
+            desc: sanitizeRichText(entry.desc),
+          })),
+        })),
+      })),
     },
   };
 }

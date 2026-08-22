@@ -602,9 +602,10 @@ export default function HistJourneySection({ section, className = "" }: HistJour
                                 >
                                   {group.dateStr}
                                 </p>
-                                <p className="font-body text-body font-normal leading-relaxed text-white">
-                                  {entry.desc}
-                                </p>
+                                <div
+                                  className="font-body text-body font-normal leading-relaxed text-white [&_p]:m-0"
+                                  dangerouslySetInnerHTML={{ __html: entry.desc }}
+                                />
                               </div>
 
                               {entry.image && (
