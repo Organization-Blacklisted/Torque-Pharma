@@ -47,7 +47,7 @@ export default async function WhiteLabelManufacturingPage() {
       </Section>
       */}
 
-      <ProductionScaleSection {...productionScale} />
+      <ProductionScaleSection {...productionScale} autoScroll />
 
       <Section padded className="bg-dark-blue">
         <Container size="xl">

@@ -39,6 +39,9 @@ type WhiteLabelApiResponse = {
       title: string;
       sub_title: string;
       desc: string;
+      button_text: string | null;
+      // Direct file upload (brochure PDF) rather than a URL field
+      file: string | null;
       items: { image: string; title: string; desc: string | null; link: string }[];
     };
     connect_section: {
@@ -87,6 +90,9 @@ export type WhiteLabelPageData = {
     title: string;
     description: string;
     items: { image: string; name: string; capacity: string | null }[];
+    // Backed by a direct file upload — can be missing/removed, so href/label
+    // aren't guaranteed to be present
+    cta?: { label: string; href: string; external?: boolean };
   };
   connect: {
     eyebrow: string;
@@ -183,6 +189,15 @@ export async function getWhiteLabelPage(): Promise<WhiteLabelPageData> {
         name: item.title,
         capacity: textOrNull(item.desc),
       })),
+      cta: wl.button_text
+        ? {
+            label: wl.button_text,
+            // No fallback to "#" — an empty href must stay falsy so the
+            // section can hide the button entirely when there's no file.
+            href: wl.file ?? "",
+            external: wl.file != null,
+          }
+        : undefined,
     },
 
     connect: {

@@ -3,6 +3,7 @@ import Section from "@/components/layouts/Section";
 import SectionHeader from "@/components/ui/SectionHeading";
 import Slider from "@/components/ui/Slider";
 import ProductionScaleCard from "@/components/ui/ProductionScaleCard";
+import { SplitButton } from "@/components/ui/SplitButton";
 import type { ProductionScaleSectionProps } from "./ProductionScaleSection.types";
 
 export default function ProductionScaleSection({
@@ -10,6 +11,8 @@ export default function ProductionScaleSection({
   title,
   description,
   items,
+  autoScroll = false,
+  cta,
   className = "",
 }: ProductionScaleSectionProps) {
   return (
@@ -31,6 +34,7 @@ export default function ProductionScaleSection({
           overflowVisible
           showProgress={false}
           controlsAlign="center"
+          autoScroll={autoScroll}
         >
           {items.map((item) => (
             <ProductionScaleCard
@@ -42,6 +46,17 @@ export default function ProductionScaleSection({
           ))}
         </Slider>
       </div>
+      {/* Backed by a direct file upload — Laravel can remove it entirely,
+          so only render when there's actually something to link to */}
+      {cta?.label && cta?.href && (
+        <Container size="wide">
+          <div className="mt-[var(--spacing-section-inner)] flex justify-center">
+            <SplitButton href={cta.href} external={cta.external} variant="primary">
+              {cta.label}
+            </SplitButton>
+          </div>
+        </Container>
+      )}
     </Section>
   );
 }

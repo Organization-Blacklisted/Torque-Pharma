@@ -7,6 +7,8 @@ import type { ResponsiveCount, SliderProps } from "./Slider.types";
 
 const GAP = 24;  // matches gap-6 / --spacing-gutter
 const PEEK = 50; // px of the next card always visible at the right edge
+const MARQUEE_ITEM_WIDTH = 260; // fixed card width in autoScroll mode — a continuously-scrolling track needs a deterministic px width, not the viewport-relative % used for manual paging
+const MARQUEE_PX_PER_SECOND = 60; // scroll speed — constant regardless of how many repeated sets a wide container needs
 
 function resolveCount(count: ResponsiveCount, width: number): number {
   if (typeof count === "number") return count;
@@ -64,10 +66,13 @@ export default function Slider({
   showProgress = true,
   controlsAlign = "end",
   peek = true,
+  autoScroll = false,
 }: SliderProps) {
   const items = useMemo(() => React.Children.toArray(children), [children]);
   const total = items.length;
 
+  // autoScroll bypasses Embla entirely — it's a passive, continuously-scrolling
+  // track, not a paged carousel, so hooks below it are simply unused in that mode.
   const [emblaRef, emblaApi] = useEmblaCarousel({ align: "start", containScroll: "trimSnaps" });
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -78,6 +83,20 @@ export default function Slider({
 
   const effectiveCount = resolveCount(visibleCount, containerWidth);
   const width = slideWidth(effectiveCount, peek);
+
+  // How many repeated sets of items are needed so the track never runs out of
+  // content before one full -50% cycle completes, plus one extra set as a
+  // buffer — same technique as ui/Marquee, just with a known fixed item width
+  // instead of a measured one. Always even so -50% lands exactly at a repeat
+  // boundary, making the loop seamless regardless of item/container size.
+  const singleSetWidth = total > 0 ? total * MARQUEE_ITEM_WIDTH + (total - 1) * GAP : 0;
+  const setsNeeded = singleSetWidth > 0 ? Math.ceil(containerWidth / singleSetWidth) + 1 : 2;
+  const marqueeSets = Math.max(setsNeeded, 1) * 2;
+  // -50% of the full track covers half its sets — duration must scale with
+  // that actual distance, not a flat per-item guess, or a wide container
+  // needing more repeated sets would visibly speed up the animation.
+  const marqueeDistance = (marqueeSets / 2) * singleSetWidth;
+  const marqueeDuration = marqueeDistance > 0 ? marqueeDistance / MARQUEE_PX_PER_SECOND : 12;
 
   // Derived — no state needed; updates automatically when effectiveCount or selectedSnap changes
   const showing = Math.min(selectedSnap + effectiveCount, total);
@@ -116,6 +135,39 @@ export default function Slider({
   }, [emblaApi, onSelect]);
 
   const progress = total > 0 ? (showing / total) * 100 : 0;
+
+  if (autoScroll) {
+    return (
+      <div ref={containerRef} className={className}>
+        <div className="overflow-hidden">
+          <div
+            className="flex w-max gap-6 will-change-transform [animation-play-state:running] hover:[animation-play-state:paused] motion-reduce:[animation-play-state:paused]"
+            style={{
+              // Longhand instead of the `animation` shorthand: the shorthand
+              // implicitly sets animation-play-state too, and an inline
+              // style always wins over the hover:/motion-reduce: utility
+              // classes above no matter their specificity — leaving it out
+              // here is what lets those classes actually take effect.
+              animationName: "marquee",
+              animationDuration: `${marqueeDuration}s`,
+              animationTimingFunction: "linear",
+              animationIterationCount: "infinite",
+            }}
+          >
+            {Array.from({ length: marqueeSets }).map((_, setIndex) => (
+              <div key={setIndex} className="flex gap-6" aria-hidden={setIndex > 0} inert={setIndex > 0 ? true : undefined}>
+                {items.map((item, i) => (
+                  <div key={i} style={{ flex: `0 0 ${MARQUEE_ITEM_WIDTH}px` }}>
+                    {item}
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div ref={containerRef} className={className}>
