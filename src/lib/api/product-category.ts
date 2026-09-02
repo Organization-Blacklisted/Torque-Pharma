@@ -24,6 +24,17 @@ interface RawSiblingCategory {
   slug: string;
 }
 
+interface RawCategoryListItem {
+  id: number;
+  name: string;
+  // Compound — "{parent_slug}/{own_slug}" (e.g. "export/dermatology").
+  // Single-category fetches (getCategoryPage) still take just the own slug.
+  slug: string;
+  parent_id: number | null;
+  parent_name: string | null;
+  parent_slug: string | null;
+}
+
 interface RawProduct {
   id: number;
   name: string;
@@ -58,6 +69,11 @@ interface RawCategoryPage {
 export interface SiblingCategory {
   id: number;
   name: string;
+  slug: string;
+}
+
+export interface CategoryRoute {
+  parent: string;
   slug: string;
 }
 
@@ -127,4 +143,27 @@ export async function getSiblingCategories(
     { tags: [`category-children-${parentSlug}`], revalidate: 3600 }
   );
   return data;
+}
+
+// Used by generateStaticParams to discover every {parent, slug} route pair
+// directly from real data instead of a hardcoded parent list — a new
+// top-level category type (a third parent besides domestic/export) gets
+// picked up automatically on the next build instead of silently missing
+// pages. Build-time only (never called on a live request), so unlike
+// getCategoryPage/getSiblingCategories above, the cache tag here isn't
+// load-bearing for revalidation — a fresh build always re-fetches anyway.
+export async function getAllCategoryRoutes(): Promise<CategoryRoute[]> {
+  const { data } = await apiFetch<ApiResponse<RawCategoryListItem[]>>(
+    "/product-categories",
+    { tags: ["product-categories-list"], revalidate: 3600 }
+  );
+
+  return data
+    .filter((c) => c.parent_slug != null)
+    .map((c) => ({
+      parent: c.parent_slug as string,
+      // slug is compound ("domestic/dermatology") — take the segment after
+      // the parent slug, matching what getCategoryPage expects.
+      slug: c.slug.split("/").pop() ?? c.slug,
+    }));
 }

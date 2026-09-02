@@ -1,23 +1,19 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { isNotFoundError } from "@/lib/api/fetcher";
-import { getCategoryPage, getSiblingCategories } from "@/lib/api/product-category";
+import { getCategoryPage, getSiblingCategories, getAllCategoryRoutes } from "@/lib/api/product-category";
 import ProductCategoryHero from "@/components/sections/products/ProductCategoryHero";
 import MedicalDisclaimerSection from "@/components/sections/products/MedicalDisclaimerSection";
 import ProductListingSection from "@/components/sections/products/ProductListingSection";
 import CtaSection from "@/components/sections/shared/CtaSection";
 import FaqSection from "@/components/sections/shared/FaqSection";
 
-const PARENT_SLUGS = ["domestic", "export"] as const;
-
+// Derived from the API's own parent/child data (via getAllCategoryRoutes)
+// rather than a hardcoded parent list — a new top-level category type
+// (a third parent besides domestic/export) gets picked up automatically
+// on the next build instead of silently missing pages.
 export async function generateStaticParams() {
-  const results = await Promise.all(
-    PARENT_SLUGS.map(async (parent) => {
-      const siblings = await getSiblingCategories(parent);
-      return siblings.map((s) => ({ parent, slug: s.slug }));
-    })
-  );
-  return results.flat();
+  return getAllCategoryRoutes();
 }
 
 export const dynamicParams = true;

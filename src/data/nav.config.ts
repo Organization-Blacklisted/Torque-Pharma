@@ -35,12 +35,12 @@ export const navItems: NavItem[] = [
           { label: "Gastro", href: "/category/domestic/gastro" },
           { label: "Multi-Vitamins", href: "/category/domestic/multivitamins" },
           { label: "Haematinics", href: "/category/domestic/haematinics" },
-          { label: "Antibiotics", href: "/category/domestic/antibiotic" },
+          { label: "Antibiotics", href: "/category/domestic/antibiotics" },
           { label: "Respiratory", href: "/category/domestic/respiratory" },
           // Backend merged Eye/Ear and Nasal into a single category
           { label: "Eye/Ear/Nasal", href: "/category/domestic/eye-ear-nasal" },
           { label: "Ayurveda", href: "/category/domestic/ayurveda" },
-          { label: "Painkillers", href: "/category/domestic/painkillers-1" },
+          { label: "Painkillers", href: "/category/domestic/painkillers" },
           // Single-product category — link straight to the product detail page
           { label: "Urinary Alkalizer", href: "/alkator-syrup" },
           { label: "Anti-Allergy", href: "/category/domestic/anti-allergy" },
@@ -56,17 +56,19 @@ export const navItems: NavItem[] = [
       {
         label: "International",
         slug: "export",
-        // hrefs use the real export category slugs from the API (several are
-        // suffixed, e.g. gastro-1); labels stay as the curated menu names.
+        // hrefs use the real export category slugs from the API; labels
+        // stay as the curated menu names. Laravel cleaned up the old
+        // "-export"/"-1"/"-2" suffixed slugs — domestic/export categories
+        // are now cleanly namespaced by parent instead.
         areas: [
           { label: "Anti-Allergies", href: "/category/export/anti-allergies" },
           { label: "Antibiotics", href: "/category/export/antibiotics" },
-          { label: "Dermatology", href: "/category/export/dermatology-export" },
-          { label: "Gastro", href: "/category/export/gastro-1" },
-          { label: "Haematinics", href: "/category/export/haematinics-export" },
+          { label: "Dermatology", href: "/category/export/dermatology" },
+          { label: "Gastro", href: "/category/export/gastro" },
+          { label: "Haematinics", href: "/category/export/haematinics" },
           { label: "Multi Vitamins", href: "/category/export/multi-vitamins" },
-          { label: "Painkillers", href: "/category/export/painkillers-2" },
-          { label: "Respiratory", href: "/category/export/respiratory-export" },
+          { label: "Painkillers", href: "/category/export/painkillers" },
+          { label: "Respiratory", href: "/category/export/respiratory" },
           { label: "Miscellaneous", href: "/category/export/miscellaneous" },
         ],
       },
