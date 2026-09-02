@@ -23,9 +23,9 @@ export async function generateMetadata({
 }: {
   params: Promise<{ parent: string; slug: string }>;
 }): Promise<Metadata> {
-  const { slug } = await params;
+  const { parent, slug } = await params;
   try {
-    const page = await getCategoryPage(slug);
+    const page = await getCategoryPage(parent, slug);
     return {
       title: page.seo.title ?? page.name,
       description: page.seo.description ?? undefined,
@@ -47,7 +47,7 @@ export default async function CategoryPage({
   let siblings: Awaited<ReturnType<typeof getSiblingCategories>>;
   try {
     [page, siblings] = await Promise.all([
-      getCategoryPage(slug),
+      getCategoryPage(parent, slug),
       getSiblingCategories(parent),
     ]);
   } catch (err) {

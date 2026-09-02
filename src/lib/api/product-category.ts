@@ -104,10 +104,16 @@ export interface CategoryPageData {
 // ─── Fetchers ─────────────────────────────────────────────────────────────────
 
 export const getCategoryPage = cache(async function getCategoryPage(
+  parentSlug: string,
   slug: string
 ): Promise<CategoryPageData> {
+  // Laravel made this endpoint parent-scoped: domestic and export can now
+  // share a category slug (e.g. both have "dermatology"), and the old
+  // unscoped /product-categories/{slug} returned whichever had the lower
+  // ID, silently ignoring which parent was meant. The unscoped form is
+  // gone entirely now (404s), so parentSlug is required, not optional.
   const { data } = await apiFetch<ApiResponse<RawCategoryPage>>(
-    `/product-categories/${slug}`,
+    `/product-categories/${parentSlug}/${slug}`,
     { tags: [`category-${slug}`], revalidate: 3600 }
   );
 
