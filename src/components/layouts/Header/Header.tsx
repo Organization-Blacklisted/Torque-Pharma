@@ -93,7 +93,7 @@ export default function Header() {
             : "duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] translate-y-0 transition-transform",
         ].join(" ")}
       >
-        <div className="rounded-[8px] border border-white/30 bg-white/70 backdrop-blur-[2px]">
+        <div className="mx-auto max-w-[1764px] rounded-[8px] border border-white/30 bg-white/70 backdrop-blur-[2px]">
           <Container size="wide">
             <div className="flex h-[68px] items-center justify-between lg:h-[72px]">
 
