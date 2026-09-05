@@ -39,7 +39,7 @@ export const navItems: NavItem[] = [
           { label: "Respiratory", href: "/category/domestic/respiratory" },
           // Backend merged Eye/Ear and Nasal into a single category
           { label: "Eye/Ear/Nasal", href: "/category/domestic/eye-ear-nasal" },
-          { label: "Ayurveda", href: "/category/domestic/ayurveda" },
+          { label: "Ayurveda & Personal Care", href: "/category/domestic/ayurveda-and-personal-care" },
           { label: "Painkillers", href: "/category/domestic/painkillers" },
           // Single-product category — link straight to the product detail page
           { label: "Urinary Alkalizer", href: "/alkator-syrup" },
@@ -47,8 +47,8 @@ export const navItems: NavItem[] = [
           { label: "Antigout", href: "/category/domestic/anti-gout" },
           { label: "Anti-Cardiac", href: "/category/domestic/anti-cardiac" },
           { label: "Anti-Diabetic", href: "/category/domestic/anti-diabetic" },
-          { label: "Anti-Thyroid", href: "/category/domestic/anti-thyroid" },
-          { label: "Erectile Dysfunction", href: "/category/domestic/erectile-dysfunction" },
+          { label: "Hormones", href: "/category/domestic/hormones" },
+          { label: "Sexual Wellness", href: "/category/domestic/sexual-wellness" },
           // Single-product category — link straight to the product detail page
           { label: "Contraception Disorder", href: "/primotor-n-tablets" },
         ],
