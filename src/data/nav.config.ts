@@ -32,7 +32,7 @@ export const navItems: NavItem[] = [
         slug: "domestic",
         areas: [
           { label: "Dermatology", href: "/category/domestic/dermatology" },
-          { label: "Gastro", href: "/category/domestic/gastro" },
+          { label: "Gastrointestinal", href: "/category/domestic/gastrointestinal" },
           { label: "Multi-Vitamins", href: "/category/domestic/multivitamins" },
           { label: "Haematinics", href: "/category/domestic/haematinics" },
           { label: "Antibiotics", href: "/category/domestic/antibiotics" },
