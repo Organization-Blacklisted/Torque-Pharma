@@ -40,8 +40,7 @@ export const navItems: NavItem[] = [
           // Backend merged Eye/Ear and Nasal into a single category
           { label: "Eye/Ear/Nasal", href: "/category/domestic/eye-ear-nasal" },
           { label: "Painkillers", href: "/category/domestic/painkillers" },
-          // Single-product category — link straight to the product detail page
-          { label: "Urinary Alkalizer", href: "/alkator-syrup" },
+          { label: "Urinary Alkalizer", href: "/category/domestic/urinary-alkalizer" },
           { label: "Anti-Allergy", href: "/category/domestic/anti-allergy" },
           { label: "Antigout", href: "/category/domestic/anti-gout" },
           { label: "Anti-Cardiac", href: "/category/domestic/anti-cardiac" },
