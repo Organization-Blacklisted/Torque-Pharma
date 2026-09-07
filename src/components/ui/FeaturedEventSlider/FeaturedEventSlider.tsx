@@ -7,31 +7,15 @@ import Link from "next/link";
 import type { Event } from "@/types/event";
 import type { FeaturedEventSliderProps } from "./FeaturedEventSlider.types";
 
-// event_date is a plain date string ("August 2, 2026") with no time
-// component — normalize "today" to midnight too so an event happening
-// today still counts as upcoming rather than being excluded by the
-// current time-of-day.
-function isUpcoming(dateStr: string | null): boolean {
-  if (!dateStr) return false;
-  const eventDate = new Date(dateStr);
-  if (Number.isNaN(eventDate.getTime())) return false;
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  return eventDate >= today;
-}
-
 function FeaturedSlide({ event }: { event: Event }) {
   const href = `/events/${event.slug}`;
 
   return (
     <div className="grid overflow-hidden rounded-lg bg-white/20 md:h-[424px] md:grid-cols-2">
       <div className="flex flex-col justify-center gap-4 overflow-hidden p-[clamp(1.5rem,_3vw,_3rem)]">
-        {/* Was unconditional — showed "Upcoming Event" even for events
-            with a past date, or no date at all. Only claim "upcoming"
-            when we can actually verify it. */}
-        {isUpcoming(event.event_date) && (
+        {event.is_featured && (
           <span className="inline-flex h-8 w-fit items-center rounded-full bg-mint px-3.5 py-1 text-h6 font-medium uppercase text-white">
-            Upcoming Event
+            Featured Event
           </span>
         )}
 
