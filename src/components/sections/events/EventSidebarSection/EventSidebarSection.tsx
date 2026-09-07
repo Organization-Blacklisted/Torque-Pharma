@@ -23,7 +23,7 @@ export default function EventSidebarSection({
       {upcomingEvents.length > 0 && (
         <div className="rounded-lg border border-[#C6CCD8] bg-surface p-[var(--spacing-card)]">
           <h3 className="mb-6 font-heading text-h3 font-light text-primary">
-            Upcoming Events Near You
+            From The Archives
           </h3>
           <div className="flex flex-col divide-y divide-[#C6CCD8]/80">
             {upcomingEvents.map((event) => (
