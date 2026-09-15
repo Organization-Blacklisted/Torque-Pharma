@@ -47,6 +47,7 @@ export const navItems: NavItem[] = [
           { label: "Anti-Diabetic", href: "/category/domestic/anti-diabetic" },
           { label: "Hormones", href: "/category/domestic/hormones" },
           { label: "Sexual Wellness", href: "/category/domestic/sexual-wellness" },
+          { label: "Medical Devices", href: "/category/domestic/medical-devices" },
           { label: "Ayurveda & Personal Care", href: "/category/domestic/ayurveda-and-personal-care" },
         ],
       },
