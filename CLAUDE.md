@@ -219,6 +219,8 @@ When adding a new fetcher with a `tags: [...]` option, add its tag to this table
 | `Pagination` | `ui/Pagination` | Numbered pagination with ellipsis collapsing. Controlled: `currentPage`/`totalPages`/`onPageChange` |
 | `Tabs` (`TabList`/`Tab`) | `ui/Tabs` | Underline tab bar — parent owns active-index state, `Tab` takes `isActive`/`onClick` |
 | `BlogsSection` | `sections/blog/BlogsSection` | `/blogs` page body — derives category tabs + client-side pagination from the full post list |
+| `SearchOverlay` | `ui/SearchOverlay` | Header search dropdown (desktop icon next to Contact Us, mobile icon next to the hamburger). Debounced live search via `/api/products/search` (name or ingredient); ≤4 results show as a static row, >4 becomes a horizontal slider (drag/arrows) with a "View All" link to `/search` |
+| `SearchResultsSection` | `sections/search/SearchResultsSection` | `/search` page body — same debounced search + `ProductCard` grid + `Pagination` pattern as `ProductListingSection`, minus the category sidebar (no category context on a raw text search) |
 | `Container` | `layouts/Container` | Max-width wrapper. Usable content widths (after px-8 gutter): wide (1700px), xl (1500px), large (1430px), standard (1360px), content (1264px), narrow (1152px), reading (1065px). max-w values are 64px larger to compensate for padding. |
 | `Section` | `layouts/Section` | Semantic section with spacing tokens. `spacing="default"` \| `"none"`. Use `first` prop on the first section of every page |
 
@@ -240,6 +242,7 @@ When adding a new fetcher with a `tags: [...]` option, add its tag to this table
 | `/resources` | **Does not exist** — no nav link points here directly (Resources dropdown links straight to children) | None |
 | `/contact-us` | Active — ContactInfoSection wired | `getContactPage()` — info section live; enquiry form section not yet built |
 | `/disclaimer` `/privacy-policy` `/terms-and-conditions` | Active — API-driven | `getPage(slug)` |
+| `/search` | Active — fully built | `SearchResultsSection` (client-fetched via `/api/products/search`, no server data). `?name=` or `?ingredient=` in the URL seeds the initial query; reached from the header `SearchOverlay`'s "View All" link. `robots: noindex` — a live text-search results page isn't meant to be indexed |
 
 ## Known issues to fix before launch
 

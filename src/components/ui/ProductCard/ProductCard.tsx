@@ -12,6 +12,7 @@ export default function ProductCard({ name, slug, image, className = "" }: Produ
               src={image}
               alt={name}
               fill
+              sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
               loading="lazy"
               className="object-contain transition-transform duration-300 group-hover:scale-105"
             />

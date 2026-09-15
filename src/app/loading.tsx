@@ -1,11 +1,9 @@
+import Spinner from "@/components/ui/Spinner";
+
 export default function Loading() {
   return (
     <div className="flex min-h-[60vh] items-center justify-center py-[var(--spacing-section)]">
-      <div
-        className="h-10 w-10 animate-spin rounded-full border-2 border-mint border-t-transparent"
-        role="status"
-        aria-label="Loading"
-      />
+      <Spinner />
     </div>
   );
 }
