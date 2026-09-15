@@ -37,13 +37,13 @@ export default function CategoryCard({
   const inner = (
     <div className={`group flex flex-col gap-3 ${className}`}>
       {fillImage ? (
-        <div className={`relative aspect-square overflow-hidden rounded-lg bg-card-bg ${imageClassName}`}>
+        <div className={`relative aspect-square overflow-hidden rounded-lg ${imageClassName}`}>
           {image && (
             <Image
               src={image}
               alt={title}
               fill
-              className={`object-contain ${zoom}`}
+              className={`object-cover ${zoom}`}
               sizes="(max-width: 768px) 50vw, 25vw"
             />
           )}
