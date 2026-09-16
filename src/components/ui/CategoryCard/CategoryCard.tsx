@@ -29,6 +29,7 @@ export default function CategoryCard({
   href,
   className = "",
   imageClassName = "",
+  labelClassName = "",
   fillImage = true,
   interactive = true,
 }: CategoryCardProps) {
@@ -63,12 +64,12 @@ export default function CategoryCard({
         </div>
       )}
       {interactive ? (
-        <div className="flex items-center justify-between">
+        <div className={`flex items-center justify-between ${labelClassName}`}>
           <p className="text-body font-medium text-primary">{title}</p>
           <ArrowIcon />
         </div>
       ) : (
-        <p className="text-body font-medium text-primary">{title}</p>
+        <p className={`text-body font-medium text-primary ${labelClassName}`}>{title}</p>
       )}
     </div>
   );

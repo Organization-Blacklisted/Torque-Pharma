@@ -4,6 +4,7 @@ export interface CategoryCardProps {
   href?: string;
   className?: string;
   imageClassName?: string;
+  labelClassName?: string;
   fillImage?: boolean;
   // Set false for a plain, non-clickable card — no hover arrow/zoom, centered title
   interactive?: boolean;
