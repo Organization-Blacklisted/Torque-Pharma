@@ -18,8 +18,7 @@ gsap.registerPlugin(ScrollTrigger);
 // Presence page.
 const IMAGE_HOOK = "js-therapeutic-image";
 const LABEL_HOOK = "js-therapeutic-label";
-const DURATION = 0.9;
-const STAGGER = 0.15;
+const DURATION = 1.6;
 
 export default function TherapeuticAreasSection({
   data: { eyebrow, heading, description, items, cta },
@@ -27,13 +26,11 @@ export default function TherapeuticAreasSection({
 }: TherapeuticAreasSectionProps) {
   const gridRef = useRef<HTMLDivElement>(null);
 
-  // Each image grows upward from its bottom edge, like a bar rising — a
-  // clip-path reveal (not a scale/translate of the whole card) so the photo
-  // itself never stretches or distorts as it grows. The label below stays
-  // hidden until its own card's image finishes growing, then fades in.
-  // Cards are staggered a beat apart. Replays every time the row is
-  // (re-)entered — scrolling down into it, or back up into it after having
-  // scrolled past — not just the first time.
+  // Images rise up from below and fade in together (translate + fade,
+  // expo.out — same technique as the Torque Lineup cards below, just from
+  // the bottom instead of the sides). The label underneath stays put and
+  // only fades in once the image finishes rising. Fires once, the first
+  // time the row is scrolled into view.
   useEffect(() => {
     const grid = gridRef.current;
     if (!grid) return;
@@ -48,20 +45,14 @@ export default function TherapeuticAreasSection({
       scrollTrigger: {
         trigger: grid,
         start: "top 85%",
-        end: "bottom top",
-        toggleActions: "restart none restart none",
+        once: true,
       },
     });
 
     tl.fromTo(
       images,
-      { clipPath: "inset(100% 0% 0% 0%)" },
-      {
-        clipPath: "inset(0% 0% 0% 0%)",
-        duration: DURATION,
-        ease: "power2.out",
-        stagger: STAGGER,
-      },
+      { y: "100%", opacity: 0 },
+      { y: "0%", opacity: 1, duration: DURATION, ease: "expo.out" },
       0
     );
 
@@ -69,14 +60,8 @@ export default function TherapeuticAreasSection({
       tl.fromTo(
         labels,
         { opacity: 0, y: 8 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.4,
-          ease: "power2.out",
-          stagger: STAGGER,
-        },
-        DURATION
+        { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" },
+        DURATION - 0.6
       );
     }
 
@@ -100,7 +85,7 @@ export default function TherapeuticAreasSection({
         className="mb-[var(--spacing-subsection)]"
       />
 
-      <div ref={gridRef}>
+      <div ref={gridRef} className="overflow-hidden">
         <MobileSlider desktopClassName="grid grid-cols-1 gap-[var(--spacing-gutter)] sm:grid-cols-2 md:grid-cols-4">
           {items.map((item) => (
             <CategoryCard

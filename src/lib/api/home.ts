@@ -10,6 +10,7 @@ import type { ContractManufacturingData } from "@/types/contract-manufacturing";
 import type { HomeOverviewData } from "@/types/home-overview";
 import type { StatsMediaData } from "@/types/homepage";
 import type { TorqueLineupData } from "@/types/torque-lineup";
+import type { TorqueLineupUpdatedData } from "@/types/torque-lineup-updated";
 import type { TherapeuticAreasData } from "@/types/therapeutic-areas";
 
 // ─── Raw API shape ─────────────────────────────────────────────────────────────
@@ -104,6 +105,18 @@ type HomeApiResponse = {
         button_link: string;
       }[];
     };
+    torque_lineup_updated_section: {
+      title: string;
+      sub_title: string;
+      description: string;
+      items: {
+        logo_image: string;
+        featured_image: string;
+        text: string;
+        button_text: string;
+        button_link: string;
+      }[];
+    };
   };
 };
 
@@ -148,6 +161,7 @@ export type HomePageData = {
   blogsPreview: HomeBlogsPreviewData;
   statsMedia: StatsMediaData;
   torqueLineup: TorqueLineupData;
+  torqueLineupUpdated: TorqueLineupUpdatedData;
 };
 
 // ─── Fetcher ───────────────────────────────────────────────────────────────────
@@ -302,6 +316,18 @@ export async function getHomePage(): Promise<HomePageData> {
         productImage: item.hover_image,
         description: item.title,
         brandName: item.hover_tag,
+        href: normalizeExternalUrl(item.button_link),
+      })),
+    },
+    torqueLineupUpdated: {
+      eyebrow: c.torque_lineup_updated_section.title,
+      heading: c.torque_lineup_updated_section.sub_title,
+      description: sanitizeRichText(c.torque_lineup_updated_section.description),
+      items: c.torque_lineup_updated_section.items.map((item) => ({
+        badge: item.text,
+        logo: item.logo_image,
+        featuredImage: item.featured_image,
+        ctaLabel: item.button_text,
         href: normalizeExternalUrl(item.button_link),
       })),
     },

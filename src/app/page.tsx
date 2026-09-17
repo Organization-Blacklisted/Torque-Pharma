@@ -9,7 +9,7 @@ import BlogsPreviewSection from "@/components/sections/home/BlogsPreviewSection"
 import ContractManufacturingSection from "@/components/sections/home/ContractManufacturingSection";
 import TherapeuticAreasSection from "@/components/sections/home/TherapeuticAreasSection";
 import HomeOverviewSection from "@/components/sections/home/HomeOverviewSection";
-import TorqueLineupSection from "@/components/sections/home/TorqueLineupSection";
+import TorqueLineupUpdatedSection from "@/components/sections/home/TorqueLineupUpdatedSection";
 import Container from "@/components/layouts/Container";
 import Section from "@/components/layouts/Section";
 export const metadata: Metadata = {
@@ -28,7 +28,7 @@ export default async function Home() {
     contractManufacturing,
     blogsPreview,
     statsMedia,
-    torqueLineup,
+    torqueLineupUpdated,
     therapeuticAreas,
   } = await getHomePage();
 
@@ -49,8 +49,8 @@ export default async function Home() {
         </Container>
       </Section>
       <Section>
-        <Container size="wide">
-          <TorqueLineupSection data={torqueLineup} />
+        <Container size="standard">
+          <TorqueLineupUpdatedSection data={torqueLineupUpdated} />
         </Container>
       </Section>
       <HomeStatsMediaSection data={statsMedia} />

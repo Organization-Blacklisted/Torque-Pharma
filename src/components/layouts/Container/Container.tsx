@@ -6,6 +6,7 @@ const sizes = {
   large: "max-w-[1494px]",
   standard: "max-w-[1424px]",
   content: "max-w-[1328px]",
+  compact: "max-w-[1320px]",
   narrow: "max-w-[1216px]",
   reading: "max-w-[1129px]",
 };
