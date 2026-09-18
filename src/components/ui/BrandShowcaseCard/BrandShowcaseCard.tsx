@@ -23,33 +23,15 @@ function VisitSiteArrow() {
   );
 }
 
-// API doesn't supply per-brand background colors — keyed by the badge text
-// it does send. Stops are lifted from the Figma source (radial gradients per
-// brand); unmapped brands fall back to the site's primary navy.
-const BRAND_GRADIENTS: Record<string, string> = {
-  "RESPIRATORY RELIEF":
-    "radial-gradient(207.39% 83.13% at 72.02% 72.46%, #095E37 8.09%, #04471D 61.93%, #023D12 100%)",
-  "ANTI-SCARS & BRIGHTENING":
-    "radial-gradient(207.39% 83.13% at 72.02% 72.46%, #CA355A 8.09%, #9E2344 61.93%, #9C2244 100%)",
-  "HAIR AND SCALP CARE":
-    "radial-gradient(207.39% 83.13% at 72.02% 72.46%, #AD3D3B 8.09%, #933433 61.93%, #953533 100%)",
-  "CLINICAL SKIN SOLUTIONS":
-    "radial-gradient(207.39% 83.13% at 72.02% 72.46%, #5A8112 8.09%, #3C6200 61.93%, #3F6500 100%)",
-};
-
-const FALLBACK_GRADIENT =
-  "radial-gradient(207.39% 83.13% at 72.02% 72.46%, #1B2978 8.09%, #131F5C 61.93%, #0D1642 100%)";
-
 export default function BrandShowcaseCard({
   badge,
   logo,
   featuredImage,
   ctaLabel,
   href,
+  gradient,
   className = "",
 }: BrandShowcaseCardProps) {
-  const gradient = BRAND_GRADIENTS[badge.toUpperCase()] ?? FALLBACK_GRADIENT;
-
   return (
     <div
       className={`group relative flex flex-col gap-4 overflow-hidden rounded-lg bg-[length:100%_100%] bg-[position:0%_0%] p-[var(--spacing-card)] transition-[background-size,background-position] duration-500 ease-out hover:bg-[length:130%_130%] hover:bg-[position:20%_20%] tablet:aspect-[650/330] tablet:flex-row tablet:gap-[2.875rem] ${className}`}

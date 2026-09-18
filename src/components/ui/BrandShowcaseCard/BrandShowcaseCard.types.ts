@@ -4,5 +4,6 @@ export interface BrandShowcaseCardProps {
   featuredImage: string;
   ctaLabel: string;
   href: string;
+  gradient: string;
   className?: string;
 }
