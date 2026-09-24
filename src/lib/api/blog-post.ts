@@ -37,5 +37,10 @@ export const getBlogPost = cache(async function getBlogPost(
       }
     : null;
 
-  return { ...data, content, faq_section };
+  return {
+    ...data,
+    description: sanitizeRichText(normalizeDescription(data.description)),
+    content,
+    faq_section,
+  };
 });

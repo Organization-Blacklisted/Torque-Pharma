@@ -6,7 +6,7 @@ import TableOfContents from "@/components/ui/TableOfContents";
 import type { BlogPostBodyProps } from "./BlogPostBody.types";
 
 export default function BlogPostBody({ post, className = "" }: BlogPostBodyProps) {
-  const { content, tags, faq_section } = post;
+  const { description, content, tags, faq_section } = post;
 
   const tocItems = useMemo(
     () => content.map(({ id, title }) => ({ id, title })),
@@ -22,6 +22,16 @@ export default function BlogPostBody({ post, className = "" }: BlogPostBodyProps
       />
 
       <div className="min-w-0 flex-1">
+        {/* Intro description — the CMS's top-level "Description" field,
+            separate from the numbered content sections below it.
+            Pre-sanitized in the API transform (sanitizeRichText). */}
+        {description && (
+          <div
+            className="rich-text rich-text--blog mb-12"
+            dangerouslySetInnerHTML={{ __html: description }}
+          />
+        )}
+
         {/* Content sections */}
         <div className="flex flex-col">
           {content.map((section) => (
