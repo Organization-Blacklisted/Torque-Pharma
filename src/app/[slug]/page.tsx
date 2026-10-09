@@ -41,6 +41,7 @@ export default async function ProductDetailPage({ params }: Props) {
     <>
       <JsonLd data={product.seo.schema} />
       <ProductDetailSection
+        slug={slug}
         name={product.name}
         description={product.description}
         featuredImage={product.featuredImage}

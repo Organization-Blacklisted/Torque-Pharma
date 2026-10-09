@@ -12,6 +12,8 @@ type BaseProps = {
   className?: string;
   labelClassName?: string;
   iconClassName?: string;
+  /** Overrides the default animated arrow — e.g. a download icon. */
+  icon?: ReactNode;
 };
 
 type LinkProps = BaseProps & {
@@ -48,9 +50,10 @@ function SplitButtonContent({
   variant,
   labelClassName,
   iconClassName,
+  icon,
 }: Pick<
   SplitButtonProps,
-  "children" | "variant" | "labelClassName" | "iconClassName"
+  "children" | "variant" | "labelClassName" | "iconClassName" | "icon"
 >) {
   const styles = splitButtonVariants[variant ?? "primary"];
 
@@ -63,7 +66,7 @@ function SplitButtonContent({
         className={joinClasses(baseIcon, styles.icon, iconClassName)}
         aria-hidden="true"
       >
-        <AnimatedArrow />
+        {icon ?? <AnimatedArrow />}
       </span>
     </>
   );
@@ -76,6 +79,7 @@ export function SplitButton({
   className,
   labelClassName,
   iconClassName,
+  icon,
   ...props
 }: SplitButtonProps) {
   const styles = splitButtonVariants[variant];
@@ -99,6 +103,7 @@ export function SplitButton({
             variant={variant}
             labelClassName={labelClassName}
             iconClassName={iconClassName}
+            icon={icon}
           >
             {children}
           </SplitButtonContent>
@@ -118,6 +123,7 @@ export function SplitButton({
           variant={variant}
           labelClassName={labelClassName}
           iconClassName={iconClassName}
+          icon={icon}
         >
           {children}
         </SplitButtonContent>
@@ -139,6 +145,7 @@ export function SplitButton({
         variant={variant}
         labelClassName={labelClassName}
         iconClassName={iconClassName}
+        icon={icon}
       >
         {children}
       </SplitButtonContent>
