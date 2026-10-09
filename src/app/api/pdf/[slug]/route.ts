@@ -14,10 +14,11 @@ async function launchBrowser() {
   // Vercel's serverless functions can't run full Playwright — its bundled
   // Chromium is too large for the function size limit and the runtime is
   // missing the system libraries headless Chrome needs. @sparticuz/chromium
-  // ships a slimmed build made for exactly this environment. Everywhere else
-  // (local dev, the AWS-hosted box — a real Linux server, not serverless) we
-  // launch whatever Chrome is actually installed on the machine instead.
-  if (process.env.VERCEL) {
+  // ships a slimmed build with its own bundled shared libraries, so it also
+  // covers the AWS-hosted box without installing a browser there manually —
+  // gated on Linux generally, not just Vercel, for exactly that reason. Local
+  // dev (Windows/Mac) launches whatever Chrome is actually on the machine.
+  if (process.platform === "linux") {
     const sparticuzChromium = (await import("@sparticuz/chromium")).default;
     return chromium.launch({
       args: sparticuzChromium.args,
