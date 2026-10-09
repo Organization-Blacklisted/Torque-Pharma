@@ -33,13 +33,19 @@ export async function GET(
   { params }: { params: Promise<{ slug: string }> }
 ) {
   const { slug } = await params;
-  // Playwright and this server run in the same process/machine, so it
-  // should always reach itself via localhost directly — not through
-  // whatever public hostname the original request came in on (that can be
-  // a tunnel, a proxy, anything). Using request.nextUrl.origin broke this
-  // behind a tunnel: forwarded headers gave "https://localhost:3000",
-  // which isn't a real endpoint, so Playwright's own request failed instantly.
-  const origin = `http://localhost:${process.env.PORT ?? 3000}`;
+  // On a traditional always-running server (AWS, local dev) Playwright and
+  // this route share the same process/machine, so it should reach itself via
+  // localhost directly — not through whatever public hostname the original
+  // request came in on (that can be a tunnel, a proxy, anything). Using
+  // request.nextUrl.origin broke this behind a local tunnel: forwarded
+  // headers gave "https://localhost:3000", which isn't a real endpoint.
+  // On Vercel there IS no persistent localhost to dogfood — each invocation
+  // is its own isolated function — so there the real request origin (which
+  // Vercel's edge network sets correctly, unlike an ad hoc tunnel) is the
+  // only way to reach the deployed site at all.
+  const origin = process.env.VERCEL
+    ? request.nextUrl.origin
+    : `http://localhost:${process.env.PORT ?? 3000}`;
 
   const browser = await launchBrowser();
   try {
