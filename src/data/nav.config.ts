@@ -68,6 +68,8 @@ export const navItems: NavItem[] = [
           { label: "Painkillers", href: "/category/export/painkillers" },
           { label: "Respiratory", href: "/category/export/respiratory" },
           { label: "Miscellaneous", href: "/category/export/miscellaneous" },
+          { label: "Eye/Ear/Nasal", href: "/category/export/eye-ear-nasal" },
+          { label: "Ayurveda & Personal Care", href: "/category/export/ayurveda-and-personal-care" },
         ],
       },
     ],
