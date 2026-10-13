@@ -4,12 +4,11 @@ import { useState, useMemo, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Section from "@/components/layouts/Section";
 import Container from "@/components/layouts/Container";
-import Pagination from "@/components/ui/Pagination";
 import ProductCard from "@/components/ui/ProductCard";
+import Spinner from "@/components/ui/Spinner";
 import type { ProductListingSectionProps } from "./ProductListingSection.types";
 
 const ALL_LETTERS = Array.from({ length: 26 }, (_, i) => String.fromCharCode(65 + i));
-const PER_PAGE = 9;
 
 // Read directly from window.location rather than Next's useSearchParams —
 // this page is statically generated, and useSearchParams would force a
@@ -25,7 +24,7 @@ const PER_PAGE = 9;
 // Only trust the query string when we can confirm it's actually ours.
 function readQueryParams(expectedPath: string) {
   if (typeof window === "undefined" || window.location.pathname !== expectedPath) {
-    return { search: "", activeLetter: "ALL", sortBy: "default" as const, page: 1 };
+    return { search: "", activeLetter: "ALL", sortBy: "default" as const };
   }
   const params = new URLSearchParams(window.location.search);
   const sort = params.get("sort");
@@ -33,9 +32,16 @@ function readQueryParams(expectedPath: string) {
     search: params.get("q") ?? "",
     activeLetter: params.get("letter") ?? "ALL",
     sortBy: (sort === "az" || sort === "za" ? sort : "default") as "default" | "az" | "za",
-    page: Number(params.get("page")) || 1,
   };
 }
+
+// Products already arrive in one fetched array (see ProductListingSection.types),
+// so "loading more" is just revealing further slices of it — the delay here
+// is purely to give the loader below the grid something to show, matching
+// the client's reference of a real "load more" moment rather than content
+// just snapping into place instantly.
+const PER_PAGE = 9;
+const SIMULATED_LOAD_DELAY_MS = 500;
 
 function ChevronDown({ className = "" }: { className?: string }) {
   return (
@@ -71,20 +77,21 @@ export default function ProductListingSection({
   className = "",
 }: ProductListingSectionProps) {
   const router = useRouter();
-  const sectionRef = useRef<HTMLDivElement>(null);
   const [categoryOpen, setCategoryOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const expectedPath = `/category/${parentSlug}/${currentSlug}`;
   const [search, setSearch] = useState(() => readQueryParams(expectedPath).search);
   const [activeLetter, setActiveLetter] = useState(() => readQueryParams(expectedPath).activeLetter);
   const [sortBy, setSortBy] = useState<"default" | "az" | "za">(() => readQueryParams(expectedPath).sortBy);
-  const [page, setPage] = useState(() => readQueryParams(expectedPath).page);
+  const [visibleCount, setVisibleCount] = useState(PER_PAGE);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const sentinelRef = useRef<HTMLDivElement>(null);
+  const loadingRef = useRef(false);
 
-  // Keep the URL in sync with search/filter/page state (via replaceState,
-  // not a navigation) so that navigating to a product and hitting the
-  // browser back button restores this exact view — both the filters
-  // above and the scroll position the browser naturally restores for it —
-  // instead of always landing back on page 1 at the top.
+  // Keep the URL in sync with search/filter state (via replaceState, not a
+  // navigation) so that navigating to a product and hitting the browser
+  // back button restores this exact view — both the filters above and the
+  // scroll position the browser naturally restores for it.
   useEffect(() => {
     // Guard against a prefetched/backgrounded instance (see readQueryParams
     // above) writing this category's filters onto whatever page happens to
@@ -95,11 +102,10 @@ export default function ProductListingSection({
     if (search) params.set("q", search);
     if (activeLetter !== "ALL") params.set("letter", activeLetter);
     if (sortBy !== "default") params.set("sort", sortBy);
-    if (page !== 1) params.set("page", String(page));
     const qs = params.toString();
     const newUrl = qs ? `${window.location.pathname}?${qs}` : window.location.pathname;
     window.history.replaceState(window.history.state, "", newUrl);
-  }, [search, activeLetter, sortBy, page, expectedPath]);
+  }, [search, activeLetter, sortBy, expectedPath]);
 
   // Lock body scroll when drawer is open
   useEffect(() => {
@@ -132,50 +138,65 @@ export default function ProductListingSection({
     return list;
   }, [products, activeLetter, search, sortBy]);
 
-  const totalPages = Math.max(1, Math.ceil(filtered.length / PER_PAGE));
-  const visible = filtered.slice((page - 1) * PER_PAGE, page * PER_PAGE);
+  const visible = filtered.slice(0, visibleCount);
+  const hasMore = visibleCount < filtered.length;
+
+  // A filter/search/sort change starts the list over at one page's worth,
+  // same as the old setPage(1) did — adjusted during render (not an effect)
+  // per React's "adjusting state when a prop changes" pattern, so it lands
+  // in the same render instead of causing an extra one.
+  const filterKey = `${activeLetter}|${search}|${sortBy}`;
+  const [prevFilterKey, setPrevFilterKey] = useState(filterKey);
+  if (filterKey !== prevFilterKey) {
+    setPrevFilterKey(filterKey);
+    setVisibleCount(PER_PAGE);
+  }
+
+  // Reveal the next batch once the sentinel below the grid scrolls into
+  // view. loadingRef guards against the sentinel re-triggering mid-load —
+  // it stays intersecting (rootMargin keeps it "visible" early) for the
+  // whole simulated delay, which would otherwise fire the callback again.
+  useEffect(() => {
+    if (!hasMore) return;
+    const sentinel = sentinelRef.current;
+    if (!sentinel) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting || loadingRef.current) return;
+        loadingRef.current = true;
+        setLoadingMore(true);
+        window.setTimeout(() => {
+          setVisibleCount((count) => Math.min(count + PER_PAGE, filtered.length));
+          setLoadingMore(false);
+          loadingRef.current = false;
+        }, SIMULATED_LOAD_DELAY_MS);
+      },
+      { rootMargin: "400px" }
+    );
+
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, [hasMore, filtered.length]);
 
   function handleSearch(value: string) {
     setSearch(value);
     if (value) setActiveLetter("ALL");
-    setPage(1);
   }
 
   function handleLetter(letter: string) {
     setActiveLetter(letter);
     if (letter !== "ALL") setSearch("");
-    setPage(1);
   }
 
   function handleSort(value: "default" | "az" | "za") {
     setSortBy(value);
-    setPage(1);
   }
 
   function handleCategoryChange(slug: string) {
     router.push(`/category/${parentSlug}/${slug}`);
     setDrawerOpen(false);
   }
-
-  function scrollToSection() {
-    if (sectionRef.current) {
-      const y = sectionRef.current.getBoundingClientRect().top + window.scrollY - 100;
-      window.scrollTo({ top: y, behavior: "smooth" });
-    }
-  }
-
-  // Scroll after the page number actually commits and the new grid has
-  // rendered, rather than inline in the click handler (which measures the
-  // DOM before React's batched re-render lands) — the prev/next arrows and
-  // numbered buttons all funnel through the same setPage call, so this
-  // fires identically for all of them instead of racing render timing.
-  const prevPageRef = useRef(page);
-  useEffect(() => {
-    if (prevPageRef.current !== page) {
-      scrollToSection();
-      prevPageRef.current = page;
-    }
-  }, [page]);
 
   const sortSelect = (
     <div className="relative flex min-w-0 shrink items-center lg:shrink-0">
@@ -225,7 +246,7 @@ export default function ProductListingSection({
   );
 
   return (
-    <div ref={sectionRef}>
+    <div>
 
       {/* ── Off-canvas drawer (mobile only) ─────────────────────── */}
       {/* Backdrop */}
@@ -395,14 +416,12 @@ export default function ProductListingSection({
                 </div>
               )}
 
-              {/* Pagination */}
-              {totalPages > 1 && (
-                <div className="flex justify-center mt-2">
-                  <Pagination
-                    currentPage={page}
-                    totalPages={totalPages}
-                    onPageChange={setPage}
-                  />
+              {/* Infinite-scroll sentinel — present only while more products
+                  remain; the IntersectionObserver effect watches it and
+                  reveals the next batch once it scrolls into view. */}
+              {hasMore && (
+                <div ref={sentinelRef} className="flex justify-center py-10">
+                  {loadingMore && <Spinner className="h-8 w-8" />}
                 </div>
               )}
             </div>
