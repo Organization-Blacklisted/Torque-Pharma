@@ -10,6 +10,8 @@ export interface SliderProps {
   overflowVisible?: boolean;
   /** Hide progress bar and Showing X/Y counter — only arrows rendered */
   showProgress?: boolean;
+  /** Hide the prev/next arrow buttons (default true) — the track stays draggable/scrollable */
+  showArrows?: boolean;
   /** Horizontal alignment of the controls row */
   controlsAlign?: "start" | "center" | "end";
   /** Show a partial peek of the next slide (default true). Pass false for clean full-width N-per-view */

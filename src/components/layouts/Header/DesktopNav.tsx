@@ -29,11 +29,14 @@ function ChevronDown({ isOpen }: { isOpen: boolean }) {
 
 export default function DesktopNav({ pathname }: DesktopNavProps) {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [openSubDropdown, setOpenSubDropdown] = useState<string | null>(null);
   const [activeMegaParent, setActiveMegaParent] = useState("domestic");
   const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const subCloseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     setOpenDropdown(null);
+    setOpenSubDropdown(null);
   }, [pathname]);
 
   const openNav = (label: string) => {
@@ -43,6 +46,15 @@ export default function DesktopNav({ pathname }: DesktopNavProps) {
 
   const scheduleClose = () => {
     closeTimerRef.current = setTimeout(() => setOpenDropdown(null), 150);
+  };
+
+  const openSubNav = (label: string) => {
+    if (subCloseTimerRef.current) clearTimeout(subCloseTimerRef.current);
+    setOpenSubDropdown(label);
+  };
+
+  const scheduleSubClose = () => {
+    subCloseTimerRef.current = setTimeout(() => setOpenSubDropdown(null), 150);
   };
 
   return (
@@ -178,15 +190,57 @@ export default function DesktopNav({ pathname }: DesktopNavProps) {
                 ].join(" ")}
               >
                 <div className="w-max min-w-[180px] rounded-lg border border-black/[0.06] bg-white/90 backdrop-blur-[8px] p-6 shadow-sm flex flex-col gap-4 whitespace-nowrap">
-                  {item.children.map((child) => (
-                    <Link
-                      key={child.href}
-                      href={child.href}
-                      className="font-body text-h5 font-normal leading-6 text-secondary hover:text-primary transition-colors duration-200"
-                    >
-                      {child.label}
-                    </Link>
-                  ))}
+                  {item.children.map((child) =>
+                    child.children ? (
+                      <div
+                        key={child.label}
+                        className="relative"
+                        onMouseEnter={() => openSubNav(child.label)}
+                        onMouseLeave={scheduleSubClose}
+                      >
+                        <button
+                          type="button"
+                          aria-haspopup="true"
+                          aria-expanded={openSubDropdown === child.label}
+                          className="flex w-full items-center justify-between gap-6 font-body text-h5 font-normal leading-6 text-secondary hover:text-primary transition-colors duration-200"
+                        >
+                          {child.label}
+                          <ChevronRight />
+                        </button>
+
+                        <div
+                          onMouseEnter={() => openSubNav(child.label)}
+                          onMouseLeave={scheduleSubClose}
+                          className={[
+                            "absolute left-full top-0 ml-2 transition-all duration-150",
+                            openSubDropdown === child.label
+                              ? "pointer-events-auto opacity-100 translate-x-0"
+                              : "pointer-events-none opacity-0 -translate-x-1",
+                          ].join(" ")}
+                        >
+                          <div className="w-max min-w-[220px] rounded-lg border border-black/[0.06] bg-white/90 backdrop-blur-[8px] p-6 shadow-sm flex flex-col gap-4 whitespace-nowrap">
+                            {child.children.map((grandchild) => (
+                              <Link
+                                key={grandchild.href}
+                                href={grandchild.href}
+                                className="font-body text-h5 font-normal leading-6 text-secondary hover:text-primary transition-colors duration-200"
+                              >
+                                {grandchild.label}
+                              </Link>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <Link
+                        key={child.href}
+                        href={child.href}
+                        className="font-body text-h5 font-normal leading-6 text-secondary hover:text-primary transition-colors duration-200"
+                      >
+                        {child.label}
+                      </Link>
+                    )
+                  )}
                 </div>
               </div>
             </div>

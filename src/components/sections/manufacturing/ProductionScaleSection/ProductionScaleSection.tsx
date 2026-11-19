@@ -12,6 +12,7 @@ export default function ProductionScaleSection({
   description,
   items,
   autoScroll = false,
+  showArrows = true,
   cta,
   className = "",
 }: ProductionScaleSectionProps) {
@@ -33,6 +34,7 @@ export default function ProductionScaleSection({
           visibleCount={{ default: 1, sm: 2, md: 3, lg: 5 }}
           overflowVisible
           showProgress={false}
+          showArrows={showArrows}
           controlsAlign="center"
           autoScroll={autoScroll}
         >

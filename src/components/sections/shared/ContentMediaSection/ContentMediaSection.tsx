@@ -8,12 +8,13 @@ import { ContentMediaSectionProps } from "./ContentMediaSection.types";
 function MediaBlock({
   media,
   layout,
-}: Pick<ContentMediaSectionProps, "media" | "layout">) {
+  className = "",
+}: Pick<ContentMediaSectionProps, "media" | "layout"> & { className?: string }) {
   const isCentered = layout === "centered";
 
   if (media.type === "rotating") {
     return (
-      <div className="flex items-center justify-center">
+      <div className={`flex items-center justify-center ${className}`}>
         <RotatingPhotoBadge
           src={media.src}
           alt={media.alt}
@@ -28,7 +29,7 @@ function MediaBlock({
 
   if (media.type === "image" && fit === "contain") {
     return (
-      <div className="flex items-center justify-center">
+      <div className={`flex items-center justify-center ${className}`}>
         <Image
           src={media.src}
           alt={media.alt}
@@ -48,6 +49,7 @@ function MediaBlock({
         overflow-hidden
         rounded-lg
         ${isCentered ? "aspect-[16/7] w-full" : "h-full min-h-[360px]"}
+        ${className}
       `}
     >
       {media.type === "image" ? (
@@ -94,10 +96,13 @@ export default function ContentMediaSection({
   eyebrow,
   heading,
   description,
+  note,
   layout,
   media,
   actions,
   headingAs = "h2",
+  columnRatio = "2:3",
+  columnGap = "40px",
   className = "",
   headerClassName = "",
   headingClassName = "",
@@ -131,32 +136,43 @@ export default function ContentMediaSection({
     <div
       className={`
         grid
-        gap-[40px]
-        md:grid-cols-[2fr_3fr]
+        ${columnGap === "112px" ? "gap-[clamp(24px,_6vw,_112px)]" : "gap-[40px]"}
+        ${columnRatio === "1:1" ? "md:grid-cols-[1fr_1fr]" : "md:grid-cols-[2fr_3fr]"}
         md:items-center
         ${className}
       `}
     >
-      {isLeft && <MediaBlock media={media} layout={layout} />}
+      {/* Image always comes first in DOM so mobile (stacked) always shows it
+          before the text, regardless of which side it sits on at md+ — md:order
+          restores the left/right split there. The order class goes directly on
+          MediaBlock (not a wrapping div) because its h-full relies on being the
+          direct grid item — CSS Grid resolves percentage heights against the
+          grid area even on auto-sized tracks, but only for the item itself;
+          an intermediate auto-height wrapper breaks that chain and the image
+          collapses to its min-height instead of matching the text column. */}
+      <MediaBlock media={media} layout={layout} className={isLeft ? "md:order-1" : "md:order-2"} />
 
-      <div>
+      <div className={isLeft ? "md:order-2" : "md:order-1"}>
         {/* Description rendered manually — SectionHeader adds max-w-3xl which we don't want in a constrained column */}
         <SectionHeader
           eyebrow={eyebrow}
           title={heading}
           align="left"
           as={headingAs}
-          size="h1"
+          size={headingAs}
         />
         {description && (
           <p className="mt-5 text-body leading-6 text-secondary">
             {description}
           </p>
         )}
+        {note && (
+          <p className="mt-5 border-l-2 border-primary/60 pl-4 text-body-sm italic text-secondary/80">
+            {note}
+          </p>
+        )}
         <Actions actions={actions} centered={false} />
       </div>
-
-      {!isLeft && <MediaBlock media={media} layout={layout} />}
     </div>
   );
 }

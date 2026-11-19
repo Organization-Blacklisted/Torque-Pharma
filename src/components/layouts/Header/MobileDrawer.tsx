@@ -184,7 +184,11 @@ export default function MobileDrawer({ menuOpen, closeMenu, pathname }: MobileDr
               <div key={item.label} className="border-b border-gray-100 last:border-0">
                 <button
                   type="button"
-                  onClick={() => setOpenAccordion(isOpen ? null : item.label)}
+                  onClick={() => {
+                    const next = isOpen ? null : item.label;
+                    setOpenAccordion(next);
+                    if (!next) setOpenSubAccordion(null);
+                  }}
                   className={[
                     "flex w-full items-center justify-between py-3 font-body text-body-sm transition-colors duration-200",
                     isActive ? "text-primary font-medium" : "text-dark-blue font-normal",
@@ -196,20 +200,64 @@ export default function MobileDrawer({ menuOpen, closeMenu, pathname }: MobileDr
 
                 {isOpen && (
                   <div className="flex flex-col pb-3 pl-3">
-                    {item.children.map((child) => (
-                      <Link
-                        key={child.href}
-                        href={child.href}
-                        onClick={closeMenu}
-                        aria-current={pathname === child.href ? "page" : undefined}
-                        className={[
-                          "py-2 font-body text-body-sm transition-colors duration-200",
-                          pathname === child.href ? "text-primary font-medium" : "text-secondary hover:text-primary",
-                        ].join(" ")}
-                      >
-                        {child.label}
-                      </Link>
-                    ))}
+                    {item.children.map((child) => {
+                      if (child.children) {
+                        const isSubOpen = openSubAccordion === child.label;
+                        const isSubActive = child.children.some((gc) => pathname === gc.href);
+                        return (
+                          <div key={child.label}>
+                            <button
+                              type="button"
+                              onClick={() => setOpenSubAccordion(isSubOpen ? null : child.label)}
+                              className={[
+                                "flex w-full items-center justify-between py-2.5 font-body text-body-sm transition-colors duration-200",
+                                isSubActive ? "text-primary font-medium" : "text-secondary font-normal",
+                              ].join(" ")}
+                            >
+                              {child.label}
+                              <ChevronDown isOpen={isSubOpen} />
+                            </button>
+
+                            {isSubOpen && (
+                              <div className="flex flex-col pb-2 pl-3">
+                                {child.children.map((grandchild) => (
+                                  <Link
+                                    key={grandchild.href}
+                                    href={grandchild.href}
+                                    onClick={closeMenu}
+                                    aria-current={pathname === grandchild.href ? "page" : undefined}
+                                    className={[
+                                      "flex items-center gap-2 py-2 font-body text-body-sm transition-colors duration-200",
+                                      pathname === grandchild.href
+                                        ? "text-primary font-medium"
+                                        : "text-secondary/70 hover:text-primary",
+                                    ].join(" ")}
+                                  >
+                                    <span className="text-secondary/30"><ChevronRight /></span>
+                                    {grandchild.label}
+                                  </Link>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        );
+                      }
+
+                      return (
+                        <Link
+                          key={child.href}
+                          href={child.href}
+                          onClick={closeMenu}
+                          aria-current={pathname === child.href ? "page" : undefined}
+                          className={[
+                            "py-2 font-body text-body-sm transition-colors duration-200",
+                            pathname === child.href ? "text-primary font-medium" : "text-secondary hover:text-primary",
+                          ].join(" ")}
+                        >
+                          {child.label}
+                        </Link>
+                      );
+                    })}
                   </div>
                 )}
               </div>

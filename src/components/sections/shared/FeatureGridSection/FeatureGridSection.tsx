@@ -1,6 +1,7 @@
 import FeatureCard from "@/components/ui/FeatureCard";
 import MobileSlider from "@/components/ui/MobileSlider";
 import SectionHeader from "@/components/ui/SectionHeading";
+import { SplitButton } from "@/components/ui/SplitButton";
 import type { FeatureGridSectionProps } from "./FeatureGridSection.types";
 
 const GRID_CLASSES = "grid gap-[var(--spacing-gutter)] sm:grid-cols-2 lg:grid-cols-3";
@@ -8,7 +9,10 @@ const GRID_CLASSES = "grid gap-[var(--spacing-gutter)] sm:grid-cols-2 lg:grid-co
 export default function FeatureGridSection({
   eyebrow,
   title,
+  description,
+  align = "center",
   items,
+  button,
   className = "",
   mobileSlider = false,
 }: FeatureGridSectionProps) {
@@ -27,7 +31,8 @@ export default function FeatureGridSection({
       <SectionHeader
         eyebrow={eyebrow}
         title={title}
-        align="center"
+        description={description}
+        align={align}
         size="h2"
         className="mb-[var(--spacing-section-inner)]"
       />
@@ -35,6 +40,13 @@ export default function FeatureGridSection({
         <MobileSlider desktopClassName={GRID_CLASSES}>{cards}</MobileSlider>
       ) : (
         <div className={GRID_CLASSES}>{cards}</div>
+      )}
+      {button && (
+        <div className="mt-[var(--spacing-section-inner)] flex justify-center">
+          <SplitButton href={button.href} variant="primary">
+            {button.label}
+          </SplitButton>
+        </div>
       )}
     </div>
   );

@@ -9,5 +9,7 @@ export interface WhyJoinSectionProps {
   heading: string;
   description: string;
   items: WhyJoinItem[];
+  /** Rendered as a centered button below the slider. */
+  button?: { label: string; href: string };
   className?: string;
 }

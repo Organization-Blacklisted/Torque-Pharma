@@ -2,6 +2,7 @@ import Image from "next/image";
 import Container from "@/components/layouts/Container";
 import SectionHeader from "@/components/ui/SectionHeading";
 import Slider from "@/components/ui/Slider";
+import { SplitButton } from "@/components/ui/SplitButton";
 import type { WhyJoinSectionProps } from "./WhyJoinSection.types";
 
 export default function WhyJoinSection({
@@ -9,6 +10,7 @@ export default function WhyJoinSection({
   heading,
   description,
   items,
+  button,
   className = "",
 }: WhyJoinSectionProps) {
   return (
@@ -43,6 +45,14 @@ export default function WhyJoinSection({
             ))}
           </Slider>
         </div>
+
+        {button && (
+          <div className="mt-[var(--spacing-subsection)] flex justify-center">
+            <SplitButton href={button.href} variant="primary">
+              {button.label}
+            </SplitButton>
+          </div>
+        )}
       </Container>
     </div>
   );

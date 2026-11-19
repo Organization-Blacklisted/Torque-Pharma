@@ -13,6 +13,8 @@ export interface ContentMediaData {
   eyebrow?: string;
   heading: string;
   description?: string;
+  /** Rendered below the description with a left rule + italic style, for a caveat/disclaimer aside. */
+  note?: string;
   layout: ContentMediaLayout;
   media:
     | { type: "image"; src: string; alt: string; fit?: "cover" | "contain" }

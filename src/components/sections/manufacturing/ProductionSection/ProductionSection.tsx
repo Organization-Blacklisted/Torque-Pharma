@@ -10,6 +10,8 @@ export default function ProductionSection({
   title,
   description,
   items,
+  trigger = "click",
+  imagePosition = "right",
   className = "",
 }: ProductionSectionProps) {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -73,15 +75,19 @@ export default function ProductionSection({
 
       {/* Desktop two-column — md and above */}
       <div className="hidden md:grid md:grid-cols-2 overflow-hidden rounded-lg bg-white/20">
-        <div className="flex flex-col px-6 py-[10px]">
+        <div
+          className={`flex flex-col px-6 py-[10px] ${imagePosition === "left" ? "md:order-2" : "md:order-1"}`}
+          onMouseLeave={trigger === "hover" ? () => setActiveIndex(0) : undefined}
+        >
           {items.map((item, i) => {
             const isActive = i === activeIndex;
             return (
               <button
                 key={i}
                 type="button"
-                onClick={() => setActiveIndex(i)}
-                className="w-full cursor-pointer text-left"
+                onClick={trigger === "click" ? () => setActiveIndex(i) : undefined}
+                onMouseEnter={trigger === "hover" ? () => setActiveIndex(i) : undefined}
+                className={`w-full text-left ${trigger === "hover" ? "cursor-default" : "cursor-pointer"}`}
               >
                 <div
                   className={`border-b px-6 transition-all duration-300 ${
@@ -114,7 +120,7 @@ export default function ProductionSection({
           })}
         </div>
 
-        <div className="relative">
+        <div className={`relative ${imagePosition === "left" ? "md:order-1" : "md:order-2"}`}>
           <Image
             src={active.image}
             alt={active.title}

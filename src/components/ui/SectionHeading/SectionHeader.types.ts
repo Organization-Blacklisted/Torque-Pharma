@@ -5,6 +5,8 @@ export interface SectionHeaderProps {
   eyebrowColor?: string;
   eyebrowDotColor?: string;
   title?: string;
+  /** Render `title` as sanitized HTML (e.g. a CMS-inserted <br>) instead of plain text. Caller must pre-sanitize. */
+  titleHtml?: boolean;
   description?: string;
   content?: string;
   children?: ReactNode;

@@ -12,6 +12,7 @@ const headingSizes: Record<"h1" | "h2" | "h3" | "h4" | "h5" | "h6", string> = {
 export default function SectionHeader({
   eyebrow,
   title,
+  titleHtml = false,
   description,
   content,
   children,
@@ -128,18 +129,33 @@ export default function SectionHeader({
       )}
 
       {title && (
-        <HeadingTag
-          className={`
-            font-heading
-            font-light
-            ${headingSizes[size]}
-            leading-[1.1]
-            ${titleColor}
-            ${headingClassName}
-          `}
-        >
-          {title}
-        </HeadingTag>
+        titleHtml ? (
+          // Pre-sanitized by the caller — same contract as `content` below.
+          <HeadingTag
+            className={`
+              font-heading
+              font-light
+              ${headingSizes[size]}
+              leading-[1.1]
+              ${titleColor}
+              ${headingClassName}
+            `}
+            dangerouslySetInnerHTML={{ __html: title }}
+          />
+        ) : (
+          <HeadingTag
+            className={`
+              font-heading
+              font-light
+              ${headingSizes[size]}
+              leading-[1.1]
+              ${titleColor}
+              ${headingClassName}
+            `}
+          >
+            {title}
+          </HeadingTag>
+        )
       )}
 
       {description && (

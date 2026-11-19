@@ -64,6 +64,7 @@ export default function Slider({
   className = "",
   overflowVisible = false,
   showProgress = true,
+  showArrows = true,
   controlsAlign = "end",
   peek = true,
   autoScroll = false,
@@ -181,47 +182,51 @@ export default function Slider({
         </div>
       </div>
 
-      <div className="mt-6">
-        {showProgress && (
-          <div className="relative h-[2px] w-full bg-white/20">
-            <div
-              className="absolute left-0 top-0 h-full bg-mint transition-all duration-300 ease-in-out"
-              style={{ width: `${progress}%` }}
-            />
-          </div>
-        )}
-        <div
-          className={`flex items-center gap-4 ${showProgress ? "mt-4" : ""} ${
-            controlsAlign === "center"
-              ? "justify-center"
-              : controlsAlign === "start"
-                ? "justify-start"
-                : "justify-end"
-          }`}
-        >
+      {(showProgress || showArrows) && (
+        <div className="mt-6">
           {showProgress && (
-            <span className="text-body-sm text-white/60">Showing {showing}/{total}</span>
+            <div className="relative h-[2px] w-full bg-white/20">
+              <div
+                className="absolute left-0 top-0 h-full bg-mint transition-all duration-300 ease-in-out"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
           )}
-          <div className="flex gap-2">
-            <button
-              onClick={() => emblaApi?.scrollPrev()}
-              disabled={!canScrollPrev}
-              aria-label="Previous slide"
-              className="flex h-[53px] w-[53px] cursor-pointer items-center justify-center rounded bg-mint transition-opacity disabled:cursor-not-allowed disabled:opacity-30"
-            >
-              <PrevArrow />
-            </button>
-            <button
-              onClick={() => emblaApi?.scrollNext()}
-              disabled={!canScrollNext}
-              aria-label="Next slide"
-              className="flex h-[53px] w-[53px] cursor-pointer items-center justify-center rounded bg-mint transition-opacity disabled:cursor-not-allowed disabled:opacity-30"
-            >
-              <NextArrow />
-            </button>
+          <div
+            className={`flex items-center gap-4 ${showProgress ? "mt-4" : ""} ${
+              controlsAlign === "center"
+                ? "justify-center"
+                : controlsAlign === "start"
+                  ? "justify-start"
+                  : "justify-end"
+            }`}
+          >
+            {showProgress && (
+              <span className="text-body-sm text-white/60">Showing {showing}/{total}</span>
+            )}
+            {showArrows && (
+              <div className="flex gap-2">
+                <button
+                  onClick={() => emblaApi?.scrollPrev()}
+                  disabled={!canScrollPrev}
+                  aria-label="Previous slide"
+                  className="flex h-[53px] w-[53px] cursor-pointer items-center justify-center rounded bg-mint transition-opacity disabled:cursor-not-allowed disabled:opacity-30"
+                >
+                  <PrevArrow />
+                </button>
+                <button
+                  onClick={() => emblaApi?.scrollNext()}
+                  disabled={!canScrollNext}
+                  aria-label="Next slide"
+                  className="flex h-[53px] w-[53px] cursor-pointer items-center justify-center rounded bg-mint transition-opacity disabled:cursor-not-allowed disabled:opacity-30"
+                >
+                  <NextArrow />
+                </button>
+              </div>
+            )}
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

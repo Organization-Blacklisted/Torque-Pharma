@@ -1,4 +1,4 @@
-export type NavChild = { label: string; href: string };
+export type NavChild = { label: string; href: string; children?: NavChild[] };
 
 export type MegaParent = {
   label: string;
@@ -78,7 +78,14 @@ export const navItems: NavItem[] = [
     label: "Capabilities",
     children: [
       { label: "Manufacturing Facilities", href: "/manufacturing-facility" },
-      { label: "White Label Manufacturing", href: "/white-label-manufacturing" },
+      {
+        label: "Export Manufacturing",
+        href: "/export-manufacturing-pharma-ayurveda",
+        children: [
+          { label: "Pharma & Ayurveda Manufacturing", href: "/export-manufacturing-pharma-ayurveda" },
+          { label: "Ayurveda & Soap Manufacturing", href: "/ayurveda-soap-manufacturing" },
+        ],
+      },
     ],
   },
   {
