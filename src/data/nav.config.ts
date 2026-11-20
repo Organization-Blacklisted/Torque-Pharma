@@ -78,7 +78,14 @@ export const navItems: NavItem[] = [
     label: "Capabilities",
     children: [
       { label: "Manufacturing Facilities", href: "/manufacturing-facility" },
-      { label: "Third-Party Manufacturing", href: "/third-party-manufacturing" },
+      {
+        label: "Third-Party Manufacturing",
+        href: "/third-party-manufacturing",
+        children: [
+          { label: "Ayurveda & Soap Manufacturing", href: "/ayurveda-soap-manufacturing" },
+          { label: "Export Manufacturing (Pharma & Ayurveda)", href: "/export-manufacturing-pharma-ayurveda" },
+        ],
+      },
     ],
   },
   {
