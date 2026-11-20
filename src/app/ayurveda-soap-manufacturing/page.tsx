@@ -44,7 +44,7 @@ export default async function AyurvedaSoapManufacturingPage() {
 
       <ExmCapabilitiesSection {...capabilities} />
 
-      <WhyJoinSection {...brand} />
+      <WhyJoinSection {...brand} className="mx-2" />
 
       <Section>
         <Container size="wide">

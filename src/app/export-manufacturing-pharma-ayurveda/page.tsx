@@ -44,7 +44,7 @@ export default async function ExportManufacturingPage() {
 
       <ExmCapabilitiesSection {...capabilities} />
 
-      <WhyJoinSection {...brand} />
+      <WhyJoinSection {...brand} className="mx-2" />
 
       <ProductionScaleSection {...dosage} showArrows={false} />
 

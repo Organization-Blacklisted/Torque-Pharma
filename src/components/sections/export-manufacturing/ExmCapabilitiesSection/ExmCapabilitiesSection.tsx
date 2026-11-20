@@ -1,7 +1,9 @@
 import Image from "next/image";
+import Link from "next/link";
 import Section from "@/components/layouts/Section";
 import Container from "@/components/layouts/Container";
 import SectionHeader from "@/components/ui/SectionHeading";
+import { ArrowIcon } from "@/components/ui/SplitButton/ArrowIcon";
 import type { ExmCapabilitiesSectionProps } from "./ExmCapabilitiesSection.types";
 
 export default function ExmCapabilitiesSection({
@@ -39,6 +41,15 @@ export default function ExmCapabilitiesSection({
               <div className="p-8">
                 <p className="text-h5 font-medium text-primary">{item.title}</p>
                 <p className="mt-4 text-body text-primary/60">{item.description}</p>
+                {item.button && (
+                  <Link
+                    href={item.button.href}
+                    className="mt-6 inline-flex items-center gap-2 text-body-sm font-medium uppercase text-mint"
+                  >
+                    {item.button.label}
+                    <ArrowIcon className="h-4 w-4 text-mint" />
+                  </Link>
+                )}
               </div>
             </div>
           ))}
