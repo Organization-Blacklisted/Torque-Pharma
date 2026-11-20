@@ -30,6 +30,10 @@ function ChevronDown({ isOpen }: { isOpen: boolean }) {
 export default function DesktopNav({ pathname }: DesktopNavProps) {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [openSubDropdown, setOpenSubDropdown] = useState<string | null>(null);
+  // The sub-flyout always opens to the right (never flips side) — it just
+  // fills whatever space is actually left before the viewport edge, only
+  // wrapping its longest label onto a second line once that space runs out.
+  const [subMenuMaxWidth, setSubMenuMaxWidth] = useState<number>(380);
   const [activeMegaParent, setActiveMegaParent] = useState("domestic");
   const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const subCloseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -48,9 +52,31 @@ export default function DesktopNav({ pathname }: DesktopNavProps) {
     closeTimerRef.current = setTimeout(() => setOpenDropdown(null), 150);
   };
 
-  const openSubNav = (label: string) => {
+  const SUB_MENU_GAP = 8; // matches ml-2
+  const SUB_MENU_EDGE_MARGIN = 16; // breathing room before the viewport edge
+  const SUB_MENU_PREFERRED_WIDTH = 380; // comfortable single-line width for the longest label
+  const SUB_MENU_MIN_WIDTH = 180;
+
+  const computeMaxWidth = (wrapperEl: Element | null) => {
+    if (!wrapperEl) return SUB_MENU_PREFERRED_WIDTH;
+    const rect = wrapperEl.getBoundingClientRect();
+    const available = window.innerWidth - rect.right - SUB_MENU_GAP - SUB_MENU_EDGE_MARGIN;
+    return Math.max(SUB_MENU_MIN_WIDTH, Math.min(SUB_MENU_PREFERRED_WIDTH, available));
+  };
+
+  const openSubNav = (label: string, wrapperEl?: Element | null) => {
     if (subCloseTimerRef.current) clearTimeout(subCloseTimerRef.current);
+    if (wrapperEl) setSubMenuMaxWidth(computeMaxWidth(wrapperEl));
     setOpenSubDropdown(label);
+  };
+
+  const toggleSubNav = (label: string, wrapperEl: Element | null) => {
+    if (subCloseTimerRef.current) clearTimeout(subCloseTimerRef.current);
+    setOpenSubDropdown((prev) => {
+      if (prev === label) return null;
+      if (wrapperEl) setSubMenuMaxWidth(computeMaxWidth(wrapperEl));
+      return label;
+    });
   };
 
   const scheduleSubClose = () => {
@@ -195,21 +221,36 @@ export default function DesktopNav({ pathname }: DesktopNavProps) {
                       <div
                         key={child.label}
                         className="relative"
-                        onMouseEnter={() => openSubNav(child.label)}
+                        onMouseEnter={(e) => openSubNav(child.label, e.currentTarget)}
                         onMouseLeave={scheduleSubClose}
                       >
-                        <button
-                          type="button"
-                          aria-haspopup="true"
-                          aria-expanded={openSubDropdown === child.label}
-                          className="flex w-full items-center justify-between gap-6 font-body text-h5 font-normal leading-6 text-secondary hover:text-primary transition-colors duration-200"
-                        >
-                          {child.label}
-                          <ChevronRight />
-                        </button>
+                        <div className="flex w-full items-center gap-6">
+                          <Link
+                            href={child.href}
+                            className="flex-1 font-body text-h5 font-normal leading-6 text-secondary hover:text-primary transition-colors duration-200"
+                          >
+                            {child.label}
+                          </Link>
+                          <button
+                            type="button"
+                            aria-haspopup="true"
+                            aria-expanded={openSubDropdown === child.label}
+                            aria-label={`Toggle ${child.label} submenu`}
+                            onClick={(e) => {
+                              // Toggling the submenu is this button's only job — it must
+                              // never navigate, so the label link above stays the sole
+                              // click target for going to the page itself.
+                              e.preventDefault();
+                              toggleSubNav(child.label, e.currentTarget.closest(".relative"));
+                            }}
+                            className="shrink-0 p-1 text-secondary hover:text-primary transition-colors duration-200"
+                          >
+                            <ChevronRight />
+                          </button>
+                        </div>
 
                         <div
-                          onMouseEnter={() => openSubNav(child.label)}
+                          onMouseEnter={(e) => openSubNav(child.label, e.currentTarget.parentElement)}
                           onMouseLeave={scheduleSubClose}
                           className={[
                             "absolute left-full top-0 ml-2 transition-all duration-150",
@@ -218,12 +259,24 @@ export default function DesktopNav({ pathname }: DesktopNavProps) {
                               : "pointer-events-none opacity-0 -translate-x-1",
                           ].join(" ")}
                         >
-                          <div className="w-max min-w-[220px] rounded-lg border border-black/[0.06] bg-white/90 backdrop-blur-[8px] p-6 shadow-sm flex flex-col gap-4 whitespace-nowrap">
+                          {/* Always opens to the right, never flips side. Explicit pixel
+                              `width` (not max-width on an intrinsically-sized box) so
+                              every browser wraps the text identically — fills as much
+                              space as is actually left before the viewport edge, up to
+                              a comfortable 380px, and a long label like "Export
+                              Manufacturing (Pharma & Ayurveda)" only wraps onto a
+                              second line once that space runs out. */}
+                          <div
+                            data-submenu-panel
+                            style={{ width: subMenuMaxWidth }}
+                            className="rounded-lg border border-black/[0.06] bg-white/90 backdrop-blur-[8px] p-6 shadow-sm flex flex-col gap-4"
+                          >
                             {child.children.map((grandchild) => (
                               <Link
                                 key={grandchild.href}
                                 href={grandchild.href}
-                                className="font-body text-h5 font-normal leading-6 text-secondary hover:text-primary transition-colors duration-200"
+                                className="block font-body text-h5 font-normal leading-6 text-secondary hover:text-primary transition-colors duration-200"
+                                style={{ whiteSpace: "normal", wordBreak: "normal" }}
                               >
                                 {grandchild.label}
                               </Link>

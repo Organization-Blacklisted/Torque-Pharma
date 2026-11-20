@@ -206,17 +206,25 @@ export default function MobileDrawer({ menuOpen, closeMenu, pathname }: MobileDr
                         const isSubActive = child.children.some((gc) => pathname === gc.href);
                         return (
                           <div key={child.label}>
-                            <button
-                              type="button"
-                              onClick={() => setOpenSubAccordion(isSubOpen ? null : child.label)}
+                            <div
                               className={[
                                 "flex w-full items-center justify-between py-2.5 font-body text-body-sm transition-colors duration-200",
                                 isSubActive ? "text-primary font-medium" : "text-secondary font-normal",
                               ].join(" ")}
                             >
-                              {child.label}
-                              <ChevronDown isOpen={isSubOpen} />
-                            </button>
+                              <Link href={child.href} onClick={closeMenu} className="flex-1">
+                                {child.label}
+                              </Link>
+                              <button
+                                type="button"
+                                aria-label={`Toggle ${child.label} submenu`}
+                                aria-expanded={isSubOpen}
+                                onClick={() => setOpenSubAccordion(isSubOpen ? null : child.label)}
+                                className="shrink-0 p-1"
+                              >
+                                <ChevronDown isOpen={isSubOpen} />
+                              </button>
+                            </div>
 
                             {isSubOpen && (
                               <div className="flex flex-col pb-2 pl-3">
