@@ -36,7 +36,7 @@ export default async function ThirdPartyManufacturingPage() {
     <>
       <TpmHeroFormSection hero={hero} form={form} pageName={PAGE_NAME} pageUrl={PAGE_URL} />
 
-      <Section spacing="none" className="mt-[120px] mb-[var(--spacing-section)]">
+      <Section spacing="none" className="mt-[60px] mb-[var(--spacing-section)] lg:mt-[120px]">
         <Container size="wide">
           <ContentMediaSection {...partnership} columnRatio="1:1" columnGap="112px" />
         </Container>

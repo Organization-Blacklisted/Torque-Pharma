@@ -22,8 +22,8 @@ export default function TpmHeroFormSection({ hero, form, pageName, pageUrl }: Tp
         size="wide"
         className="pt-[calc(92px+var(--spacing-page-top))] pb-[var(--spacing-section-inner)] lg:pt-[96px] lg:pb-0"
       >
-        <div className="grid items-start gap-[clamp(24px,_8vw,_160px)] lg:grid-cols-[1fr_1fr]">
-          <div>
+        <div className="grid min-w-0 items-start gap-[clamp(24px,_8vw,_160px)] lg:grid-cols-[1fr_1fr]">
+          <div className="min-w-0">
             <SectionHeader eyebrow={hero.eyebrow} title={hero.title} as="h1" size="h1" />
             <p className="mt-5 text-body leading-6 text-secondary">{hero.description}</p>
             <div className="mt-8">
@@ -33,7 +33,7 @@ export default function TpmHeroFormSection({ hero, form, pageName, pageUrl }: Tp
             </div>
           </div>
 
-          <div className="rounded-lg bg-dark-blue p-8 lg:p-10">
+          <div className="min-w-0 rounded-lg bg-dark-blue p-5 sm:p-8 lg:p-10">
             <ThirdPartyManufacturingForm
               title={form.title}
               subtitle={form.subtitle}

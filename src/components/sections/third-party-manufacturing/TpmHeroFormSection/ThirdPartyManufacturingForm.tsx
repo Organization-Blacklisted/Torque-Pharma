@@ -111,7 +111,7 @@ export default function ThirdPartyManufacturingForm({
       <h2 className="font-body text-h4 font-medium text-white">{title}</h2>
       <p className="mt-2 text-body text-white/80">{subtitle}</p>
       <form onSubmit={handleSubmit(onSubmit)} noValidate className="mt-6 flex flex-col gap-4">
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid min-w-0 gap-4 sm:grid-cols-2">
           <FormField error={errors.fullName?.message}>
             <FormInput placeholder="Full Name" hasError={!!errors.fullName} className="!bg-white" {...register("fullName")} />
           </FormField>
@@ -120,11 +120,11 @@ export default function ThirdPartyManufacturingForm({
           </FormField>
         </div>
 
-        <div className="grid gap-4 sm:grid-cols-2">
-          <FormField error={errors.email?.message}>
+        <div className="grid min-w-0 gap-4 sm:grid-cols-2">
+          <FormField error={errors.email?.message} className="min-w-0">
             <FormInput type="email" placeholder="Business Email" hasError={!!errors.email} className="!bg-white" {...register("email")} />
           </FormField>
-          <FormField error={errors.phone?.message}>
+          <FormField error={errors.phone?.message} className="min-w-0">
             <Controller
               name="phone"
               control={control as Control<FormValues>}
@@ -144,7 +144,7 @@ export default function ThirdPartyManufacturingForm({
           </FormField>
         </div>
 
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid min-w-0 gap-4 sm:grid-cols-2">
           <FormField error={errors.requirement?.message}>
             <FormInput placeholder="Manufacturing Requirement" hasError={!!errors.requirement} className="!bg-white" {...register("requirement")} />
           </FormField>
