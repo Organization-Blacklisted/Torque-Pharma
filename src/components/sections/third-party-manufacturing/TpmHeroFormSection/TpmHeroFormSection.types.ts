@@ -4,7 +4,7 @@ export interface TpmHeroFormSectionProps {
     title: string;
     description: string;
     image: string | null;
-    button: { label: string; href: string };
+    button: { label: string; href: string; external?: boolean };
   };
   form: {
     title: string;

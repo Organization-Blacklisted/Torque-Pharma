@@ -104,7 +104,7 @@ export type ThirdPartyManufacturingPageData = {
     title: string;
     description: string;
     image: string | null;
-    button: { label: string; href: string };
+    button: { label: string; href: string; external?: boolean };
   };
   form: {
     title: string;
@@ -173,6 +173,14 @@ function cleanText(text: string): string {
   return text.replace(/\r?\n/g, " ").trim();
 }
 
+// The CMS can point a button at either an internal page route or a direct
+// file download (e.g. the hero button currently links to a PDF brochure
+// instead of the original "discuss requirements" anchor) — detect file
+// links so they open in a new tab instead of navigating away from the site.
+function isFileLink(href: string): boolean {
+  return /\.(pdf|docx?|xlsx?|pptx?|zip)$/i.test(href);
+}
+
 // ─── Fetcher ──────────────────────────────────────────────────────────────────
 
 export async function getThirdPartyManufacturingPage(): Promise<ThirdPartyManufacturingPageData> {
@@ -202,7 +210,11 @@ export async function getThirdPartyManufacturingPage(): Promise<ThirdPartyManufa
       title: hero.title,
       description: cleanText(hero.desc),
       image: hero.image,
-      button: { label: hero.button_text, href: hero.button_link },
+      button: {
+        label: hero.button_text,
+        href: hero.button_link,
+        external: isFileLink(hero.button_link),
+      },
     },
 
     form: {
@@ -253,8 +265,11 @@ export async function getThirdPartyManufacturingPage(): Promise<ThirdPartyManufa
         title: item.title,
         description: item.desc,
       })),
+      // Jumps to the enquiry form already built into this page's own hero
+      // instead of the CMS's button_link (currently "/contact-us") — the
+      // page doesn't need to send the visitor elsewhere for this.
       button: whiteLabel.button_text
-        ? { label: whiteLabel.button_text, href: whiteLabel.button_link }
+        ? { label: whiteLabel.button_text, href: "#tpm-enquiry-form" }
         : undefined,
     },
 
@@ -297,8 +312,8 @@ export async function getThirdPartyManufacturingPage(): Promise<ThirdPartyManufa
       title: quality.title,
       description: cleanText(quality.desc),
       items: quality.items,
-      button: quality.button_text && quality.button_link !== "#"
-        ? { label: quality.button_text, href: quality.button_link }
+      button: quality.button_text
+        ? { label: quality.button_text, href: "#tpm-enquiry-form" }
         : undefined,
     },
 
@@ -307,7 +322,9 @@ export async function getThirdPartyManufacturingPage(): Promise<ThirdPartyManufa
     cta: {
       eyebrow: cta.tag,
       title: sanitize(cta.title),
-      button: { label: cta.button_text, href: cta.button_link },
+      // Same reasoning as whiteLabel's button above — jump to this page's own
+      // enquiry form instead of the CMS's button_link ("/contact-us").
+      button: { label: cta.button_text, href: "#tpm-enquiry-form" },
     },
   };
 }

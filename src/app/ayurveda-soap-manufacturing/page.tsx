@@ -9,8 +9,12 @@ import ExmQualityChecklistSection from "@/components/sections/export-manufacturi
 import FaqSection from "@/components/sections/shared/FaqSection";
 import CtaSection from "@/components/sections/shared/CtaSection";
 import { SplitButton } from "@/components/ui/SplitButton";
+import ManufacturingEnquiryProvider, { EnquiryTriggerButton } from "@/components/ui/ManufacturingEnquiryModal";
 import Container from "@/components/layouts/Container";
 import Section from "@/components/layouts/Section";
+
+const PAGE_NAME = "Ayurveda & Soap Manufacturing";
+const PAGE_URL = "/ayurveda-soap-manufacturing";
 
 export async function generateMetadata(): Promise<Metadata> {
   const { seo } = await getAyurvedaSoapPage();
@@ -29,10 +33,22 @@ export default async function AyurvedaSoapManufacturingPage() {
     await getAyurvedaSoapPage();
 
   return (
-    <>
+    <ManufacturingEnquiryProvider pageName={PAGE_NAME} pageUrl={PAGE_URL}>
       <Section first>
         <Container size="wide">
-          <ContentMediaSection {...hero} headingAs="h1" columnRatio="1:1" columnGap="112px" />
+          <ContentMediaSection
+            {...hero}
+            headingAs="h1"
+            columnRatio="1:1"
+            columnGap="112px"
+            actionsOverride={
+              hero.actions?.[0] && (
+                <EnquiryTriggerButton variant={hero.actions[0].variant}>
+                  {hero.actions[0].label}
+                </EnquiryTriggerButton>
+              )
+            }
+          />
         </Container>
       </Section>
 
@@ -44,11 +60,26 @@ export default async function AyurvedaSoapManufacturingPage() {
 
       <ExmCapabilitiesSection {...capabilities} />
 
-      <WhyJoinSection {...brand} className="mx-2" />
+      <WhyJoinSection
+        {...brand}
+        className="mx-2"
+        buttonOverride={brand.button && <EnquiryTriggerButton>{brand.button.label}</EnquiryTriggerButton>}
+      />
 
       <Section>
         <Container size="wide">
-          <ContentMediaSection {...formulations} columnRatio="1:1" columnGap="112px" />
+          <ContentMediaSection
+            {...formulations}
+            columnRatio="1:1"
+            columnGap="112px"
+            actionsOverride={
+              formulations.actions?.[0] && (
+                <EnquiryTriggerButton variant={formulations.actions[0].variant}>
+                  {formulations.actions[0].label}
+                </EnquiryTriggerButton>
+              )
+            }
+          />
         </Container>
       </Section>
 
@@ -81,11 +112,9 @@ export default async function AyurvedaSoapManufacturingPage() {
 
       <FaqSection {...faq} />
 
-      <CtaSection
-        eyebrow={cta.eyebrow}
-        title={cta.title}
-        button={{ label: cta.button.label, href: cta.button.href }}
-      />
-    </>
+      <CtaSection eyebrow={cta.eyebrow} title={cta.title}>
+        <EnquiryTriggerButton variant="secondary">{cta.button.label}</EnquiryTriggerButton>
+      </CtaSection>
+    </ManufacturingEnquiryProvider>
   );
 }

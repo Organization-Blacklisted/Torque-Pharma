@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import Image from "next/image";
 import RotatingPhotoBadge from "@/components/ui/RotatingPhotoBadge";
 import SectionHeader from "@/components/ui/SectionHeading";
@@ -69,11 +70,17 @@ function MediaBlock({
 
 function Actions({
   actions,
+  actionsOverride,
   centered,
 }: {
   actions: ContentMediaSectionProps["actions"];
+  actionsOverride: ReactNode;
   centered: boolean;
 }) {
+  if (actionsOverride) {
+    return <div className={`mt-8 flex flex-wrap gap-4 ${centered ? "justify-center" : ""}`}>{actionsOverride}</div>;
+  }
+
   if (!actions?.length) return null;
 
   return (
@@ -100,6 +107,7 @@ export default function ContentMediaSection({
   layout,
   media,
   actions,
+  actionsOverride,
   headingAs = "h2",
   columnRatio = "2:3",
   columnGap = "40px",
@@ -125,7 +133,7 @@ export default function ContentMediaSection({
         <div className="mt-[var(--spacing-subsection)]">
           <MediaBlock media={media} layout={layout} />
         </div>
-        <Actions actions={actions} centered />
+        <Actions actions={actions} actionsOverride={actionsOverride} centered />
       </div>
     );
   }
@@ -171,7 +179,7 @@ export default function ContentMediaSection({
             {note}
           </p>
         )}
-        <Actions actions={actions} centered={false} />
+        <Actions actions={actions} actionsOverride={actionsOverride} centered={false} />
       </div>
     </div>
   );

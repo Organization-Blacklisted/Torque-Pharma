@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 export interface ExmQualityChecklistSectionProps {
   eyebrow: string;
   title: string;
@@ -5,5 +7,7 @@ export interface ExmQualityChecklistSectionProps {
   note?: string;
   items: { text: string }[];
   button?: { label: string; href: string };
+  /** Renders in place of the CMS-driven `button` when provided. */
+  buttonOverride?: ReactNode;
   className?: string;
 }

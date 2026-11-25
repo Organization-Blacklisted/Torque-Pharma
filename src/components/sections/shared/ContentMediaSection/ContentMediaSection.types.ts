@@ -1,6 +1,10 @@
+import type { ReactNode } from "react";
 import type { ContentMediaData } from "@/types/content-media";
 
 export interface ContentMediaSectionProps extends ContentMediaData {
+  /** Renders in place of the CMS-driven `actions` buttons when provided — e.g. a button that
+   * opens a modal instead of navigating. The CMS `actions` label/href data is otherwise unused. */
+  actionsOverride?: ReactNode;
   // Semantic heading tag. Pages using this section as their hero must pass
   // "h1" — the visual size is h1 either way, but the tag defaults to h2.
   headingAs?: "h1" | "h2";

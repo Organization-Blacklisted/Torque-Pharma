@@ -11,6 +11,7 @@ export default function WhyJoinSection({
   description,
   items,
   button,
+  buttonOverride,
   className = "",
 }: WhyJoinSectionProps) {
   return (
@@ -46,11 +47,13 @@ export default function WhyJoinSection({
           </Slider>
         </div>
 
-        {button && (
+        {(buttonOverride || button) && (
           <div className="mt-[var(--spacing-subsection)] flex justify-center">
-            <SplitButton href={button.href} variant="primary">
-              {button.label}
-            </SplitButton>
+            {buttonOverride ?? (
+              <SplitButton href={button!.href} variant="primary">
+                {button!.label}
+              </SplitButton>
+            )}
           </div>
         )}
       </Container>

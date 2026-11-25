@@ -14,6 +14,7 @@ export default function ProductionScaleSection({
   autoScroll = false,
   showArrows = true,
   cta,
+  ctaOverride,
   className = "",
 }: ProductionScaleSectionProps) {
   return (
@@ -50,12 +51,14 @@ export default function ProductionScaleSection({
       </div>
       {/* Backed by a direct file upload — Laravel can remove it entirely,
           so only render when there's actually something to link to */}
-      {cta?.label && cta?.href && (
+      {(ctaOverride || (cta?.label && cta?.href)) && (
         <Container size="wide">
           <div className="mt-[var(--spacing-section-inner)] flex justify-center">
-            <SplitButton href={cta.href} external={cta.external} variant="primary">
-              {cta.label}
-            </SplitButton>
+            {ctaOverride ?? (
+              <SplitButton href={cta!.href} external={cta!.external} variant="primary">
+                {cta!.label}
+              </SplitButton>
+            )}
           </div>
         </Container>
       )}

@@ -27,13 +27,13 @@ export default function TpmHeroFormSection({ hero, form, pageName, pageUrl }: Tp
             <SectionHeader eyebrow={hero.eyebrow} title={hero.title} as="h1" size="h1" />
             <p className="mt-5 text-body leading-6 text-secondary">{hero.description}</p>
             <div className="mt-8">
-              <SplitButton href={hero.button.href} variant="primary">
+              <SplitButton href={hero.button.href} external={hero.button.external} variant="primary">
                 {hero.button.label}
               </SplitButton>
             </div>
           </div>
 
-          <div className="min-w-0 rounded-lg bg-dark-blue p-5 sm:p-8 lg:p-10">
+          <div id="tpm-enquiry-form" className="min-w-0 scroll-mt-24 rounded-lg bg-dark-blue p-5 sm:p-8 lg:p-10">
             <ThirdPartyManufacturingForm
               title={form.title}
               subtitle={form.subtitle}

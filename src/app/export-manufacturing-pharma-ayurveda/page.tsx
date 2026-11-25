@@ -9,8 +9,12 @@ import WhyJoinSection from "@/components/sections/career/WhyJoinSection";
 import ExmQualityChecklistSection from "@/components/sections/export-manufacturing/ExmQualityChecklistSection";
 import FaqSection from "@/components/sections/shared/FaqSection";
 import CtaSection from "@/components/sections/shared/CtaSection";
+import ManufacturingEnquiryProvider, { EnquiryTriggerButton } from "@/components/ui/ManufacturingEnquiryModal";
 import Container from "@/components/layouts/Container";
 import Section from "@/components/layouts/Section";
+
+const PAGE_NAME = "Export Manufacturing: Pharma & Ayurveda";
+const PAGE_URL = "/export-manufacturing-pharma-ayurveda";
 
 export async function generateMetadata(): Promise<Metadata> {
   const { seo } = await getExportManufacturingPage();
@@ -29,10 +33,22 @@ export default async function ExportManufacturingPage() {
     await getExportManufacturingPage();
 
   return (
-    <>
+    <ManufacturingEnquiryProvider pageName={PAGE_NAME} pageUrl={PAGE_URL}>
       <Section first>
         <Container size="wide">
-          <ContentMediaSection {...hero} headingAs="h1" columnRatio="1:1" columnGap="112px" />
+          <ContentMediaSection
+            {...hero}
+            headingAs="h1"
+            columnRatio="1:1"
+            columnGap="112px"
+            actionsOverride={
+              hero.actions?.[0] && (
+                <EnquiryTriggerButton variant={hero.actions[0].variant}>
+                  {hero.actions[0].label}
+                </EnquiryTriggerButton>
+              )
+            }
+          />
         </Container>
       </Section>
 
@@ -44,9 +60,17 @@ export default async function ExportManufacturingPage() {
 
       <ExmCapabilitiesSection {...capabilities} />
 
-      <WhyJoinSection {...brand} className="mx-2" />
+      <WhyJoinSection
+        {...brand}
+        className="mx-2"
+        buttonOverride={brand.button && <EnquiryTriggerButton>{brand.button.label}</EnquiryTriggerButton>}
+      />
 
-      <ProductionScaleSection {...dosage} showArrows={false} />
+      <ProductionScaleSection
+        {...dosage}
+        showArrows={false}
+        ctaOverride={dosage.cta && <EnquiryTriggerButton>{dosage.cta.label}</EnquiryTriggerButton>}
+      />
 
       <Section>
         <Container size="wide">
@@ -60,11 +84,9 @@ export default async function ExportManufacturingPage() {
 
       <FaqSection {...faq} />
 
-      <CtaSection
-        eyebrow={cta.eyebrow}
-        title={cta.title}
-        button={{ label: cta.button.label, href: cta.button.href }}
-      />
-    </>
+      <CtaSection eyebrow={cta.eyebrow} title={cta.title}>
+        <EnquiryTriggerButton variant="secondary">{cta.button.label}</EnquiryTriggerButton>
+      </CtaSection>
+    </ManufacturingEnquiryProvider>
   );
 }

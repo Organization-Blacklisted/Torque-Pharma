@@ -10,6 +10,7 @@ import ManufacturingProcessSection from "@/components/sections/manufacturing/Man
 import ExmQualityChecklistSection from "@/components/sections/export-manufacturing/ExmQualityChecklistSection";
 import FaqSection from "@/components/sections/shared/FaqSection";
 import CtaSection from "@/components/sections/shared/CtaSection";
+import ScrollToFormButton from "@/components/sections/third-party-manufacturing/TpmHeroFormSection/ScrollToFormButton";
 import Container from "@/components/layouts/Container";
 import Section from "@/components/layouts/Section";
 
@@ -44,7 +45,11 @@ export default async function ThirdPartyManufacturingPage() {
 
       <ExmCapabilitiesSection {...capabilities} />
 
-      <WhyJoinSection {...whiteLabel} className="mx-2" />
+      <WhyJoinSection
+        {...whiteLabel}
+        className="mx-2"
+        buttonOverride={whiteLabel.button && <ScrollToFormButton>{whiteLabel.button.label}</ScrollToFormButton>}
+      />
 
       <Section>
         <Container size="wide">
@@ -56,15 +61,16 @@ export default async function ThirdPartyManufacturingPage() {
 
       <ManufacturingProcessSection {...process} className="mx-2" />
 
-      <ExmQualityChecklistSection {...quality} />
+      <ExmQualityChecklistSection
+        {...quality}
+        buttonOverride={quality.button && <ScrollToFormButton>{quality.button.label}</ScrollToFormButton>}
+      />
 
       <FaqSection {...faq} />
 
-      <CtaSection
-        eyebrow={cta.eyebrow}
-        title={cta.title}
-        button={{ label: cta.button.label, href: cta.button.href }}
-      />
+      <CtaSection eyebrow={cta.eyebrow} title={cta.title}>
+        <ScrollToFormButton variant="secondary">{cta.button.label}</ScrollToFormButton>
+      </CtaSection>
     </>
   );
 }

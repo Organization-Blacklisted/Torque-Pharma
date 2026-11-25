@@ -26,6 +26,7 @@ export default function ExmQualityChecklistSection({
   note,
   items,
   button,
+  buttonOverride,
   className = "",
 }: ExmQualityChecklistSectionProps) {
   return (
@@ -39,11 +40,13 @@ export default function ExmQualityChecklistSection({
                 {note}
               </p>
             )}
-            {button && (
+            {(buttonOverride || button) && (
               <div className="mt-6">
-                <SplitButton href={button.href} variant="primary">
-                  {button.label}
-                </SplitButton>
+                {buttonOverride ?? (
+                  <SplitButton href={button!.href} variant="primary">
+                    {button!.label}
+                  </SplitButton>
+                )}
               </div>
             )}
           </div>
